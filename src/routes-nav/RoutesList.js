@@ -1,4 +1,4 @@
-
+//Need to install react router and add imports
 
 
 /**
@@ -15,6 +15,8 @@ function RoutesList() {
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/blog" element={<Blog />} />
+        {/* Catch all other routes and route to "/" */}
+        <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
     </div>
   );
