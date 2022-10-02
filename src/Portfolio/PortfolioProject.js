@@ -1,6 +1,6 @@
 
 
-function PortfolioProject({ project }) {
+export default function PortfolioProject({ project }) {
 
   return (
     <div>
