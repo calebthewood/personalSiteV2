@@ -11,15 +11,10 @@ export default function PortfolioProject({ project }) {
     e.preventDefault();
     setActiveTab(e.target.id);
   }
-  // const triggerTabList = document.querySelectorAll('#myTab button')
-  // triggerTabList.forEach(triggerEl => {
-  //   const tabTrigger = new Tab(triggerEl)
 
-  //   triggerEl.addEventListener('click', event => {
-  //     event.preventDefault()
-  //     tabTrigger.show()
-  //   })
-  // })
+  function createProjectTabs() {
+
+  }
 
   return (
     <div className="card mb-3" style={style}>
@@ -30,33 +25,21 @@ export default function PortfolioProject({ project }) {
         <div className="col-md-8">
           <div className="card-header">
             <ul className="nav nav-tabs card-header-tabs" onClick={handleTabs}>
-              <li className="nav-item">
-                <a
-                  id="summary"
-                  className={activeTab === "summary" ? "nav-link active" : "nav-link"}
-                  aria-current="true"
-                  href="#summary">{project.title}</a>
-              </li>
-              <li className="nav-item">
-                <a
-                  id="frontend"
-                  className={activeTab === "frontend" ? "nav-link active" : "nav-link"}
-                  href="#frontend">Frontend</a>
-              </li>
-              <li className="nav-item">
-                <a
-                  id="backend"
-                  className={activeTab === "backend" ? "nav-link active" : "nav-link"}
-                  href="#backend">Backend</a>
-              </li>
-              <li className="nav-item">
-                <a
-                  id="database"
-                  className={activeTab === "database" ? "nav-link active" : "nav-link"}
-                  href="#database">Database</a>
-              </li>
+              {["Summary", "Frontend", "Backend", "Database"].map(tabName => {
+                let name = tabName.toLowerCase();
+                return (
+                  <li className="nav-item">
+                    <a
+                      id={name}
+                      className={activeTab === name ? "nav-link active" : "nav-link"}
+                      aria-current="true"
+                      href={"#" + name}>{tabName}</a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
+
           <div className="card-body">
             <div class="tab-content" id="myTabContent">
               <div

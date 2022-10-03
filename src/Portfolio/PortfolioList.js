@@ -1,11 +1,7 @@
-import { portfolio } from "./PortfolioData";
+import { portfolio } from "./portfolioData";
 import PortfolioProject from "./PortfolioProject";
 
 export default function PortfolioList() {
-  /* Data isn't coming from a db so it'll just be hard coded.
-  I can do that here or create another file to hold project data
-  like title, description, image, etc. */
-
 
   return (
     <div>
