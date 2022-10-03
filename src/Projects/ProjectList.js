@@ -1,11 +1,6 @@
-/* This will render list of projects
- pass in projects list from component that renders Project List
-
-will probably keep the actual components here. Will have to think through
-how to store a list of components
-*/
-
+import { projects } from "./projectData"
 import { useState } from "react"
+import ProjectCard from "./ProjectCard";
 
 
 export default function ProjectList() {
@@ -18,14 +13,9 @@ the weird thing is that it isn't text. Can we store components in objects???
 hrmm... Anyway,
 */
 
-  // let [projectSelected, setProject] = useState(null)
-
-
   return (
-    <div>
-      <h1>Projects</h1>
-      <div>List of Project Cards</div>
-      <div>Prompt to visit blog</div>
+    <div className="container">
+      {projects.map( project => <ProjectCard project={project}/>)}
     </div>
   )
 }
