@@ -1,24 +1,38 @@
 
 
-const portfolio = [
+export const portfolio = [
   {
     title: "Jobly",
-    description: "Yadda yadda yadda",
+    summary: "Yadda yadda yadda",
+    frontend: "frontend",
+    backend: "backend",
+    database: "database",
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/jobly.png",
     site: "https://jobly-r25.surge.sh/",
   },
   {
     title: "Warbler",
-    description: "Yadda yadda yadda",
+    summary: "Yadda yadda yadda",
+    frontend: "frontend",
+    backend: "backend",
+    database: "database",
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/warbler.png",
     site: "https://r-warble.herokuapp.com/",
   },
   {
     title: "this site",
-    description: "This site, explore around",
+    summary: "This site, explore around",
+    frontend: "frontend",
+    backend: "backend",
+    database: "database",
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/site-shot.png"
   },
   {
     title: "Stretch goals",
-    description: "to be considered, project must utilize a front end and a backend. preferably with a DB, but maybe not."
+    summary: "to be considered, project must utilize a front end and a backend. preferably with a DB, but maybe not.",
+    frontend: "frontend",
+    backend: "backend",
+    database: "database",
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/whittle.png"
   }
 ];

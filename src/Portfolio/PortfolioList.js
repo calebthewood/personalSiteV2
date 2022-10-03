@@ -1,5 +1,5 @@
-// Renders project components
-//pass in portfolio data from file that renders portfolio list
+import { portfolio } from "./PortfolioData";
+import PortfolioProject from "./PortfolioProject";
 
 export default function PortfolioList() {
   /* Data isn't coming from a db so it'll just be hard coded.
@@ -9,8 +9,9 @@ export default function PortfolioList() {
 
   return (
     <div>
-      <div>
-        portfolio.map PortfolioComponents
+      <h1>Portfolio</h1>
+      <div className="container">
+        {portfolio.map( item => <PortfolioProject project={item} />)}
       </div>
       <div>
         Prompt to go to projects
