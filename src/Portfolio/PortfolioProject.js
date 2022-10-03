@@ -2,12 +2,13 @@ import { useState } from "react";
 
 export default function PortfolioProject({ project }) {
   const style = {
-    "max-width": "540px;"
+    "max-width": "400px;"
   };
 
   const [activeTab, setActiveTab] = useState("summary");
 
   function handleTabs(e) {
+    e.preventDefault();
     setActiveTab(e.target.id);
   }
   // const triggerTabList = document.querySelectorAll('#myTab button')
@@ -34,25 +35,25 @@ export default function PortfolioProject({ project }) {
                   id="summary"
                   className={activeTab === "summary" ? "nav-link active" : "nav-link"}
                   aria-current="true"
-                  href="#">{project.title}</a>
+                  href="#summary">{project.title}</a>
               </li>
               <li className="nav-item">
                 <a
                   id="frontend"
                   className={activeTab === "frontend" ? "nav-link active" : "nav-link"}
-                  href="#">Frontend</a>
+                  href="#frontend">Frontend</a>
               </li>
               <li className="nav-item">
                 <a
                   id="backend"
                   className={activeTab === "backend" ? "nav-link active" : "nav-link"}
-                  href="#">Backend</a>
+                  href="#backend">Backend</a>
               </li>
               <li className="nav-item">
                 <a
                   id="database"
                   className={activeTab === "database" ? "nav-link active" : "nav-link"}
-                  href="#">Database</a>
+                  href="#database">Database</a>
               </li>
             </ul>
           </div>
