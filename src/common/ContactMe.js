@@ -5,8 +5,8 @@ export default function ContactMe() {
     <section id="contact">
       <p>
         Please reach out via email with any questions.
-        <br/>
-          <p><a className="" href="https://www.instagram.com/calebthewood/?hl=en">calebwood.cs@gmail.com</a></p>
+        <br />
+        <a className="" href="https://www.instagram.com/calebthewood/?hl=en">calebwood.cs@gmail.com</a>
       </p>
       <p>
         <a className="" href="mailto:calebwood.cs@gmail.com">

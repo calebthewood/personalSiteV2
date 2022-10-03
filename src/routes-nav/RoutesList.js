@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "../Home/Home";
-import AboutMe from "../AboutMe/AboutMe";
-import PortfolioList from "../Portfolio/PortfolioList";
-import ProjectList from "../Projects/ProjectList";
-import BlogList from "../Blog/BlogList";
+import Home from "../home/Home";
+import AboutMe from "../about/AboutMe";
+import PortfolioList from "../portfolio/PortfolioList";
+import ProjectList from "../projects/ProjectList";
+import BlogList from "../blog/BlogList";
 
 
 /**

@@ -23,14 +23,9 @@ hrmm... Anyway,
 
   return (
     <div>
-      <p>projects.map() - list project summary components</p>
-      <div> if project selected, display project
-        in line or in container to the side, OR show only
-        the component and keep a back arrow to return to list
-      </div>
-      <div>
-        prompt to visit blog
-      </div>
+      <h1>Projects</h1>
+      <div>List of Project Cards</div>
+      <div>Prompt to visit blog</div>
     </div>
   )
 }

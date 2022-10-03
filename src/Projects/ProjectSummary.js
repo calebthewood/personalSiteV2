@@ -6,7 +6,7 @@ export default function ProjectCard() {
 let project = {
   title: "Canvas Platformer",
   description: "blah blah blah",
-  component: <CanvasGame />,
+  component: "<CanvasGame />",
   img: "url/"
 }
   return (
