@@ -3,7 +3,7 @@ import "./Navigation.css";
 
 export default function Navigation() {
   return (
-    <nav className="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-sm bg-light">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">Caleb Wood</NavLink>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +14,7 @@ export default function Navigation() {
             <NavLink className="nav-link active" aria-current="page" to="/about">About</NavLink>
             <NavLink className="nav-link" to="/portfolio">Portfolio</NavLink>
             <NavLink className="nav-link" to="/projects">Projects</NavLink>
-            <NavLink className="nav-link" to="/blog">Blog</NavLink>
+            <NavLink className="nav-link" to="/blog-posts">Blog</NavLink>
           </div>
         </div>
       </div>
