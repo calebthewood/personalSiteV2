@@ -29,7 +29,7 @@ export default function ProjectList() {
           </div>
         </div>
       </header>
-      {projects.map(project => <ProjectCard project={project} />)}
+      {projects.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
     </div>
   );
 }
