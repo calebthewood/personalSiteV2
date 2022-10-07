@@ -10,7 +10,7 @@ section = {
 export default function SectionCard({ section }) {
 
   return (
-    <div className="col-sm-4">
+    <div className="col-sm-4 mb-3">
       <div className="card">
         <Link to={section.url}>
           <div className="card-body">

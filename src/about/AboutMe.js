@@ -15,7 +15,7 @@ export default function AboutMe() {
     description: "maybe more"
   },
   {
-    url: "/blog",
+    url: "/blog-posts",
     title: "My Blog",
     subtitle: "Click to see my blog where I write about my apps, breads, and whatever else.",
     description: "maybe more"
@@ -28,15 +28,20 @@ export default function AboutMe() {
         <div class="row">
           <div class="col">
             <header>
-              <h1>About</h1>
+              <div className="card mb-3">
+                <div className="card-body">
+                  <h1 className="card-title">About Me</h1>
+                  <h5 className="card-subtitle mb-2 text-muted">I like building things on the web.</h5>
+                </div>
+              </div>
             </header>
           </div>
         </div>
 
         <div class="row d-flex justify-content-evenly">
-          <div class="col-xs-12 col-md-10 col-lg-4">
+          <div class="col-xs-12 col-md-4 col-lg-4">
             <div
-              class="card bg-transparent about-card my-5">
+              class="card bg-transparent about-card my-3">
               <img class="card-img-top" src="https://s3.us-west-1.amazonaws.com/pix.ly/selfie.jpg" alt="Caleb's Selfie" />
               <div class="card-body text-center">
                 <div><i class="fas fa-map-marker-alt"></i> San Francisco, CA</div>
@@ -52,9 +57,9 @@ export default function AboutMe() {
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-10 col-lg-7">
+          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
             <div
-              class="card bg-transparent about-card my-5 p-4">
+              class="card bg-transparent about-card my-3 p-4">
               <h5 class="card-title">A little about myself</h5>
               <ul class="list-group list-group-flush">
                 <br />
@@ -79,7 +84,7 @@ export default function AboutMe() {
         </div>
 
         <div className="row d-flex justify-content-evenly">
-          <div class="col-xs-12 col-sm-12 col-md-10 col-lg-11">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div className="row">
               {sectionData.map(section => <SectionCard section={section} />)}
             </div>
