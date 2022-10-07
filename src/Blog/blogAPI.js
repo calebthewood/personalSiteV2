@@ -8,7 +8,9 @@ class BlogAPI {
     console.debug("API Call:", endpoint, data, method);
 
     const url = `${BLOG_URL}/${endpoint}`;
-    const headers = {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
     const params = (method === "get")
       ? data
       : {};
@@ -29,11 +31,18 @@ class BlogAPI {
     console.log("fetchPosts:     ", res);
     return res.data?.response;
   }
-
-  static async fetchPostById(id) {
-    let res = await this.request(`posts/${id}`);
+  /** Fetch based on top level parameters:
+   *  _id, slug, title, author, date, project_id, tags[]
+   */
+  static async fetchPostsByDetail(options) {
+    let res = await axios.request({
+      method: 'get',
+      url: `${BLOG_URL}/posts`,
+      responseType: 'JSON',
+      params: options
+    });
     console.log("fetchPosts:     ", res);
-    return res.response;
+    return res.data?.response;
   }
 }
 

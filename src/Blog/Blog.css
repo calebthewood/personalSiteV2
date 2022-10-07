@@ -1,3 +1,4 @@
+ /* Return Btn */
  #button-search {
    max-width: 32px;
    align-content: center;
@@ -7,6 +8,17 @@
  i.search-icon  {
    margin: 0;
  }
+/* End Rtern Btn */
+
+/* Links and anchor tags */
+
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+/* End links and anchor tags */
+
 
  .code,
  code {

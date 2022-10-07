@@ -10,17 +10,16 @@ import ReturnButton from "../common/ReturnButton";
 export default function BlogPost({ post, showList }) {
 
   const blocks = post.blocks.map(block => {
-    let type = block.type;
-    if (type === "paragraph") {
-      return <ParagraphBlock block={block.paragraph} />;
-    } else if (type === "code") {
-      return <CodeBlock block={block.code} />;
-    } else if (type === "heading_1") {
-      return <TitleBlock block={block.heading_1} author={post.author} date={post.date} />;
-    } else if (type === "heading_2") {
-      return <HeadingBlock block={block.heading_2} />;
-    } else if (type === "heading_3") {
-      return <HeadingBlock block={block.heading_3} />;
+    if (block.type === "paragraph") {
+      return <ParagraphBlock key={block.id} block={block} />;
+    } else if (block.type === "code") {
+      return <CodeBlock key={block.id} block={block} />;
+    } else if (block.type === "heading_1") {
+      return <TitleBlock key={block.id} block={block} author={post.author} date={post.date} />;
+    } else if (block.type === "heading_2") {
+      return <HeadingBlock key={block.id} block={block} />;
+    } else if (block.type === "heading_3") {
+      return <HeadingBlock key={block.id} block={block} />;
     }
     return <hr />;
   });

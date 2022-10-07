@@ -16,3 +16,32 @@ See [Notion Blocks Page](https://developers.notion.com/reference/block) for the 
 
 ### Feature Todo List
 - Text Annotations
+
+### Example Block
+If the text in a block is unbroken it will generally have one element in the roch_text field. If there are links, or type annotations then the text will be broken up into multiple elements.
+```
+const block = {
+  id: "f6e7a307-bdf2-49ed-851b-f73fd527149e",
+  type: "heading_1",
+  content: {
+    rich_text: [
+      {
+        type: "text",
+        text: {},
+        annotations: {
+          bold: false,
+          italic: false,
+          strikethrough: false,
+          underline: false,
+          code: false,
+          color: "default",
+        },
+        plain_text: "Test Blog",
+        href: null
+      }
+    ],
+    is_toggleable: false,
+    color: "default",
+  }
+};
+```
