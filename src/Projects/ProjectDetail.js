@@ -6,7 +6,9 @@ import { projects } from "./projectData";
 
 export default function ProjectDetail() {
   let { project } = useParams();
-  let currentProject = projects.filter(p => p.url === "/" + project)
+  let currentProject = projects.filter(p => p.url === "/" + project)[0]
+  console.log("param ",project)
+  console.log("currentProject ",currentProject)
   const styles = {
     height: "300px",
     width: "400px",
@@ -15,7 +17,7 @@ export default function ProjectDetail() {
     <div className="container">
       <ReturnButton route="/projects" />
       <div className="card text-bg-dark">
-        <img src="..." className="card-img" alt="..." style={styles}/>
+        <img src="..." className="card-img" alt="project screenshot" style={styles}/>
           <div className="card-img-overlay">
             <h5 className="card-title">{currentProject.title}</h5>
             <p className="card-text">This represents a project component</p>
