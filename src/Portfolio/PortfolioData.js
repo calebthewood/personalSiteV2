@@ -3,6 +3,7 @@
 export const portfolio = [
   {
     title: "Jobly",
+    id: "jobly",
     summary: "Jobly summary to go here.",
     frontend: "Frontend specs to go here.",
     backend: "Backend specs to go here.",
@@ -12,6 +13,7 @@ export const portfolio = [
   },
   {
     title: "Warbler",
+    id: "warbler",
     summary: "Warbler summary to go here.",
     frontend: "Frontend specs to go here.",
     backend: "Backend specs to go here.",
@@ -21,6 +23,7 @@ export const portfolio = [
   },
   {
     title: "This site",
+    id: "personalSite",
     summary: "Personal site summary to go here.",
     frontend: "Frontend specs to go here.",
     backend: "Backend specs to go here.",
@@ -29,6 +32,7 @@ export const portfolio = [
   },
   {
     title: "Stretch goals",
+    id: "futureProjects",
     summary: "Future projects go here",
     frontend: "Frontend specs to go here.",
     backend: "Backend specs to go here.",

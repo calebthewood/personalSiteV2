@@ -19,7 +19,7 @@ export default function PortfolioList() {
         </div>
       </header>
       <div>
-        {portfolio.map(item => <PortfolioProject project={item} />)}
+        {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
       </div>
       <div>
         Prompt to go to projects
