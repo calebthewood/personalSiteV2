@@ -1,5 +1,5 @@
 import { projects } from "./projectData";
-import { useState } from "react";
+// import { useState } from "react";
 import ProjectCard from "./ProjectCard";
 
 
@@ -12,6 +12,7 @@ export default function ProjectList() {
   the weird thing is that it isn't text. Can we store components in objects???
   hrmm... Anyway,
   */
+
 
   return (
     <div className="container">

@@ -1,9 +1,7 @@
 import { useState } from "react";
 
 export default function PortfolioProject({ project }) {
-  const style = {
-    "max-width": "400px;"
-  };
+
 
   const [activeTab, setActiveTab] = useState("summary");
 
@@ -12,12 +10,12 @@ export default function PortfolioProject({ project }) {
     setActiveTab(e.target.id);
   }
 
-  function createProjectTabs() {
+  // function createProjectTabs() {
 
-  }
+  // }
 
   return (
-    <div className="card mb-3" style={style}>
+    <div className="card mb-3">
       <div className="row g-0">
         <div className="col-md-4">
           <img src={project.img} className="img-fluid rounded-start" alt="project-screenshot" />
@@ -41,30 +39,30 @@ export default function PortfolioProject({ project }) {
           </div>
 
           <div className="card-body">
-            <div class="tab-content" id="myTabContent">
+            <div className="tab-content" id="myTabContent">
               <div
                 id="summary-tab-pane"
-                class={activeTab === "summary" ? "tab-pane fade show active" : "tab-pane fade"}
+                className={activeTab === "summary" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
-                aria-labelledby="summary-tab" tabindex="0">{project.summary}</div>
+                aria-labelledby="summary-tab" tabIndex="0">{project.summary}</div>
               <div
                 id="frontend-tab-pane"
-                class={activeTab === "frontend" ? "tab-pane fade show active" : "tab-pane fade"}
+                className={activeTab === "frontend" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
                 aria-labelledby="frontend-tab"
-                tabindex="0">{project.frontend}</div>
+                tabIndex="0">{project.frontend}</div>
               <div
                 id="backend-tab-pane"
-                class={activeTab === "backend" ? "tab-pane fade show active" : "tab-pane fade"}
+                className={activeTab === "backend" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
                 aria-labelledby="backend-tab"
-                tabindex="0">{project.backend}</div>
+                tabIndex="0">{project.backend}</div>
               <div
                 id="database-tab-pane"
-                class={activeTab === "database" ? "tab-pane fade show active" : "tab-pane fade"}
+                className={activeTab === "database" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
                 aria-labelledby="database-tab"
-                tabindex="0">{project.database}</div>
+                tabIndex="0">{project.database}</div>
             </div>
           </div>
         </div>

@@ -1,10 +1,8 @@
 import axios from "axios";
 
-const BLOG_URL = process.env.BLOG_URL || "http://localhost:3001/blog/";
+const BLOG_URL = "http://localhost:3001/blog";
 
 class BlogAPI {
-
-
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
@@ -16,25 +14,27 @@ class BlogAPI {
       : {};
 
     try {
-      return (await axios({ url, method, data, params, headers })).data;
+      let res = await axios({ url, method, data, params, headers });
+      console.log("RES.DATA:  ", res.data)
+      return res;
     } catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.error.message;
-      throw Array.isArray(message) ? message : [message];
+      console.error("API Error:", err);
+      // let message = err.response.data.error.message;
+      // throw Array.isArray(message) ? message : [message];
     }
   }
 
-  static async fetchPosts(){
-    let res = await this.request("posts");
-    console.log("fetchPosts:     ",res);
-    return res;
+  static async fetchPosts() {
+    let res = await axios.get(BLOG_URL + "/posts");
+    console.log("fetchPosts:     ", res);
+    return res.data?.response;
   }
 
   static async fetchPostById(id) {
     let res = await this.request(`posts/${id}`);
-    console.log("fetchPosts:     ",res);
-    return res;
+    console.log("fetchPosts:     ", res);
+    return res.response;
   }
-
-  static async queryPosts() {}
 }
+
+export default BlogAPI;

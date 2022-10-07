@@ -1,7 +1,7 @@
 import "./Blog.css";
 import BlogMenu from "./BlogMenu";
 import BlogSummary from "./BlogSummary";
-import { blogData } from "./mockBlogs";
+// import { blogData } from "./mockBlogs";
 import { useState, useEffect } from "react";
 import BlogAPI from "./blogAPI";
 import BlogPost from "./BlogPost";
@@ -10,19 +10,23 @@ export default function BlogList() {
 
   const [posts, setPosts] = useState(null);
   const [currentPost, setCurrentPost] = useState(null);
-  useEffect(function getPostsOnMount() {
+
+  useEffect(function () {
     console.debug("BlogList useEffect getPostsOnMount");
     getPosts();
   }, []);
 
   async function getPosts() {
-    let posts = await BlogAPI.getPosts();
+    let posts = await BlogAPI.fetchPosts();
     setPosts(posts);
+    console.log("BlogList line 20:   ", posts)
   }
 
+  function showList() {
+    setCurrentPost(null)
+  }
 
-
-  if (!posts) return <div><h2>Loading...</h2></div>
+  if (!posts) return <div><h2>Loading...</h2></div>;
 
   return (
     <div className="container">
@@ -46,10 +50,9 @@ export default function BlogList() {
               <BlogMenu />
             </div>
             <div className="col-8">
-              <h4>List of Blogs to go here.</h4>
               {currentPost ?
-                <BlogPost post={currentPost} />
-                : posts.map(post => <BlogSummary summary={post} handleClick={()=> setCurrentPost(post)}/>)}
+                <BlogPost post={currentPost} showList={showList} /> :
+                posts.map((post,i) => <BlogSummary key={"blogSum" + i} post={post} handleClick={() => setCurrentPost(post)} />)}
             </div>
           </div>
         </div>

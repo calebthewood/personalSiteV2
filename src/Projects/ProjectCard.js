@@ -2,7 +2,6 @@ import "./projects.css";
 import { Link } from "react-router-dom";
 
 export default function ProjectCard({ project }) {
-  const styles = { maxWidth: "540px" };
   /* TODO: if I get more than like 10 projects, allow for filtering by tags
   Also, if this gets bigger, look into lazy loading project components */
   return (
@@ -12,7 +11,7 @@ export default function ProjectCard({ project }) {
           <div className="col-md-3">
             {project.img ?
               <img src={project.img} className="img-fluid rounded-start" alt="Project Logo" /> :
-              <i class="fa-solid fa-image img-fluid rounded-start"></i>}
+              <i className="fa-solid fa-image img-fluid rounded-start"></i>}
           </div>
           <div className="col-md-9">
             <div className="card-body">

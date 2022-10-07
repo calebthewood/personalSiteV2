@@ -3,10 +3,10 @@
 export default function BlogMenu() {
 
   return (
-    <nav class="nav flex-column">
+    <nav className="nav flex-column">
       <div className="input-group input-group-sm mb-3">
         <input type="text" className="form-control" placeholder="Search blog" aria-label="search blog" aria-describedby="search blog" />
-        <button className="btn btn-outline-secondary" type="button" id="button-search"><i class="search-icon fa-solid fa-magnifying-glass"></i></button>
+        <button className="btn btn-outline-secondary" type="button" id="button-search"><i className="search-icon fa-solid fa-magnifying-glass"></i></button>
       </div>
       <a className="nav-link active" aria-current="page" href="#">Recent</a>
       <a className="nav-link" href="#">Projects</a>

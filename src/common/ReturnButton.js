@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import "./ReturnButton.css";
 
-export default function ReturnButton({ route }) {
+export default function ReturnButton({ route, back }) {
   return (
-    <Link to={route}>
+    <Link to={route} onClick={back}>
 
-        <i id="returnBtn" class="fa-solid fa-arrow-left"></i>
+        <i id="returnBtn" className="fa-solid fa-arrow-left"></i>
 
     </Link>
   )
