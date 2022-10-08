@@ -11,7 +11,7 @@ export default function Navigation() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <NavLink className="nav-link active" aria-current="page" to="/about">About</NavLink>
+            <NavLink className="nav-link" aria-current="page" to="/about">About</NavLink>
             <NavLink className="nav-link" to="/portfolio">Portfolio</NavLink>
             <NavLink className="nav-link" to="/projects">Projects</NavLink>
             <NavLink className="nav-link" to="/blog/posts/recent">Blog</NavLink>

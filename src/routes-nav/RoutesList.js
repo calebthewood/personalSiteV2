@@ -3,9 +3,9 @@ import Home from "../home/Home";
 import AboutMe from "../about/AboutMe";
 import PortfolioList from "../portfolio/PortfolioList";
 import ProjectList from "../projects/ProjectList";
-import ProjectDetail from "../projects/ProjectDetail";
 import BlogList from "../blog/BlogList";
-import BlogPost from "../blog/BlogPost";
+// import ProjectDetail from "../projects/ProjectDetail";
+// import BlogPost from "../blog/BlogPost";
 
 
 /**
@@ -19,7 +19,8 @@ export default function RoutesList() {
         <Route path="/about" element={<AboutMe />} />
         <Route path="/portfolio" element={<PortfolioList />} />
         <Route path="/projects" element={<ProjectList />} />
-        <Route path="/projects/:project" element={<ProjectDetail />} />
+        <Route path="/projects/:param" element={<ProjectList />} />
+        {/* <Route path="/projects/:project" element={<ProjectDetail />} /> */}
         <Route path="/blog/posts/:showing" element={<BlogList />} />
         {/* <Route path="/blog/:id" element={<BlogPost />} /> */}
 

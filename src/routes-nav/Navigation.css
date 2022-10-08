@@ -1,0 +1,9 @@
+/* .navbar-brand.active {
+  font-weight: bold;
+  color: black;
+} */
+
+.nav-link.active {
+  font-weight: bold;
+  color: black;
+}
