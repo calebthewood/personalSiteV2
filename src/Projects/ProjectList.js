@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import ProjectDetail from "./ProjectDetail";
 
-
 export default function ProjectList() {
   const { param } = useParams();
   const [currentProject] = projects.filter(project => project.id === param);
@@ -18,20 +17,7 @@ export default function ProjectList() {
   */
 
   return (
-    <div className="container">
-      <header>
-        <div className="card mb-3">
-          <div className="card-body">
-            <h1 className="card-title">Project Library</h1>
-            <h5 className="card-subtitle mb-2 text-muted">Click on a project to interact with it.</h5>
-            <p className="card-text">This is something like my personal component
-              library. Mostly, it's a place to show off the apps and programs
-              that made it to the finish line. Each project has an associated blog
-              that walks through the design and my implementation choices.
-            </p>
-          </div>
-        </div>
-      </header>
+    <div>
       {param ? <ProjectDetail project={currentProject}/> :
         projects.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
     </div>

@@ -7,7 +7,7 @@ import BlogAPI from "./blogAPI";
 import BlogPost from "./BlogPost";
 import { dateToNum } from "../utils";
 import { useParams } from "react-router-dom";
-
+import Footer from '../common/Footer';
 export default function BlogList() {
   const { showing } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -73,22 +73,7 @@ export default function BlogList() {
   }
 
   return (
-    <div className="container">
-
-      <div className="row">
-        <div className="col">
-          <header>
-            <div className="card mb-3">
-              <div className="card-body">
-                <h1 className="card-title">Project Pith</h1>
-                <h5 className="card-subtitle mb-2 text-muted">A blog</h5>
-                <p className="card-text"> Expect to see detailed project walkthroughs,
-                  conference notes, my twitter feed, and the occasional musing on what
-                  makes a good baguette.
-                </p>
-              </div>
-            </div>
-          </header>
+    <div>
           <div className="row">
             <div className="col-3">
               <BlogMenu />
@@ -100,8 +85,7 @@ export default function BlogList() {
                 showList([...allPosts])}
             </div>
           </div>
-        </div>
-      </div >
+      <Footer />
     </div >
   );
 }
