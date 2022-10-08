@@ -14,7 +14,7 @@ export default function Navigation() {
             <NavLink className="nav-link active" aria-current="page" to="/about">About</NavLink>
             <NavLink className="nav-link" to="/portfolio">Portfolio</NavLink>
             <NavLink className="nav-link" to="/projects">Projects</NavLink>
-            <NavLink className="nav-link" to="/blog-posts">Blog</NavLink>
+            <NavLink className="nav-link" to="/blog/posts/recent">Blog</NavLink>
           </div>
         </div>
       </div>

@@ -20,8 +20,9 @@ export default function RoutesList() {
         <Route path="/portfolio" element={<PortfolioList />} />
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:project" element={<ProjectDetail />} />
-        <Route path="/blog-posts" element={<BlogList />} />
-        <Route path="/blog-posts/:id" element={<BlogPost />} />
+        <Route path="/blog" element={<Navigate to="/blog/posts/recent" />} />
+        <Route path="/blog/posts/:showing" element={<BlogList />} />
+        {/* <Route path="/blog/:id" element={<BlogPost />} /> */}
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
     </div>
