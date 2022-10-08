@@ -38,23 +38,20 @@ export default function BlogList() {
 
   /** Filters for Blog posts connected to a project, sorts by date. */
   function filterProjectPosts(posts) {
-    const projectPosts = posts.filter(post => post.project_id).sort((a, b) => {
+    return posts.filter(post => post.project_id).sort((a, b) => {
       return dateToNum(b.date) - dateToNum(a.date);
-    });
-    return projectPosts.map(post => <BlogSummary
-      key={post._id}
-      post={post} />);
+    }).map(post => <BlogSummary key={post._id} post={post} />);
   }
 
   /** Get all posts with a given tag.
    * Goal: be able to select many tags at the same time.
    */
   function filterTaggedPosts(posts) {
-    const taggedPosts = posts.filter(post => post.tags.filter(
-      t => t.name === showing)).sort((a, b) => dateToNum(b.date) - dateToNum(a.date));
-    return taggedPosts.map(post => <BlogSummary
-      key={post._id}
-      post={post} />);
+    return posts.filter(post => {
+      for (let t of post.tags) if (t.name === showing) return true;
+      return false;
+    }).sort((a, b) => dateToNum(b.date) - dateToNum(a.date))
+      .map(post => <BlogSummary key={post._id} post={post} />);
   }
 
   function filterPostsBySlug(posts) {
@@ -64,9 +61,10 @@ export default function BlogList() {
 
   function showList(posts) {
     let postList;
-    if (showing === 'project') {
+    const tags = new Set(["React", "Node", "JavaScript"]);
+    if (showing === 'projects') {
       postList = filterProjectPosts(posts);
-    } else if (showing === 'tag') {
+    } else if (tags.has(showing)) {
       postList = filterTaggedPosts(posts);
     } else if (showing === 'recent') {
       postList = filterRecentPosts(posts);

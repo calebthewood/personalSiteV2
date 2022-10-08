@@ -36,7 +36,7 @@ export default function BlogPost({ post }) {
           <Link
             key={tag.id}
             className={`tag${tag.name} card-link`}
-            to={"/"}>{tag.name}</Link>)}
+            to={`/blog/posts/${tag.name}`}>{tag.name}</Link>)}
       </div>
     </div>
   );

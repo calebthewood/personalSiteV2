@@ -1,16 +1,9 @@
 
-let date = new Date()
-let month = date.getMonth();
-let day = date.getDay();
-let year = date.getFullYear();
-date = `${month}/${day}/${year}`
-
-
-export const blogData = [
+const blogData = [
   {
     id: "post1",
     author: "Bilbo",
-    date: date,
+    date: "2021-1-12",
     title: "On Being a Ringbearer",
     description: "Musings on carrying the ring of power.",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -20,7 +13,7 @@ export const blogData = [
   {
     id: "post2",
     author: "Frodo",
-    date: date,
+    date: "2018-10-21",
     title: "On Being another Ringbearer",
     description: "Musings on also carrying the ring of power.",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -30,7 +23,7 @@ export const blogData = [
   {
     id: "post3",
     author: "Bilbo",
-    date: date,
+    date: "2001-12-21",
     title: "Elevensies",
     description: "Is elevensies still relevant in today's world?",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -40,7 +33,7 @@ export const blogData = [
   {
     id: "post4",
     author: "Bilbo",
-    date: date,
+    date: "2022-10-10",
     title: "How to: Painting a Door",
     description: "Valar scratching runes into your door? Follow this guide!",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -50,7 +43,7 @@ export const blogData = [
   {
     id: "post5",
     author: "Bilbo",
-    date: date,
+    date: "1089-02-01",
     title: "On retiring to Valinor",
     description: "How to know when you're ready to fade into the West.",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -60,7 +53,7 @@ export const blogData = [
   {
     id: "post6",
     author: "Frodo",
-    date: date,
+    date: "2022-12-22",
     title: "Am I an Orphan",
     description: "Or is my uncle just my best friend.",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -70,7 +63,7 @@ export const blogData = [
   {
     id: "post7",
     author: "Sam",
-    date: date,
+    date: "2015-05-04",
     title: "Carrying the Team, a memoir",
     description: "I look back on carrying the fellowship across middle earth.",
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
