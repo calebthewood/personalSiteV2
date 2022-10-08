@@ -1,9 +1,13 @@
 import { projects } from "./projectData";
-// import { useState } from "react";
+import { useParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
+import ProjectDetail from "./ProjectDetail";
 
 
 export default function ProjectList() {
+  const { param } = useParams();
+  const [currentProject] = projects.filter(project => project.id === param);
+
   /*
   clicking on a individual project summary will summon the componant sooo...
   since each project is unique I can either hard code the route for each one
@@ -12,7 +16,6 @@ export default function ProjectList() {
   the weird thing is that it isn't text. Can we store components in objects???
   hrmm... Anyway,
   */
-
 
   return (
     <div className="container">
@@ -29,7 +32,8 @@ export default function ProjectList() {
           </div>
         </div>
       </header>
-      {projects.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
+      {param ? <ProjectDetail project={currentProject}/> :
+        projects.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
     </div>
   );
 }
