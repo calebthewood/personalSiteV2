@@ -1,19 +1,22 @@
-
+import "./block.css"
+import { classListFromAnnotations } from "./blockUtils";
 
 export default function CodeBlock({ block }) {
-  let [data] = block.rich_text;
-  const classList = []; // may need bootstrap class
-  Object.keys(data.annotations).forEach(type => {
-    if (block.rich_text[0].annotations[type]) classList.push(type);
-  });
-
+  const languages = {
+    'javascript': 'JavaScript',
+    'python': 'Python',
+  }
+  const { annotations, plain_text, id } = block.content.rich_text[0];
+  const classList = classListFromAnnotations(annotations)
   return (
-    <div>
-    <span>{data.language}</span>
-    <code className={classList.join(" ")}>
-      {data.plain_text}
-    </code>
+    <div id={id} className="code">
+      <p><span>{languages[block.content.language]}</span></p>
+      <pre>
+        <code className={classList}>
+          {plain_text}
+        </code>
+      </pre>
     </div>
-  )
+  );
 
 }

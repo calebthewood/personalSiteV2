@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 
 export default function BlogMenu({ showList }) {
 
@@ -9,11 +9,11 @@ export default function BlogMenu({ showList }) {
         <input type="text" className="form-control" placeholder="Search blog" aria-label="search blog" aria-describedby="search blog" />
         <button className="btn btn-outline-secondary" type="button" id="button-search"><i className="search-icon fa-solid fa-magnifying-glass"></i></button>
       </div>
-      <a className="nav-link active" onClick={()=> showList("recent")} aria-current="page" href="#">Recent</a>
-      <a className="nav-link" onClick={()=> showList("project")} href="#">Projects</a>
-      <a className="nav-link disabled" href="#">100 Days</a>
-      <a className="nav-link disabled">Boulangerie</a>
-      <a className="nav-link" href="#">View Tags</a>
+      <Link to="/blog/posts/recent" className="nav-link active" aria-current="page" >Recent</Link>
+      <Link to="/blog/posts/projects" className="nav-link">Projects</Link>
+      <Link className="nav-link disabled" >100 Days</Link>
+      <Link className="nav-link disabled">Boulangerie</Link>
+      <Link className="nav-link disabled" >View Tags</Link>
     </nav>
   );
 };

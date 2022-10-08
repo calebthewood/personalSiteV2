@@ -5,9 +5,10 @@ import HeadingBlock from "./blocks/HeadingBlock";
 import ParagraphBlock from "./blocks/ParagraphBlock";
 import TitleBlock from "./blocks/TitleBlock";
 import ReturnButton from "../common/ReturnButton";
+import { Link } from "react-router-dom";
 
 
-export default function BlogPost({ post, showList }) {
+export default function BlogPost({ post }) {
 
   const blocks = post.blocks.map(block => {
     if (block.type === "paragraph") {
@@ -26,10 +27,16 @@ export default function BlogPost({ post, showList }) {
 
   return (
     <div className="card">
-  <ReturnButton back={showList} />
+      <ReturnButton />
       <div className="card-body">
         {blocks}
-        <a href="#" className="card-link">tags</a>
+      </div>
+      <div className="tags">
+        {post.tags.map(tag =>
+          <Link
+            key={tag.id}
+            className={`tag${tag.name} card-link`}
+            to={"/"}>{tag.name}</Link>)}
       </div>
     </div>
   );

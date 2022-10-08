@@ -1,13 +1,14 @@
- /* Return Btn */
- #button-search {
-   max-width: 32px;
-   align-content: center;
-   padding: auto 0;
- }
+/* Return Btn */
+#button-search {
+  max-width: 32px;
+  align-content: center;
+  padding: auto 0;
+}
 
- i.search-icon  {
-   margin: 0;
- }
+i.search-icon {
+  margin: 0;
+}
+
 /* End Rtern Btn */
 
 /* Links and anchor tags */
@@ -19,37 +20,30 @@ a:link {
 
 /* End links and anchor tags */
 
+.code>p {
+  text-align: end;
+  font-size: smaller;
+  color: rgba(0, 0, 0, 0.556);
+}
 
- .code,
- code {
-   background: rgba(135, 131, 120, 0.15);
-   border-radius: 3px;
-   padding: 0.2em 0.4em;
-   border-radius: 3px;
-   font-size: 85%;
-   tab-size: 2;
- }
-
- code {
-   color: #eb5757;
- }
-
- .code {
-   padding: 1.5em 1em;
- }
-
- .code-wrap {
-   white-space: pre-wrap;
-   word-break: break-all;
- }
-
- .code>code {
-   background: none;
-   padding: 0;
-   font-size: 100%;
-   color: inherit;
- }
-
- .code {
+.code {
   font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+  background: rgba(135, 131, 120, 0.15);
+  border-radius: 3px;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  tab-size: 2;
+  padding: 1em 1em;
+}
+
+.code-wrap {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.code>code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  color: #eb5757;
 }
