@@ -10,8 +10,6 @@ import { useParams } from "react-router-dom";
 
 export default function BlogList() {
   const { showing } = useParams();
-  console.log("SHOWING ", showing);
-  // const [listName, setListName] = useState(list);
   const [isLoading, setIsLoading] = useState(true);
   const [allPosts, setAllPosts] = useState(null);
 
@@ -22,7 +20,7 @@ export default function BlogList() {
       setAllPosts(posts);
       setIsLoading(false);
     }
-    // console.debug("BlogList useEffect getPostsOnMount");
+    console.debug("BlogList useEffect getPostsOnMount");
     getPosts(); // Recent is the default
   }, []);
 
