@@ -8,9 +8,9 @@ export default function BlogMenu() {
         <input type="text" className="form-control" placeholder="Search blog" aria-label="search blog" aria-describedby="search blog" />
         <button className="btn btn-outline-secondary" type="button" id="button-search"><i className="search-icon fa-solid fa-magnifying-glass"></i></button>
       </div>
-      <Link to="/blog/posts/recent" className="nav-link active" aria-current="page" >Recent</Link>
+      <Link to="/blog/posts/recent" className="nav-link" aria-current="page" >Recent</Link>
       <Link to="/blog/posts/projects" className="nav-link">Projects</Link>
-      <Link className="nav-link disabled" >100 Days</Link>
+      <Link to="/blog/posts/tweets" className="nav-link" >100 Days</Link>
       <Link className="nav-link disabled">Boulangerie</Link>
       <Link className="nav-link disabled" >View Tags</Link>
     </nav>
