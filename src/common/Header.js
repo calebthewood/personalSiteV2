@@ -1,19 +1,16 @@
+import "./common.css"
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getResourceFromPath } from '../utils';
 
 
 export default function Header() {
-  const { pathname } = useLocation();
-  const path = getResourceFromPath(pathname);
-
-  console.log("PATHNAME", pathname);
-
+  // get first resource in a pathname
+  const path = useLocation().pathname.split("/")[1];
   const [headerData, setHeaderData] = useState({
     about: {
       title: "About Me",
       subtitle: "I like building things on the web.",
-      text: "Scroll down for a mini bio."
+      text: ""
     },
     portfolio: {
       title: "Fullstack Portfolio",
