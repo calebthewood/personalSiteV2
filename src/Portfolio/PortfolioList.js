@@ -1,3 +1,4 @@
+import "./portfolio.css"
 import { portfolio } from "./portfolioData";
 import PortfolioProject from "./PortfolioProject";
 

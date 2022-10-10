@@ -17,7 +17,7 @@ export default function PortfolioProject({ project }) {
   return (
     <div className="card mb-3">
       <div className="row g-0">
-        <div className="col-md-4">
+        <div className="portfolio-img col-md-4">
           <img src={project.img} className="img-fluid rounded-start" alt="project-screenshot" />
         </div>
         <div className="col-md-8">
@@ -38,7 +38,7 @@ export default function PortfolioProject({ project }) {
             </ul>
           </div>
 
-          <div className="card-body">
+          <div className="card-body portfolio-card">
             <div className="tab-content" id="myTabContent">
               <div
                 id="summary-tab-pane"

@@ -1,3 +1,12 @@
+.App {
+  background-color: #212121;
+  color: ivory;
+}
+
+i {
+  color: ivory;
+}
+
 .container {
   max-width: 80%;
 }
