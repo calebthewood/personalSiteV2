@@ -1,5 +1,6 @@
 import axios from "axios";
 import { dateToNum } from "../utils";
+import { Tweet } from 'react-twitter-widgets';
 
 const BLOG_URL = "http://localhost:3001/blog";
 
@@ -47,31 +48,38 @@ class BlogAPI {
   }
 
   /** Sorts blog posts by date, doubles as the default on load */
-  static filterRecentPosts(posts) {
+  static filterRecentPosts(posts, [start, end]) {
     return posts.sort((a, b) => dateToNum(b.date) - dateToNum(a.date))
-      ;
   }
 
   /** Filters for Blog posts connected to a project, sorts by date. */
-  static filterProjectPosts(posts, showing) {
+  static filterProjectPosts(posts, [start, end]) {
     return posts.filter(post => post.project_id).sort((a, b) => {
-      return dateToNum(b.date) - dateToNum(a.date);
+      return dateToNum(b.date) - dateToNum(a.date)
     });
   }
 
   /** Get all posts with a given tag.
    * Goal: be able to select many tags at the same time.
    */
-  static filterTaggedPosts(posts, showing) {
+  static filterTaggedPosts(posts, showing, [start, end]) {
     return posts.filter(post => {
       for (let t of post.tags) if (t.name === showing) return true;
       return false;
-    }).sort((a, b) => dateToNum(b.date) - dateToNum(a.date));
+    }).sort((a, b) => dateToNum(b.date) - dateToNum(a.date))
   }
 
   static filterPostsBySlug(posts, showing) {
     const [post] = posts.filter(post => post.slug === showing);
     return post;
+  }
+
+  static filterTweets(tweets, [start, end]) {
+    const options = {
+      dnt: true,
+    }
+    return tweets.filter((post, i) => i >= start && i <= end)
+      .map(tweet => <Tweet tweetId={tweet.id} options={options} />);
   }
 
 }
