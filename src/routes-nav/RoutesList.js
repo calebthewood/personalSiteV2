@@ -4,6 +4,7 @@ import AboutMe from "../about/AboutMe";
 import PortfolioList from "../portfolio/PortfolioList";
 import ProjectList from "../projects/ProjectList";
 import BlogList from "../blog/BlogList";
+import Dashboard from "../dashboard/Dashboard";
 // import ProjectDetail from "../projects/ProjectDetail";
 // import BlogPost from "../blog/BlogPost";
 
@@ -27,9 +28,10 @@ export default function RoutesList({ isLoading, allPosts, tweets }) {
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:param" element={<ProjectList />} />
         <Route path="/blog/posts/:showing" element={<BlogList
-                                                      isLoading={isLoading}
-                                                      allPosts={allPosts}
-                                                      tweets={tweets} />} />
+          isLoading={isLoading}
+          allPosts={allPosts}
+          tweets={tweets} />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
