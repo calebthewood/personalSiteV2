@@ -1,5 +1,5 @@
 
-import "./Tweet.css"
+import "./tweet.css"
 // const tweet = {
 //   entities: {
 //    urls: [Array],
@@ -15,10 +15,12 @@ import "./Tweet.css"
 // need to work on getting tweet formatted
 export default function tweet({ tweet }) {
 
-
+  //   <blockquote className="twitter-tweet">
+  //   <p lang="en" dir="ltr"> {tweet.text} </p>
+  // </blockquote>
   return (
-    <blockquote className="twitter-tweet">
-      <p lang="en" dir="ltr"> {tweet.text} </p>
-    </blockquote>
+<blockquote class="twitter-tweet">
+  <a href={`https://twitter.com/x/status/${tweet.id}`}></a>
+</blockquote>
   );
 }
