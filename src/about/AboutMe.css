@@ -8,10 +8,11 @@
 }
 
 .card {
+  color: ivory;
+}
+
+.section-card>div.card-body {
   background-color: #212121;
   color: ivory;
 }
 
-i {
-  color: ivory;
-}

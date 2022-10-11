@@ -26,6 +26,11 @@ export default function Header() {
       title: "Project Pith",
       subtitle: "A blog",
       text: "Expect to see detailed project walkthroughs, conference notes, my twitter feed, and the occasional musing on what makes a good baguette."
+    },
+    dashboard: {
+      title: "My Dashboard",
+      subtitle: "Site-wide metrics, updated on load",
+      text: "Expect to see additional charts and graphs added here."
     }
   });
 

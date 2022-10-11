@@ -3,11 +3,27 @@
   border-left: none;
 }
 
+.email:active {
+  text-decoration: none;
+
+}
+
+#contact:first-child {
+  font-size: 1.5rem;
+}
+
 footer {
   text-align: center;
 }
 
-i {
+footer i {
   margin: 0 1rem;
-  color: black;
+  color: ivory;
+  font-size: 2rem;
+}
+
+.copyright {
+  background-color: ivory;
+  color: #212121;
+  padding: 1rem 0;
 }

@@ -35,9 +35,9 @@ function App() {
       <div className="container">
         <Header />
         <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+      </div>
         <Footer />
         <Metrics />
-      </div>
     </div>
   );
 }
