@@ -6,9 +6,9 @@ export default function BlogSummary({ post }) {
   // const description = post.blocks[1].paragraph.plain_text[0].slice(0,50)
 
   return (
-    <div className="card mb-3">
+    <div className="card text-bg-dark mb-3">
       <div className="card-body">
-        <Link to={`/blog/posts/${post.slug}`}>
+        <Link className="navigation-link" to={`/blog/posts/${post.slug}`}>
           <h5 className="card-title">{post.title}</h5>
           <h6 className="card-subtitle mb-2 text-muted">{post.author} - {post.date}</h6>
           <p className="card-text">Filler description, will either add a field to the blog, or find a nice way to show the first x chars from content</p>
