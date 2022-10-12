@@ -30,7 +30,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="App bg-dark">
       <Navigation />
       <div className="container">
         <Header />

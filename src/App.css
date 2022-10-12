@@ -1,11 +1,3 @@
-.App {
-  background-color: #212121;
-  color: ivory;
-}
-
-i {
-  color: ivory;
-}
 
 .container {
   max-width: 80%;
@@ -14,4 +6,30 @@ i {
 .nav-link.active {
   font-weight: bold;
   color: black;
+}
+
+a.navigation-link {
+  text-decoration: none;
+}
+/* unvisited link */
+a.navigation-link:link {
+  color: ivory;
+}
+/* visited link */
+a.navigation-link:visited {
+  color: ivory;
+}
+/* mouse over link */
+a.navigation-link:hover {
+  color: ivory;
+}
+/* selected link */
+a.navigation-link:active {
+  color: #555749;
+}
+
+#visitor-count {
+  font-size: 6rem;
+  justify-content: center;
+  text-align: center;
 }
