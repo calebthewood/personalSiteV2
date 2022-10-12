@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import "./dashboard.css";
 
 
 export default function PieChart({ results }) {
@@ -31,5 +32,26 @@ export default function PieChart({ results }) {
     draw(context);
   }, [results, total]);
 
-  return <canvas width="200" height="200" ref={canvasRef} />;
+  return (
+    <div>
+      <div className="row">
+
+          {results.map(item => {
+            let style = { background: item.color };
+            return (
+              <div className="col-6 card-subtitle mb-1 text-muted">
+                <div className="legend" style={style}></div>
+                  {" /" + item.name}
+              </div>
+            );
+          })}
+      </div>
+
+      <div className="row justify-content-around">
+        <div id="pie-chart" className="col-md-auto">
+          <canvas width="200" height="200" ref={canvasRef} />
+        </div>
+      </div>
+    </div>
+  );
 }

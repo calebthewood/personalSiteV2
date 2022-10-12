@@ -21,29 +21,31 @@ export default class DashboardAPI {
   static generateRouteChart(data) {
     //create freq counter that resembles this
     const results = [
-      { name: "about", count: 0, color: "lightblue" },
-      { name: "portfolio", count: 0, color: "lightgreen" },
-      { name: "projects", count: 0, color: "pink" },
-      { name: "blog", count: 0, color: "silver" },
-      { name: "home", count: 0, color: "green" },
+      { name: "home", count: 0, color: "#686de0" },
+      { name: "about", count: 0, color: "#f6e58d" },
+      { name: "portfolio", count: 0, color: "#ff7979" },
+      { name: "projects", count: 0, color: "#badc58" },
+      { name: "blog", count: 0, color: "#7ed6df" },
     ];
 
     for (let document of data) {
       if ('route' in document) {
         let route = document.route.split("/");
-        if (route.length < 2) {
-          results[4].count += 1; // home is root route
+
+        if (route[1] === '') {
+          results[0].count += 1; // home is root route
         } else if (route[1] === 'about') {
-          results[0].count += 1;
-        } else if (route[1] === 'portfolio') {
           results[1].count += 1;
-        } else if (route[1] === 'projects') {
+        } else if (route[1] === 'portfolio') {
           results[2].count += 1;
-        } else if (route[1] === 'blog') {
+        } else if (route[1] === 'projects') {
           results[3].count += 1;
+        } else if (route[1] === 'blog') {
+          results[4].count += 1;
         }
       }
     }
+
     return results;
   }
 

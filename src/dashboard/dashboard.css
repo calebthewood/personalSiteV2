@@ -1,0 +1,13 @@
+.legend {
+  display: inline-block;
+  width: .8rem;
+  height: .8rem;
+}
+
+
+
+/* .legend {
+  margin: 2px;
+  display: inline-block;
+  width: fit-content;
+} */
