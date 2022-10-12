@@ -38,7 +38,7 @@ export default function PortfolioProject({ project }) {
             </ul>
           </div>
 
-          <div className="card-body portfolio-card">
+          <div className="card-body">
             <div className="tab-content" id="myTabContent">
               <div
                 id="summary-tab-pane"
