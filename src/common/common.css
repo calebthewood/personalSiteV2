@@ -1,11 +1,37 @@
 #header>div.card{
   border: none;
   border-left: none;
+  box-shadow: none;
 }
 
-.email:active {
-  text-decoration: none;
+#contact>p>a {
+  color: white
+}
+#contact>p>a:link {
+  color: none;
+}
+#contact>p>a:visited {
 
+}
+#contact>p>a:hover {
+  transform: scale(2, 0.5);
+}
+
+
+/* unvisited link */
+a.email:link {
+  text-decoration: none;
+}
+/* visited link */
+a.email:visited {
+}
+/* mouse over link */
+a.email:hover {
+  border-bottom: 1px solid ivory;
+}
+/* selected link */
+a.email:active {
+  color: blue;
 }
 
 #contact:first-child {
@@ -18,7 +44,6 @@ footer {
 
 footer i {
   margin: 0 1rem;
-  color: ivory;
   font-size: 2rem;
 }
 
