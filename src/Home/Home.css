@@ -1,1 +1,8 @@
 
+#home-page {
+  height: 100vh;
+}
+
+#home-page:first-child {
+  top: 200px;
+}
