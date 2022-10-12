@@ -26,7 +26,7 @@ export default function BlogPost({ post }) {
   });
 
   return (
-    <div className="card">
+    <div className="card text-bg-dark">
       <ReturnButton />
       <div className="card-body">
         {blocks}
@@ -35,7 +35,7 @@ export default function BlogPost({ post }) {
         {post.tags.map(tag =>
           <Link
             key={tag.id}
-            className={`tag${tag.name} card-link`}
+            className={`tag${tag.name} navigation-link card-link`}
             to={`/blog/posts/${tag.name}`}>{tag.name}</Link>)}
       </div>
     </div>
