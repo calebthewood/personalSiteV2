@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "./Navigation.css";
+import "./navigation.css";
 
 export default function Navigation() {
   return (
@@ -15,6 +15,7 @@ export default function Navigation() {
             <NavLink className="nav-link" to="/portfolio">Portfolio</NavLink>
             <NavLink className="nav-link" to="/projects">Projects</NavLink>
             <NavLink className="nav-link" to="/blog/posts/recent">Blog</NavLink>
+            <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
           </div>
         </div>
       </div>

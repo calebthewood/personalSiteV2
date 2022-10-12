@@ -5,8 +5,8 @@ export default function ProjectCard({ project }) {
   /* TODO: if I get more than like 10 projects, allow for filtering by tags
   Also, if this gets bigger, look into lazy loading project components */
   return (
-    <div className="card mb-3">
-      <Link to={"/projects" + project.url}>
+    <div className="card text-bg-dark mb-3">
+      <Link className="navigation-link" to={"/projects" + project.url}>
         <div className="row g-0">
           <div className="col-md-3">
             {project.img ?
