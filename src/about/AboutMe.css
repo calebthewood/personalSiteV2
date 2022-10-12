@@ -1,18 +1,21 @@
-.list-group-item {
+
+
+/* unvisited link */
+a.plain-link:link {
   color: ivory;
+
+}
+/* visited link */
+a.plain-link:visited {
+  color: green;
+}
+/* mouse over link */
+a.plain-link:hover {
+  color: #555749;
+}
+/* selected link */
+a.plain-link:active {
+  color: blue;
 }
 
-.card a {
-  background-color: #212121;
-  color: ivory;
-}
-
-.card {
-  color: ivory;
-}
-
-.section-card>div.card-body {
-  background-color: #212121;
-  color: ivory;
-}
 
