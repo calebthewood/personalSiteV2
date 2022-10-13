@@ -21,44 +21,45 @@ export default function Dashboard() {
   let visitorCount = DashboardAPI.uniqueVisitorCount(results);
   let topPages = DashboardAPI.rankPages(results);
   return (
-    <div className="row">
+    <div className="container-md">
+      <div className="row">
 
-      <div className="col-4">
-        <div className="card text-bg-dark">
-          <div className="card-body">
-            <h2 className="card-title">Route Traffic</h2>
-            <hr />
-            <PieChart results={pieChartData} />
+        <div className="col-md-4 col-12">
+          <div className="card text-bg-dark">
+            <div className="card-body">
+              <h2 className="card-title">Route Traffic</h2>
+              <hr />
+              <PieChart results={pieChartData} />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-4">
+          <div className="card text-bg-dark">
+            <div className="card-body">
+              <h2>
+                Unique Visitors
+              </h2>
+              <hr />
+              <h2 id="visitor-count">
+                {visitorCount}
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-4">
+          <div className="card text-bg-dark">
+            <div className="card-body">
+              <h2>Top Ten Pages</h2>
+              <hr />
+              <ol className="list-group list-group-flush list-group-numbered">
+                {topPages.filter((page, i) => i < 10).map(page => <li className="text-bg-dark list-group-item">{page.route.slice(12)}</li>)}
+              </ol>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="col-4">
-        <div className="card text-bg-dark">
-          <div className="card-body">
-            <h2>
-              Unique Visitors
-            </h2>
-            <hr />
-            <h2 id="visitor-count">
-              {visitorCount}
-            </h2>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-4">
-        <div className="card text-bg-dark">
-          <div className="card-body">
-            <h2>Top Ten Pages</h2>
-            <hr />
-            <ol className="list-group list-group-flush list-group-numbered">
-              {topPages.filter((page, i) => i < 10).map(page => <li className="text-bg-dark list-group-item">{page.route.slice(12)}</li>)}
-            </ol>
-          </div>
-        </div>
-      </div>
-
     </div>
   );
 }

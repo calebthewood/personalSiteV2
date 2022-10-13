@@ -3,9 +3,9 @@ import "./navigation.css";
 
 export default function Navigation() {
   return (
-    <nav className="navbar navbar-expand-sm bg-light">
+    <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to="/">Caleb Wood</NavLink>
+        <NavLink className="navbar-brand" to="/"><img style={{"width": "35px"}} src="/favicon_io/android-chrome-192x192.png" alt="CW"/></NavLink>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
