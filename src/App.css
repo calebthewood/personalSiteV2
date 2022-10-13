@@ -3,29 +3,31 @@
   color: black;
 }
 
-i {
-  margin: 0 1rem;
+.email-btn {
   font-size: 1.5rem;
-  color: #f8f9fa;
 }
 
 a.navigation-link {
   text-decoration: none;
 }
+
 /* unvisited link */
 a.navigation-link:link {
   color: inherit;
 
 }
+
 /* visited link */
 a.navigation-link:visited {
   color: inherit;
 }
+
 /* mouse over link */
 a.navigation-link:hover {
   color: inherit;
   background-color: #212121;
 }
+
 /* selected link */
 a.navigation-link:active {
   color: #555749;

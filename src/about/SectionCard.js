@@ -10,13 +10,13 @@ section = {
 export default function SectionCard({ section }) {
 
   return (
-    <div className="col-sm-4 mb-3">
+    <div className="col-sm-4 mb-2">
       <div className="card text-bg-dark">
-        <Link to={section.url} className="navigation-link">
+        <Link to={section.url} type="button" className="btn btn-dark">
           <div className="card-body">
-            <h5 className="card-title">{section.title}</h5>
+            <h5 className="section-icon card-title">{section.icon}</h5>
             <hr/>
-            <h6 className="card-subtitle mb-2">{section.subtitle}</h6>
+            <h6 className="card-subtitle">{section.title}</h6>
           </div>
         </Link>
       </div>
