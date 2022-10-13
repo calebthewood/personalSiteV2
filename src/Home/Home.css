@@ -1,8 +1,38 @@
-
-#home-page {
-  height: 100vh;
+/* #home-container {
+  height: 50vw;
+} */
+#home-row {
+  min-height: 50vh;
 }
 
-#home-page:first-child {
-  top: 200px;
+#about-btn {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 1.5rem;
+  width: 120px;
+}
+
+#portfolio-btn {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 1.5rem;
+  width: 120px;
+}
+
+#projects-btn {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 1.5rem;
+  width: 120px;
+}
+
+#blog-btn {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 1.5rem;
+  width: 120px;
 }

@@ -30,12 +30,10 @@ function App() {
 
 
   return (
-    <div className="App bg-dark">
+    <div className="App">
       <Navigation />
-      <div className="container">
         <Header />
         <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
-      </div>
         <Footer />
         <Metrics />
     </div>

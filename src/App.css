@@ -1,11 +1,12 @@
-
-.container {
-  max-width: 80%;
-}
-
 .nav-link.active {
   font-weight: bold;
   color: black;
+}
+
+i {
+  margin: 0 1rem;
+  font-size: 1.5rem;
+  color: #f8f9fa;
 }
 
 a.navigation-link {
@@ -13,15 +14,17 @@ a.navigation-link {
 }
 /* unvisited link */
 a.navigation-link:link {
-  color: ivory;
+  color: inherit;
+
 }
 /* visited link */
 a.navigation-link:visited {
-  color: ivory;
+  color: inherit;
 }
 /* mouse over link */
 a.navigation-link:hover {
-  color: ivory;
+  color: inherit;
+  background-color: #212121;
 }
 /* selected link */
 a.navigation-link:active {

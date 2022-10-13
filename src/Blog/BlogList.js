@@ -50,25 +50,27 @@ export default function BlogList({ isLoading, allPosts, tweets }) {
   }
 
   return (
-    <div>
+    <div className="container-md">
       <div className="row">
         <div className="col-3">
           <BlogMenu />
         </div>
 
-        <div className="col-9">
+        <div id="blog-list" className="col-9">
           {isLoading ?
             <div><h2>Loading...</h2></div> :
-            showList([...allPosts], tweets, showing)}
+            <ul class="list-group list-group-flush">
+              {showList([...allPosts], tweets, showing)}
+            </ul>}
 
           {showing === "tweets" ?
-            <div className="row justify-content-center">
-              <div className="col-5">
+            <div className="row justify-content-around">
+              <div className="col-md-auto">
                 <button
                   onClick={() => updatePagination("back")}
                   type="button"
                   className="btn btn-outline-secondary mx-3">Back</button>
-
+                <span className="text-light">{`${paginateRange[0] + 1} to ${paginateRange[1] + 1} of ${tweets.length}`}</span>
                 <button
                   onClick={() => updatePagination("next")}
                   type="button"
