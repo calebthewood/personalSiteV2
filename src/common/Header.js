@@ -1,4 +1,3 @@
-import "./common.css"
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -38,11 +37,13 @@ export default function Header() {
 
   return (
     <header id="header">
-      <div className="card text-bg-dark mb-3">
-        <div className="card-body">
-          <h1 className="card-title">{headerData[path].title}</h1>
-          <h5 className="card-subtitle mb-2 text-muted">{headerData[path].subtitle}</h5>
-          <p className="card-text">{headerData[path].text}</p>
+      <div className="container-md">
+        <div className="card text-bg-dark mb-3 mt-3">
+          <div className="card-body">
+            <h1 className="card-title">{headerData[path].title}</h1>
+            <h5 className="card-subtitle mb-2 text-muted">{headerData[path].subtitle}</h5>
+            <p className="card-text">{headerData[path].text}</p>
+          </div>
         </div>
       </div>
     </header>
