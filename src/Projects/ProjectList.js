@@ -17,7 +17,7 @@ export default function ProjectList() {
   */
 
   return (
-    <div>
+    <div className="container">
       {param ? <ProjectDetail project={currentProject}/> :
         projects.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
     </div>
