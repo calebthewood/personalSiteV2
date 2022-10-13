@@ -5,13 +5,8 @@ import PortfolioProject from "./PortfolioProject";
 export default function PortfolioList() {
 
   return (
-    <div className="container">
-      <div>
+    <div className="container mb-2">
         {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
-      </div>
-      <div>
-        Prompt to go to projects
-      </div>
     </div>
   );
 }

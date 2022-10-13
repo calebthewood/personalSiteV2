@@ -15,21 +15,21 @@ export default function PortfolioProject({ project }) {
   // }
 
   return (
-    <div className="card mb-3">
+    <div className="card mb-5 text-bg-dark">
       <div className="row g-0">
         <div className="portfolio-img col-md-4">
           <img src={project.img} className="img-fluid rounded-start" alt="project-screenshot" />
         </div>
         <div className="col-md-8">
-          <div className="card-header">
-            <ul className="nav nav-tabs card-header-tabs" onClick={handleTabs}>
+          <div className="card-header text-bg-secondary bg-opacity-25">
+            <ul className="nav nav-tabs nav-tabs-dark card-header-tabs" onClick={handleTabs}>
               {["Summary", "Frontend", "Backend", "Database"].map(tabName => {
                 let name = tabName.toLowerCase();
                 return (
                   <li className="nav-item">
                     <a
                       id={name}
-                      className={activeTab === name ? "nav-link active" : "nav-link"}
+                      className={activeTab === name ? "nav-link active text-light bg-dark border-dark": "nav-link text-muted"}
                       aria-current="true"
                       href={"#" + name}>{tabName}</a>
                   </li>
