@@ -28,7 +28,7 @@ export default function AboutMe() {
 
         <div className="row">
 
-          <div className="col-12 col-md-4">
+          <div className="col-12 col-md-4 col-lg-3">
             <div className="row ">
 
               <div className="col-5 col-md-12 mb-4">
@@ -73,7 +73,7 @@ export default function AboutMe() {
           </div>
 
 
-          <div className="col-12 col-md-8 col-lg-8">
+          <div className="col-12 col-md-8 col-lg-9">
             <div
               className="card text-bg-dark p-4 mb-4">
               <h5 className="card-title">A little about myself, and the site</h5>

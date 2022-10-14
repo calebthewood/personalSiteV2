@@ -17,10 +17,7 @@ export default function PieChart({ results }) {
       for (let result of results) {
         let sliceAngle = (result.count / total) * 2 * Math.PI;
         ctx.beginPath();
-        // center = 100,100
-        // from current angle, clockwise by slice's angle
-        ctx.arc(100, 100, 100,
-          currentAngle, currentAngle + sliceAngle);
+        ctx.arc(100, 100, 100, currentAngle, currentAngle + sliceAngle);
         currentAngle += sliceAngle;
         ctx.lineTo(100, 100);
         ctx.fillStyle = result.color;
@@ -35,16 +32,14 @@ export default function PieChart({ results }) {
   return (
     <div>
       <div className="row">
-
-          {results.map(item => {
-            let style = { background: item.color };
-            return (
-              <div className="col-6 card-subtitle mb-1 text-muted">
-                <div className="legend" style={style}></div>
-                  {" /" + item.name}
-              </div>
-            );
-          })}
+        {results.map(item => {
+          let style = { background: item.color };
+          return (
+            <div className="col-6 card-subtitle mb-1 text-muted">
+              <div className="legend" style={style}></div>
+              {" /" + item.name}
+            </div>);
+        })}
       </div>
 
       <div className="row justify-content-around">
