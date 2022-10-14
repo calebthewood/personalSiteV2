@@ -2,17 +2,12 @@ import { useState } from "react";
 
 export default function PortfolioProject({ project }) {
 
-
   const [activeTab, setActiveTab] = useState("summary");
 
   function handleTabs(e) {
     e.preventDefault();
     setActiveTab(e.target.id);
   }
-
-  // function createProjectTabs() {
-
-  // }
 
   return (
     <div className="card mb-5 text-bg-dark">
@@ -29,7 +24,7 @@ export default function PortfolioProject({ project }) {
                   <li className="nav-item">
                     <a
                       id={name}
-                      className={activeTab === name ? "nav-link active text-light bg-dark border-dark": "nav-link text-muted"}
+                      className={activeTab === name ? "nav-link active text-light bg-dark border-dark" : "nav-link text-muted"}
                       aria-current="true"
                       href={"#" + name}>{tabName}</a>
                   </li>
@@ -50,19 +45,34 @@ export default function PortfolioProject({ project }) {
                 className={activeTab === "frontend" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
                 aria-labelledby="frontend-tab"
-                tabIndex="0">{project.frontend}</div>
+                tabIndex="0">
+                <ul className="list-group list-group-flush">
+                  {project.frontend.map((item, i) => i === 0 ?
+                    <h5 className="card-title">{item}</h5> : <li className="text-bg-dark list-group-item">{item}</li>)}
+                </ul>
+              </div>
               <div
                 id="backend-tab-pane"
                 className={activeTab === "backend" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
                 aria-labelledby="backend-tab"
-                tabIndex="0">{project.backend}</div>
+                tabIndex="0">
+                <ul className="list-group list-group-flush">
+                  {project.backend.map((item, i) => i === 0 ?
+                    <h5 className="card-title">{item}</h5> : <li className="text-bg-dark list-group-item">{item}</li>)}
+                </ul>
+              </div>
               <div
                 id="database-tab-pane"
                 className={activeTab === "database" ? "tab-pane fade show active" : "tab-pane fade"}
                 role="tabpanel"
                 aria-labelledby="database-tab"
-                tabIndex="0">{project.database}</div>
+                tabIndex="0">
+                <ul className="list-group list-group-flush">
+                  {project.database.map((item, i) => i === 0 ?
+                    <h5 className="card-title">{item}</h5> : <li className="text-bg-dark list-group-item">{item}</li>)}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
