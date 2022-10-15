@@ -13,7 +13,7 @@ export default function PortfolioProject({ project }) {
     <div className="card mb-5 text-bg-dark">
       <div className="row g-0">
         <div className="portfolio-img col-md-4">
-          <img src={project.img} className="img-fluid rounded-start" alt="project-screenshot" />
+          <img src={project.img} className="img-fluid rounded" alt="project-screenshot" />
         </div>
         <div className="col-md-8">
           <div className="card-header text-bg-secondary bg-opacity-25">

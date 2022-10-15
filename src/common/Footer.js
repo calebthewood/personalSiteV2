@@ -31,7 +31,7 @@ export default function Footer() {
         </ul>
 
         <p className="text-center text-muted">
-          <p>&copy; {currentYear} Caleb Wood. All rights reserved.</p>
+          &copy; {currentYear} Caleb Wood. All rights reserved.
         </p>
       </div>
     </footer>

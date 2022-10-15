@@ -1,11 +1,12 @@
 import { projects } from "./projectData";
+import { ProjectLibrary } from "./projectLibrary/ProjectLibrary";
 import { useParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import ProjectDetail from "./ProjectDetail";
 
 export default function ProjectList() {
   const { param } = useParams();
-  const [currentProject] = projects.filter(project => project.id === param);
+  const [currentProject] = ProjectLibrary.filter(project => project.id === param);
 
   /*
   clicking on a individual project summary will summon the componant sooo...
@@ -18,8 +19,8 @@ export default function ProjectList() {
 
   return (
     <div className="container">
-      {param ? <ProjectDetail project={currentProject}/> :
-        projects.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
+      {currentProject ? <ProjectDetail project={currentProject}/> :
+        ProjectLibrary.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
     </div>
   );
 }

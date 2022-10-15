@@ -95,10 +95,10 @@ export const portfolio = [
     ],
     database: [
       "MongoDB Database",
-      "The current site is well suited to a non-relational db",
-      "Mongo Atlas is both fast, and integrates easily with my blog and metric systems",
+      "The needs of the site are well suited to a non-relational db",
+      "Mongo Atlas is both quick, easy, and free, and integrates nicely with my blog and metrics needs",
       "If I add users and comments to the blog then I'll implement a RDBMS at that time",
-      "I'm currently relying on the front end for filtering blog posts.",
+      "I currently relying on the front end for filtering blog posts, but that isn't scalable.",
       "As I add more content I will expand the backend to filter posts before sending to react ",
     ],
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/site-shot.png"
