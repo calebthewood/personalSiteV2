@@ -1,4 +1,3 @@
-import { projects } from "./projectData";
 import { ProjectLibrary } from "./projectLibrary/ProjectLibrary";
 import { useParams } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
