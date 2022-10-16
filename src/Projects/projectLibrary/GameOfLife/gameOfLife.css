@@ -1,14 +1,12 @@
 .cell {
-  width: 20px;
-  height: 20px;
-  background-color: #f8f9fa;
-  border: 2px solid #212529;
+  width: 1rem;
+  height: 1rem;
+  background-color: #212529;
+  border-radius: 30%;
+  border: 1px solid #2f343b;
 }
 
 .cell.alive {
-  background-color: #212529;
+  background-color: #f8f9fa;
+  border-radius: 30%;
 }
-
-/* .cell.dead {
-  background-color: black;
-} */

@@ -17,7 +17,7 @@ export const ProjectLibrary = [
     id: "gameOfLife",
     description: "My implementation of Conway's Game of Life in React. Originally I did this in plain JavaScript while working through the book, Eloquent JavaScript.",
     component: <GameOfLife />,
-    img: null,
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/Screen+Shot+2022-10-15+at+6.02.49+PM.png",
     tags: ["JavaScript", "React"],
     url: "/gameOfLife"
   },
