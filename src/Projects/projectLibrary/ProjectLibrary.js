@@ -1,5 +1,6 @@
 import Board from "./LightsOut/Board";
 import GameOfLife from "./GameOfLife/GameOfLife";
+import Productiv from "./Productiv/Productiv";
 
 
 export const ProjectLibrary = [
@@ -22,13 +23,13 @@ export const ProjectLibrary = [
     url: "/gameOfLife"
   },
   {
-    title: "Game of Life",
-    id: "gameOfLife",
-    description: "My own implementation of Conway's Game of Life. It simulates an infinite field by wrapping both horizontal and vertical edges.",
-    component: "<CanvasGame />",
-    img: null,
-    tags: ["JavaScript", "React"],
-    url: "/gameOfLife"
+    title: "Productiv",
+    id: "productiv",
+    description: "A Scandinavian themed Todo app that also includes an inspsirational quote generator.",
+    component: <Productiv />,
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/Screen+Shot+2022-10-16+at+5.14.16+PM.png",
+    tags: ["useState", "AJAX", "axios", "Rithm", ],
+    url: "/productiv"
   },
   {
     title: "Pixel Paint Editor",

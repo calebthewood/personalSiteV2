@@ -27,7 +27,7 @@ export default function useLocalStorage(key, firstValue = null) {
       localStorage.removeItem(key);
     } else {
       localStorage.setItem(key, item);
-      console.log("Token set in local storage.")
+      console.log("Item set in local storage.")
     }
   }, [key, item]);
   return [item, setItem];
