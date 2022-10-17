@@ -12,6 +12,7 @@ export default function PieChart({ results }) {
   useEffect(() => {
     function draw(ctx) {
       ctx.fillStyle = '#000000';
+
       //start at top
       let currentAngle = 0.5 * Math.PI;
       for (let result of results) {
