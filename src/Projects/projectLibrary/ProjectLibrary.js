@@ -1,6 +1,7 @@
 import Board from "./LightsOut/Board";
 import GameOfLife from "./GameOfLife/GameOfLife";
 import Productiv from "./Productiv/Productiv";
+import Whittle from "./Whittle/Whittle";
 
 
 export const ProjectLibrary = [
@@ -32,12 +33,12 @@ export const ProjectLibrary = [
     url: "/productiv"
   },
   {
-    title: "Pixel Paint Editor",
-    id: "pixelPaintEditor",
-    description: "A simple drawing program coded entirely in JavaScript. Draw or edit pixel images. Features saving, loading, and hotkeys.",
-    component: "<CanvasGame />",
+    title: "Whittle",
+    id: "whittle",
+    description: "A wordle assist app to help whittle down all your options.",
+    component: <Whittle />,
     img: null,
     tags: ["JavaScript", "React"],
-    url: "/pixelPaintEditor"
+    url: "/whittle"
   },
 ];
