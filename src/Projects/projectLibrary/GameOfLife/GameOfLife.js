@@ -146,7 +146,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
               />
               <label
                 className="btn btn-lg btn-outline-light"
-                for="btncheck1">
+                htmlFor="btncheck1">
                 {isRunning ?
                   <i class="fa-solid fa-pause"></i> :
                   <i class="fa-solid fa-play"></i>}
@@ -203,7 +203,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="single"
                 checked={pattern === "single"}
               />
-              <label className="btn btn-outline-light" for="single">{patterns.single.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="single">{patterns.single.icon}</label>
             </div>
             <div className="btn-group col-md-3 mb-2" role="group" aria-label="Basic radio toggle button group">
               <input
@@ -214,7 +214,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="glider"
                 checked={pattern === "glider"}
               />
-              <label className="btn btn-outline-light" for="glider">{patterns.glider.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="glider">{patterns.glider.icon}</label>
               <input
                 type="radio"
                 className="btn-check"
@@ -223,7 +223,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="lwss"
                 checked={pattern === "lwss"}
               />
-              <label className="btn btn-outline-light" for="lwss">{patterns.lwss.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="lwss">{patterns.lwss.icon}</label>
               <input
                 type="radio"
                 className="btn-check"
@@ -232,7 +232,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="mwss"
                 checked={pattern === "mwss"}
               />
-              <label className="btn btn-outline-light" for="mwss">{patterns.mwss.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="mwss">{patterns.mwss.icon}</label>
             </div>
             <div className="btn-group col-md-3 mb-2" role="group" aria-label="Basic radio toggle button group">
               <input
@@ -243,7 +243,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="toad"
                 checked={pattern === "toad"}
               />
-              <label className="btn btn-outline-light" for="toad">{patterns.toad.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="toad">{patterns.toad.icon}</label>
               <input
                 type="radio"
                 className="btn-check"
@@ -252,7 +252,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="pentaDec"
                 checked={pattern === "pentaDec"}
               />
-              <label className="btn btn-outline-light" for="pentaDec">{patterns.pentaDec.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="pentaDec">{patterns.pentaDec.icon}</label>
               <input
                 type="radio"
                 className="btn-check"
@@ -261,7 +261,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="pulsar"
                 checked={pattern === "pulsar"}
               />
-              <label className="btn btn-outline-light" for="pulsar">{patterns.pulsar.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="pulsar">{patterns.pulsar.icon}</label>
             </div>
             <div className="btn-group col-md-3 mb-2" role="group" aria-label="Basic radio toggle button group">
               <input
@@ -272,7 +272,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="diehard"
                 checked={pattern === "diehard"}
               />
-              <label className="btn btn-outline-light" for="diehard">{patterns.diehard.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="diehard">{patterns.diehard.icon}</label>
               <input
                 type="radio"
                 className="btn-check"
@@ -281,7 +281,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="acorn"
                 checked={pattern === "acorn"}
               />
-              <label className="btn btn-outline-light" for="acorn">{patterns.acorn.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="acorn">{patterns.acorn.icon}</label>
               <input
                 type="radio"
                 className="btn-check"
@@ -290,7 +290,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
                 value="gosper"
                 checked={pattern === "gosper"}
               />
-              <label className="btn btn-outline-light" for="gosper">{patterns.gosper.icon}</label>
+              <label className="btn btn-outline-light" htmlFor="gosper">{patterns.gosper.icon}</label>
             </div>
         </div>
       </div >
