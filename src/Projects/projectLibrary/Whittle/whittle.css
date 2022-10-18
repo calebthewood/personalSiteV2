@@ -8,22 +8,31 @@ input.whittle-cell {
   text-align: center;
   caret-color: transparent;
   border-radius: 2px;
+  font-style: uppercase;
+  padding: 4px;
+  margin: 2px;
+  border: none;
+  background: transparent;
+  font-display: uppercase;
+  cursor: pointer;
 }
+
+td.whittle-td {
+
+}
+
 
 td.green {
   border: solid 3px #6ab04c;
   background-color: #badc58;
-  color: whitesmoke;
 }
 
 td.yellow {
-  border: solid 3px #f6e58d;
-  background-color: #f9ca24;
-  color: whitesmoke;
+  border: solid 3px #f9ca24;
+  background-color: #f6e58d;
 }
 
 td.grey {
   border: solid 3px #535c68;
   background-color: #95afc0;
-  color: whitesmoke;
 }
