@@ -4,7 +4,7 @@ import RoutesList from "./RoutesNav/RoutesList";
 import Footer from "./Common/Footer/Footer";
 import Header from "./Common/Header/Header";
 import { useState, useEffect } from "react";
-import BlogAPI from "./Blog/BlogAPI";
+import BlogAPI from "./BlogAPI/BlogAPI";
 import TwitterAPI from "./TwitterAPI/TwitterAPI";
 import Metrics from "./Common/Metric/Metric";
 

@@ -3,7 +3,7 @@ import Home from "../Home/Home";
 import AboutMe from "../About/AboutMe";
 import PortfolioList from "../Portfolio/PortfolioList";
 import ProjectList from "../Projects/ProjectList";
-import BlogList from "../Blog/BlogList";
+import BlogList from "../BlogAPI/BlogList";
 import Dashboard from "../Dashboard/Dashboard";
 // import ProjectDetail from "../projects/ProjectDetail";
 // import BlogPost from "../blog/BlogPost";
