@@ -1,11 +1,11 @@
 import "./App.css";
+import BlogAPI from "./BlogAPI/BlogAPI";
+import { TwitterAPI } from "./TwitterAPI/TwitterAPI";
 import Navigation from "./RoutesNav/Navigation";
 import RoutesList from "./RoutesNav/RoutesList";
 import Footer from "./Common/Footer/Footer";
 import Header from "./Common/Header/Header";
 import { useState, useEffect } from "react";
-import BlogAPI from "./BlogAPI/BlogAPI";
-import TwitterAPI from "./TwitterAPI/TwitterAPI";
 import Metrics from "./Common/Metric/Metric";
 
 
@@ -32,10 +32,10 @@ function App() {
   return (
     <div className="App">
       <Navigation />
-        <Header />
-        <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
-        <Footer />
-        <Metrics />
+      <Header />
+      <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+      <Footer />
+      <Metrics />
     </div>
   );
 }

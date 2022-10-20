@@ -1,5 +1,5 @@
 import SectionCard from "./SectionCard";
-import "./aboutMe.css";
+import "./AboutMe.css";
 
 
 export default function AboutMe() {

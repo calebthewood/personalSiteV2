@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export default class TwitterAPI {
-
+export class TwitterAPI {
   static url = "https://project-pith.herokuapp.com/tweets";
 
   static async getTweetsByTag(tag) {
@@ -9,5 +8,4 @@ export default class TwitterAPI {
     let { data } = await axios.get(url);
     return data.response;
   }
-
 }
