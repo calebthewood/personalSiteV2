@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import TopTodo from "./TopTodo";
 import EditableTodoList from "./EditableTodoList";
 import TodoForm from "./TodoForm";
-import useLocalStorage from "../../../customHooks/useLocalStorage";
+import useLocalStorage from "../../../CustomHooks/useLocalStorage";
 
 /** App for managing a todo list.
  *

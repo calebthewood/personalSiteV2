@@ -1,4 +1,4 @@
-import ReturnButton from "../common/ReturnButton";
+import ReturnButton from "../Common/ReturnButton";
 
 
 export default function ProjectDetail({ project }) {
