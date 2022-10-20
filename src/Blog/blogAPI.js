@@ -4,7 +4,7 @@ import { Tweet } from 'react-twitter-widgets';
 
 const BLOG_URL = "https://project-pith.herokuapp.com/blog";
 
-class BlogAPI {
+export default class BlogAPI {
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
@@ -83,5 +83,3 @@ class BlogAPI {
   }
 
 }
-
-export default BlogAPI;
