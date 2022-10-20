@@ -37,7 +37,7 @@ export const ProjectLibrary = [
     id: "whittle",
     description: "A wordle assist app to help whittle down all your options.",
     component: <Whittle />,
-    img: null,
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/Screen+Shot+2022-10-18+at+12.31.56+AM.png",
     tags: ["JavaScript", "React"],
     url: "/whittle"
   },

@@ -5,7 +5,7 @@ export default class DashboardAPI {
   static async fetchMetricData() {
     let response;
     try {
-      response = await axios.get("http://localhost:3001/metrics");
+      response = await axios.get("https://project-pith.herokuapp.com/metrics");
     } catch (e) {
       console.error("Error: Fetching Metric Data");
     }

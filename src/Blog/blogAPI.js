@@ -2,7 +2,7 @@ import axios from "axios";
 import { dateToNum } from "../utils";
 import { Tweet } from 'react-twitter-widgets';
 
-const BLOG_URL = "http://localhost:3001/blog";
+const BLOG_URL = "https://project-pith.herokuapp.com/blog";
 
 class BlogAPI {
 

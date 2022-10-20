@@ -1,56 +1,62 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fiveLetterWords } from "./wordList";
+import WhittleHeader from "./WhittleHeader";
 import "./whittle.css";
+import { WhittleList } from "./WhittleList";
+import _ from "lodash";
 
-
+/**
+ * TODOs:
+ * 1) Add Webster API to get a word definition on click
+ * 2) Think about storing the word list better, maybe filter down one list if adding
+ *    characters, and refulter the whole list if previous characters change?
+ * 3) Move wordlist to db?
+ */
 export default function Whittle() {
-  const [filteredWords, setFilteredWords] = useState([]);
-  const [filterData, setFilterData] = useState([]); // [{char: "a", type: "green", coords: [x,y]}]
+  const [filteredWords, setFilteredWords] = useState(fiveLetterWords);
   const [grid, setGrid] = useState(createBoard());
   const [chars, setChars] = useState(createFormData());
+  const debouncedFilter = _.debounce(() => runFilter(), 500);
 
   function getFilterData() {
     let data = [];
+    let char, type;
     for (let y = 0; y < 5; y++) {
       for (let x = 0; x < 5; x++) {
-        if (chars[y][x] !== "") {
-          data.push({
-            char: chars[y][x],
-            type: grid[y][x],
-            coords: [y, x]
-          });
+        char = chars[y][x];
+        type = grid[y][x];
+        if (char !== "" && type !== "white") {
+          data.push({ char, type, index: x });
         }
       }
     }
     return data;
   }
 
-  function runFilter(x, y) {
-    setFilterData(getFilterData());
-    setFilteredWords([...fiveLetterWords.filter(word => filterWord(word))]);
+  function runFilter() {
+    const filterData = getFilterData();
+    setFilteredWords(fiveLetterWords.filter(word => {
+      for (let { char, type, index } of filterData) {
+        if (type === 'grey' && word.includes(char)) {
+          return false;
+        } else if (type === 'yellow' && !word.includes(char)) {
+          if (word[index] === char) return false;
+        } else if (type === 'green') {
+          if (word[index] !== char) return false;
+        }
+      }
+      return true;
+    }));
   }
 
   function changeColor(x, y) {
     let newGrid = grid;
-    if (chars[y][x] === "") newGrid[y][x] = "grey";
+    if (chars[y][x] === "") newGrid[y][x] = "white";
+    else if (newGrid[y][x] === "white") newGrid[y][x] = "grey";
     else if (newGrid[y][x] === "grey") newGrid[y][x] = "yellow";
     else if (newGrid[y][x] === "yellow") newGrid[y][x] = "green";
     else if (newGrid[y][x] === "green") newGrid[y][x] = "grey";
     setGrid([...newGrid]);
-  }
-
-  function filterWord(word) {
-    for (let { char, type, coords } of filterData) {
-      let [y, x] = coords;
-      if (type === 'grey') {
-        if (word.includes(char)) return false;
-      } else if (type === 'yellow') {
-        if (word[x] === char || !word.includes(char)) return false;
-      } else if (type === 'green') {
-        if (word[x] !== char) return false;
-      }
-    }
-    return true;
   }
 
   function createFormData() {
@@ -68,7 +74,7 @@ export default function Whittle() {
   function createBoard() {
     return Array.from({ length: 5 }).map(
       row => Array.from({ length: 5 }).map(
-        cell => "grey"
+        cell => "white"
       )
     );
   }
@@ -77,7 +83,7 @@ export default function Whittle() {
     const [x, y] = evt.target.name.match(/\d+/g).map(Number);
     console.log("clicked xy ", x, y);
     if (!evt.target.value.length) return;
-    runFilter(x, y);
+    debouncedFilter();
     changeColor(x, y);
   }
 
@@ -86,10 +92,10 @@ export default function Whittle() {
     if (e.key === "Backspace" && !chars[y][x]) {
       handleFocus(x, y, "backward");
       changeColor(x, y);
-    }else if (e.key === "Enter" && chars[y][x].length) {
-      runFilter(x, y);
+    } else if (e.key === "Enter" && chars[y][x].length) {
+      debouncedFilter();
       changeColor(x, y);
-    }else if (e.key !== "Backspace" && chars[y][x]) {
+    } else if (e.key !== "Backspace" && chars[y][x]) {
       handleFocus(x, y, "forward");
     }
   }
@@ -101,7 +107,7 @@ export default function Whittle() {
     newChars[y][x] = value;
     if (!value) changeColor(x, y);
     setChars([...newChars]);
-    runFilter(x, y);
+    debouncedFilter();
   }
 
   function handleFocus(x, y, direction) {
@@ -115,32 +121,27 @@ export default function Whittle() {
     if (moveTo) moveTo.focus();
   }
 
-  /** Updates character values in state */
-  // function handleChange(evt) {
-  //   const { value, name } = evt.target;
-
-  //   let newChars = chars;
-  //   newChars[y][x] = value.toLowerCase();
-  //   setChars([...newChars]);
-  // }
-
   return (
     <div className="container">
-      <div className="row text-center justify-content-center">
+      <div className="row justify-content-center">
+        <WhittleHeader />
+      </div>
+      <div className="row justify-content-around">
+        <div className="col" style={{ width: "270px" }}>
 
-        <div className="col">
           <table className="whittle">
             <tbody onClick={handleClick}>
               {grid.map((row, y) => {
                 return (
                   <tr key={`row-${y}`}>{row.map(
                     (cell, x) => (
-                      <td id={`x${x}-y${y}`} key={`x${x}-y${y}`} className={`whittle-td ${cell}`}>
+                      <td id={`x${x}-y${y}`} key={`x${x}-y${y}`} className="whittle-td">
                         <input
                           type="text"
-                          className="whittle-cell"
+                          className={`whittle-cell ${cell} border rounded border-3 `}
                           size="1"
                           maxLength="1"
+                          autoComplete="off"
                           name={`x${x}-y${y}`}
                           value={chars[y][x]}
                           onChange={handleChange}
@@ -154,13 +155,8 @@ export default function Whittle() {
 
         </div>
 
-        <div className="row">
-          <div className="col">
-            <ol>
-              {filteredWords.length > 100 ? "You gotta try a little first..." :
-                filteredWords.map((word, i) => <li key={`${word}-${i}`}>{word}</li>)}
-            </ol>
-          </div>
+        <div className="col">
+          <WhittleList wordList={filteredWords} />
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="py-3 mt-5 text-bg-dark text-center container-flex">
       <div className="container pt-2">
-        <h5>Contact Me by email with any questions</h5>
+        <h5>Contact me by email with any questions</h5>
         <p><a type="button" className="email-btn btn btn-dark" href="mailto:calebwood.cs@gmail.com">calebwood.cs@gmail.com</a></p>
         <hr className="border border-light" />
 

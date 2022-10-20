@@ -1,3 +1,23 @@
+#title {
+  text-align: center;
+  height: fit-content;
+  background-color: #fff;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#title h1 {
+  font-size: 3rem;
+  margin: auto;
+  color: #212121;
+  border-bottom: .25rem solid #212121;
+}
+
+#title p {
+  font-size: small;
+  color: rgba(102, 102, 102, 0.63);
+  text-align: center;
+}
+
 input.whittle-cell {
   height: 3rem;
   width: 3rem;
@@ -7,32 +27,35 @@ input.whittle-cell {
   vertical-align: middle;
   text-align: center;
   caret-color: transparent;
-  border-radius: 2px;
-  font-style: uppercase;
-  padding: 4px;
-  margin: 2px;
-  border: none;
-  background: transparent;
-  font-display: uppercase;
   cursor: pointer;
+  text-transform: uppercase;
+  margin: 2px;
+  padding: 2px;
 }
 
-td.whittle-td {
-
+.whittle {
+  border: none;
+  height: 270px;
+  width: 270px;
 }
 
-
-td.green {
-  border: solid 3px #6ab04c;
-  background-color: #badc58;
+.whittle-td {
+  border: none;
 }
 
-td.yellow {
-  border: solid 3px #f9ca24;
-  background-color: #f6e58d;
+input.whittle-cell.green {
+  background-color: #6ab04c;
 }
 
-td.grey {
-  border: solid 3px #535c68;
+input.whittle-cell.yellow {
+  background-color: #f9ca24;
+}
+
+input.whittle-cell.grey {
   background-color: #95afc0;
+}
+
+#whittle-list {
+    grid-column: 1 / 11;
+    grid-row: 6;
 }

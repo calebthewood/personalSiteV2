@@ -111,7 +111,7 @@ export default function GameOfLife({ width = 39, height = 23, defaultChance = .5
   }, [isRunning, board]);
 
   return (
-    <div className="card text-bg-dark">
+    <div className="card text-bg-dark" style={{maxWidth: "764px"}}>
       <div className="card-body">
         <h2 className="cart-title">Conway's Game of Life</h2>
         <p class="card-text">
