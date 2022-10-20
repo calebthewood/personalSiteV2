@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import useLocalStorage from "../CustomHooks/useLocalStorage";
+import useLocalStorage from "../../CustomHooks/useLocalStorage";
 import axios from "axios";
 
 /** Metrics

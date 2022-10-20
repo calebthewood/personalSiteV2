@@ -1,12 +1,12 @@
 import "./App.css";
 import Navigation from "./RoutesNav/Navigation";
 import RoutesList from "./RoutesNav/RoutesList";
-import Footer from "./Common/Footer";
-import Header from "./Common/Header";
+import Footer from "./Common/Footer/Footer";
+import Header from "./Common/Header/Header";
 import { useState, useEffect } from "react";
 import BlogAPI from "./Blog/BlogAPI";
 import TwitterAPI from "./TwitterAPI/TwitterAPI";
-import Metrics from "./Common/Metric";
+import Metrics from "./Common/Metric/Metric";
 
 
 function App() {
