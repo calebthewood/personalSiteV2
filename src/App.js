@@ -4,8 +4,8 @@ import RoutesList from './routes-nav/RoutesList';
 import Footer from './common/Footer';
 import Header from './common/Header';
 import { useState, useEffect } from 'react';
-import BlogAPI from './blog/blogAPI';
-import TwitterAPI from './api/twitterAPI';
+import BlogAPI from './blog/BlogAPI';
+import TwitterAPI from './TwitterAPI/TwitterAPI';
 import Metrics from './common/Metric';
 
 
