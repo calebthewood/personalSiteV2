@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "../Home/Home";
-import AboutMe from "../About/AboutMe";
-import PortfolioList from "../Portfolio/PortfolioList";
-import ProjectList from "../Projects/ProjectList";
-import BlogList from "../BlogAPI/BlogList";
-import Dashboard from "../Dashboard/Dashboard";
+import Home from "../Home";
+import AboutMe from "../AboutMe";
+import PortfolioList from "../PortfolioList";
+import ProjectList from "../ProjectList";
+import BlogList from "../BlogList";
+import Dashboard from "../Dashboard";
 // import ProjectDetail from "../projects/ProjectDetail";
 // import BlogPost from "../blog/BlogPost";
 

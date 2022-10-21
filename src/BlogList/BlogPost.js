@@ -2,7 +2,7 @@ import CodeBlock from "./blocks/CodeBlock";
 import HeadingBlock from "./blocks/HeadingBlock";
 import ParagraphBlock from "./blocks/ParagraphBlock";
 import TitleBlock from "./blocks/TitleBlock";
-import ReturnButton from "../Common/ReturnButton/ReturnButton";
+import ReturnButton from "../Common/ReturnButton";
 import { Link } from "react-router-dom";
 
 

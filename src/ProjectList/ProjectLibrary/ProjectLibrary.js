@@ -1,7 +1,7 @@
-import Board from "./LightsOut/Board";
-import GameOfLife from "./GameOfLife/GameOfLife";
-import Productiv from "./Productiv/Productiv";
-import Whittle from "./Whittle/Whittle";
+import LightsOut from "./LightsOut";
+import GameOfLife from "./GameOfLife";
+import Productiv from "./Productiv";
+import Whittle from "./Whittle";
 
 
 export const ProjectLibrary = [
@@ -9,7 +9,7 @@ export const ProjectLibrary = [
     title: "Lights Out",
     id: "lights-out",
     description: "Lights Out is a logic/puzzle game, played on a gird of individual lights, which can either be lit or unlit. The puzzle is won when when all of the lights are turned off.",
-    component: <Board />,
+    component: <LightsOut />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/lights-out-react.png",
     tags: ["JavaScript", "React"],
     url: "/lights-out"

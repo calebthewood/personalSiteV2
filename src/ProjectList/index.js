@@ -19,9 +19,6 @@ export default function ProjectList() {
   return (
     <div className="container">
       <div className="row row justify-content-center" >
-
-
-
         {currentProject ? <ProjectDetail project={currentProject} /> :
           <div className="col-8">
             {ProjectLibrary.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}

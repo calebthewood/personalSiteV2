@@ -27,7 +27,7 @@ import "./Board.css";
  *
  **/
 
-export default function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
+export default function LightsOut({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
   const [board, setBoard] = useState(createBoard());
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
