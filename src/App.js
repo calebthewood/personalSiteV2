@@ -1,15 +1,15 @@
 import "./App.css";
+import { useState, useEffect } from "react";
 import { BlogAPI } from "./BlogAPI/BlogAPI";
 import { TwitterAPI } from "./TwitterAPI/TwitterAPI";
 import Navigation from "./RoutesNav/Navigation";
 import RoutesList from "./RoutesNav/RoutesList";
 import Footer from "./Common/Footer/Footer";
 import Header from "./Common/Header/Header";
-import { useState, useEffect } from "react";
 import Metrics from "./Common/Metric/Metric";
 
 
-function App() {
+export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [allPosts, setAllPosts] = useState(null);
   const [tweets, setTweets] = useState(null);
@@ -39,5 +39,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
