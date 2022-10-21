@@ -1,5 +1,5 @@
 import "./App.css";
-import BlogAPI from "./BlogAPI/BlogAPI";
+import { BlogAPI } from "./BlogAPI/BlogAPI";
 import { TwitterAPI } from "./TwitterAPI/TwitterAPI";
 import Navigation from "./RoutesNav/Navigation";
 import RoutesList from "./RoutesNav/RoutesList";

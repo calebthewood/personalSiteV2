@@ -9,4 +9,3 @@ export function classListFromAnnotations(annotations, classList = []) {
   });
   return classList.join(" ")
 }
-

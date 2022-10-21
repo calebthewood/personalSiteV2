@@ -1,4 +1,3 @@
-
 import { classListFromAnnotations } from "./blockUtils";
 
 /** Generates content from a paragraph block object */

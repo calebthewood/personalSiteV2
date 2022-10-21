@@ -11,6 +11,7 @@
   color: #303952;
   background-color: #786fa6;
 }
+
 .tags.purple:hover {
   background-color: #847ea5;;
 }
@@ -19,6 +20,7 @@
   color: #303952;
   background-color: #ea8685;
 }
+
 .tags.red:hover {
   background-color: #dc9998;
 }
@@ -53,13 +55,6 @@ div.card.blog-summary {
 i.search-icon {
   margin: 0;
 }
-
-/* End Rtern Btn */
-
-/* Links and anchor tags */
-
-
-/* End links and anchor tags */
 
 .code>p {
   text-align: end;
