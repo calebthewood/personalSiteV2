@@ -33,7 +33,7 @@ export default function TodoApp({ initialTodos }) {
   useEffect(() => {
     const todoString = JSON.stringify(todos);
     setLocalTodos(todoString);
-  }, [todos, setTodos]);
+  }, [todos, setTodos, setLocalTodos]);
 
 
   /** update a todo with updatedTodo */

@@ -24,7 +24,6 @@ export default function App() {
       setIsLoading(false);
     }
     console.debug("BlogList useEffect getPostsOnMount");
-    console.log(tweets);
     getPosts(); // Recent is the default
   }, []);
 

@@ -55,7 +55,7 @@ export default function Metrics() {
       }
     }
     logPath();
-  }, [pathname]);
+  }, [pathname, token]);
 
   const styles = {
     position: "absolute",
