@@ -5,7 +5,7 @@ import PortfolioProject from "./PortfolioProject";
 export default function PortfolioList() {
 
   return (
-    <div className="container mb-2">
+    <div className="container col-8 mb-2">
         {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
     </div>
   );

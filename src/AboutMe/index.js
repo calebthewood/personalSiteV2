@@ -24,7 +24,7 @@ export default function AboutMe() {
   ];
   return (
     <section id="about">
-      <div className="container-md">
+      <div className="container-md col">
 
         <div className="row">
 

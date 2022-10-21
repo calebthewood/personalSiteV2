@@ -2,6 +2,38 @@
 
 export const portfolio = [
   {
+    title: "This site",
+    id: "personalSite",
+    summary: "This site is v2 of my personal website. It's quite an upgrade from the old site, and is the most complex frontend application I've developed to date. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
+    frontend: [
+      "React Frontend",
+      "Features my own content management system based on the Notion SDK",
+      "React-Router-Dom keeps the URL relevant and handles navigation around the app",
+      "Developed the Metric component that forms 1 part of my fillstack metrics system",
+      "Implemented a custom local storage hook to stash and retrieve a JWT",
+      "The Dashboard contains up-to-date metrics on visitor behavior, and pie chart drawn with HTML canvas",
+      "Bootstrap 5.2 provides the styling and layout of the site",
+      "Due to minimal blog content at launch, some search features of the blog are disabled. Expect to see more added over the next couple months",
+      "I'm most proud of the Notion system I developed which allows me to publish blog posts straight from the Notion app."
+    ],
+    backend: [
+      "Node-Express Backend",
+      "Integrated Notion SDK to publish blogs from my dekstop Notion app to this site",
+      "Wrote an OOP class to parse Notion Page Objects before uploading to db",
+      "Integrated Twitter API to embed my programming related tweets",
+      "Developed my own fullstack system for measuring site metrics",
+      "Implemented auth endpoint to provide tokens for counting unique visitors",
+      "By using a local token, I can track user path and page visits",
+    ],
+    database: [
+      "Databases: AWS S3, MongoDB",
+      "All files stored in in AWS S3 bucket",
+      "MongoDB allows for rapid storage and retrieval for metric data and blog posts",
+      "Upcoming: as I add more content I'll also develop better search capabilities for the blog",
+    ],
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/site-shot.png"
+  },
+  {
     title: "Jobly",
     id: "jobly",
     summary: "Jobly is a fullstack job-board web app featuring a ReactJS frontend, NodeJS REST API backend, and PostgreSQL database containing mock data. It is deployed on Heroku and Surge. I built Jobly over the course of two, weeklong sprints while attending Rithm School bootcamp in San Francisco.",
@@ -13,7 +45,7 @@ export const portfolio = [
       "Carefully planned component heirarchy and state management",
       "A user system with full login, signup, update, and role functionality",
       "Custom hook for storing and retrieving from local storage",
-      "Currently in the process of converting the app to TypeScript"
+      "Currently in the process of converting the app to TypeScript",
     ],
     backend: [
       "Node-Express REST API backend",
@@ -27,10 +59,10 @@ export const portfolio = [
     ],
     database: [
       "PostgreSQL Database",
-      "Interfaced with db via PG, a lightweight Node-Postgres interface",
+      "Interfaced with db via PG, a lightweight Postgres driver for Node",
       "Database consists of tables for Company, User, and Job",
-      "Developed Job as a through-table for many-to-many relationship between Company and User",
-      "Wrote OOP methods to dynamically build SQL queries based on search parameters",
+      "Developed Job table as a through-table for many-to-many relationship between Company and User",
+      "OOP methods dynamically build SQL queries based on search parameters",
       "Implemented parameterized queries to prevent against SQL injection",
     ],
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/jobly.png",
@@ -39,15 +71,15 @@ export const portfolio = [
   {
     title: "Warbler",
     id: "warbler",
-    summary: "Warbler is a fullstack Twitter clone built on Python-Flask. It is the result of a weeklong sprint to extend an existing, somewhat-functional app. During this project I worked to uncover bugs, write tests, and extending the app with new features.",
+    summary: "Warbler is a fullstack Twitter clone built on Python-Flask. It is the result of a weeklong sprint to extend an existing, semi-functional app. During this project I worked to uncover bugs, write tests, and extend the app with new features.",
     frontend: [
       "Flask-Jinja Frontend",
-      "Server-side-rendered pages using the JinjaII templating engine:",
+      "Server-side-rendered pages using the Jinja II templating engine:",
       "Abstracted repeated code to templates for headers, footers, cards, and more",
       "Used Jinja syntax to implement dynamic behavior and logic inside templates",
       "Designed and implemented a “like” button with dynamic UI that sends an AJAX post request",
       "Utilized the library WTForms to build and validate forms for Messages and User SignUp/Login/Edit",
-      "Used WTForms to protect against CSRF attacks and to validate form input",
+      "Used WTForms to protect against CSRF attacks and to validate form inputs",
     ],
     backend: [
       "Flask-Python Backend",
@@ -69,56 +101,4 @@ export const portfolio = [
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/warbler.png",
     link: "https://r-warble.herokuapp.com/",
   },
-  {
-    title: "This site",
-    id: "personalSite",
-    summary: "This site is v2 of my personal website. It's quite an upgrade, and easily the most complex frontend application I've developed to date. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
-    frontend: [
-      "React Frontend",
-      "I wrote and continue to add to an OOP class responsible for converting Notion blocks to JSX",
-      "Bootstrap 5.2 provides the styling and layout of the site",
-      "React-Router-Dom keeps the URL relevant and handles navigation around the app",
-      "I developed a simple metrics system encapsulated in the Metric component",
-      "I implemented a custom local storage hook to stash and retrieve a JWT",
-      "The Dashboard contains up-to-date metrics on visitor behavior, and pie chart drawn HTML canvas",
-      "Due to having minimal content at launch, some search features of the blog are disabled. Expect to see more added over the next couple months",
-      "I'm most proud of the Blog and Block system. Iterating on that API will allow me to write some stellar looking posts. No promises on to writing quality."
-    ],
-    backend: [
-      "Node-Express Backend",
-      "Integrated Notion SDK to publish blogs from my dekstop Notion app to this site",
-      "Integrated Twitter API to embed my programming related tweets",
-      "Developed my own system for measuring site metrics",
-      "Wrote an OOP class to parse Notion Page Objects before uploading to db",
-      "Implemented JWT endpoint to provide tokens for identifying unique visitors",
-      "Future plans to integrate more 3rd party APIs",
-    ],
-    database: [
-      "MongoDB Database",
-      "The needs of the site are well suited to a non-relational db",
-      "Mongo Atlas is both quick, easy, and free, and integrates nicely with my blog and metrics needs",
-      "If I add users and comments to the blog then I'll implement a RDBMS at that time",
-      "I currently relying on the front end for filtering blog posts, but that isn't scalable.",
-      "As I add more content I will expand the backend to filter posts before sending to react ",
-    ],
-    img: "https://s3.us-west-1.amazonaws.com/pix.ly/site-shot.png"
-  },
-  {
-    title: "Stretch Goals",
-    id: "futureProjects",
-    summary: "Just a few musings on future projects and technologies I'd like to work with. The Image is from the first application I ever deployed, Whittle.",
-    frontend: ["",
-      "I enjoy alternating between Vanilla JS and React. Translating projects from JS to JSX has been immensely educational, and quite a bit of fun too.",
-      "In the future, I'd like to explore more sophisticated React concepts, and branch out to dabble in other frameworks as well.",
-    ],
-    backend: ["",
-      "I'm excited to do more work in Node, specifically with web sockets. I plan on using Pith as something of a monolith for my personal projects.",
-      "I'm also quite good with Flask, and there's so many amazing Python tools. I expect I'll put up some flask projects as I work through a book on data viz",
-    ],
-    database: ["",
-      "So far my projects have stuck to one database per project, but I am interested in layering on the complexity.",
-      "I'd like to experiment by using relational databases in conjunction with services like Mongo, Redis, or even GunJS.",
-    ],
-    img: "https://s3.us-west-1.amazonaws.com/pix.ly/whittle.png"
-  }
 ];
