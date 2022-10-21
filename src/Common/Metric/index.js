@@ -24,7 +24,7 @@ export default function Metrics() {
       console.log("Metric useEffect getToken");
       if (!token) {
         console.log("GET: /metrics/token");
-        let res = await axios.get('http://localhost:3001/metrics/token');
+        let res = await axios.get('https://project-pith.herokuapp.com/metrics/token');
         console.log("useEffect new token ", res.status)
         setToken(res.data.token);
       }
@@ -40,7 +40,7 @@ export default function Metrics() {
         //I would still need to monitor it the same way, but not send it as a param. Will check.
         let res = await axios({
           method: 'POST',
-          url: 'http://localhost:3001/metrics',
+          url: 'https://project-pith.herokuapp.com/metrics',
           params: {
             pathname,
             token,
