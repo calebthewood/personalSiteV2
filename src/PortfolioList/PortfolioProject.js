@@ -11,11 +11,11 @@ export default function PortfolioProject({ project }) {
 
   return (
     <div className="card mb-5 text-bg-dark">
-      <div className="row g-0">
-        <div className="portfolio-img col-md-4">
-          <img src={project.img} className="img-fluid rounded" alt="project-screenshot" />
+
+        <div className="portfolio-img">
+          <img src={project.img} className="card-img-top rounded" alt="project-screenshot" />
         </div>
-        <div className="col-md-8">
+
           <div className="card-header text-bg-secondary bg-opacity-25">
             <ul className="nav nav-tabs nav-tabs-dark card-header-tabs" onClick={handleTabs}>
               {["Summary", "Frontend", "Backend", "Database"].map((tabName, i) => {
@@ -78,8 +78,8 @@ export default function PortfolioProject({ project }) {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+
+
     </div>
   );
 }
