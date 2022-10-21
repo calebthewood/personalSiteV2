@@ -1,0 +1,32 @@
+.locale {
+  font-size: 1rem;
+}
+
+.about-icons {
+  font-size: 1.5rem;
+}
+
+.section-icon {
+  font-size: 4rem;
+}
+
+
+/* unvisited link */
+a.plain-link:link {
+  color: inherit;
+
+}
+/* visited link */
+a.plain-link:visited {
+  color: inherit;
+}
+/* mouse over link */
+a.plain-link:hover {
+  color: #555749;
+}
+/* selected link */
+a.plain-link:active {
+  color: blue;
+}
+
+
