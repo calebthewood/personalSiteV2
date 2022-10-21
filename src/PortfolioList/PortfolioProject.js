@@ -18,10 +18,10 @@ export default function PortfolioProject({ project }) {
         <div className="col-md-8">
           <div className="card-header text-bg-secondary bg-opacity-25">
             <ul className="nav nav-tabs nav-tabs-dark card-header-tabs" onClick={handleTabs}>
-              {["Summary", "Frontend", "Backend", "Database"].map(tabName => {
+              {["Summary", "Frontend", "Backend", "Database"].map((tabName, i) => {
                 let name = tabName.toLowerCase();
                 return (
-                  <li className="nav-item">
+                  <li key={`${project.id}-1${i}`} className="nav-item">
                     <a
                       id={name}
                       className={activeTab === name ? "nav-link active text-light bg-dark border-dark" : "nav-link text-muted"}
@@ -48,7 +48,8 @@ export default function PortfolioProject({ project }) {
                 tabIndex="0">
                 <ul className="list-group list-group-flush">
                   {project.frontend.map((item, i) => i === 0 ?
-                    <h5 className="card-title">{item}</h5> : <li className="text-bg-dark list-group-item">{item}</li>)}
+                    <h5 key={`${project.id}-2${i}`} className="card-title">{item}</h5> :
+                    <li key={`${project.id}-2${i}`} className="text-bg-dark list-group-item">{item}</li>)}
                 </ul>
               </div>
               <div
@@ -59,7 +60,8 @@ export default function PortfolioProject({ project }) {
                 tabIndex="0">
                 <ul className="list-group list-group-flush">
                   {project.backend.map((item, i) => i === 0 ?
-                    <h5 className="card-title">{item}</h5> : <li className="text-bg-dark list-group-item">{item}</li>)}
+                    <h5 key={`${project.id}-3${i}`} className="card-title">{item}</h5> :
+                    <li key={`${project.id}-3${i}`} className="text-bg-dark list-group-item">{item}</li>)}
                 </ul>
               </div>
               <div
@@ -70,7 +72,8 @@ export default function PortfolioProject({ project }) {
                 tabIndex="0">
                 <ul className="list-group list-group-flush">
                   {project.database.map((item, i) => i === 0 ?
-                    <h5 className="card-title">{item}</h5> : <li className="text-bg-dark list-group-item">{item}</li>)}
+                    <h5 key={`${project.id}-4${i}`} className="card-title">{item}</h5> :
+                    <li key={`${project.id}-4${i}`} className="text-bg-dark list-group-item">{item}</li>)}
                 </ul>
               </div>
             </div>
