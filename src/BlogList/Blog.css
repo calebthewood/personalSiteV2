@@ -59,12 +59,12 @@ i.search-icon {
 .code>p {
   text-align: end;
   font-size: smaller;
-  color: rgba(0, 0, 0, 0.556);
+  color: rgba(30, 30, 30, 0.847);
 }
 
 .code {
   font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
-  background: rgba(135, 131, 120, 0.15);
+  background: rgba(162, 158, 146, 0.478);
   border-radius: 3px;
   padding: 0.2em 0.4em;
   border-radius: 3px;

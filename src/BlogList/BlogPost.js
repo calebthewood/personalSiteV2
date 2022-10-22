@@ -29,12 +29,11 @@ export default function BlogPost({ post }) {
       <div className="card-body">
         {blocks}
       </div>
-      <div className="tags">
-        {post.tags.map(tag =>
-          <Link
+      <div className="m-2">
+      {post.tags.map(tag => <Link
             key={tag.id}
-            className={`tag${tag.name} navigation-link card-link`}
-            to={`/blog/posts/${tag.name}`}>{tag.name}</Link>)}
+            to={`/blog/posts/${tag.name}`}
+            className={`tags ${tag.color} mx-1`}> {tag.name} </Link>)}
       </div>
     </div>
   );
