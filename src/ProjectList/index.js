@@ -17,7 +17,7 @@ export default function ProjectList() {
   */
 
   return (
-    <div className="container col-8">
+    <div className="container col-12 col-md-8">
       <div className="row row justify-content-center" >
         {currentProject ? <ProjectDetail project={currentProject} /> :
           <div className="col">
