@@ -17,10 +17,10 @@ export default function ProjectList() {
   */
 
   return (
-    <div className="container">
+    <div className="container col-8">
       <div className="row row justify-content-center" >
         {currentProject ? <ProjectDetail project={currentProject} /> :
-          <div className="col-8">
+          <div className="col">
             {ProjectLibrary.map((project, i) => <ProjectCard key={`${project.id}-${i}`} project={project} />)}
           </div>}
       </div>
