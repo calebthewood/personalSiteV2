@@ -16,7 +16,7 @@ export default function AboutMe() {
     description: "Click to see a collection of projects and components"
   },
   {
-    url: "/blog-posts",
+    url: "/blog/posts",
     title: "View Blog",
     icon: <i className="fa-solid fa-shapes"></i>,
     description: "Click to see my articles on development, and more"
