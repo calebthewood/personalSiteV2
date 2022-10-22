@@ -50,7 +50,7 @@ export default function BlogList({ isLoading, allPosts, tweets }) {
   return (
     <div className="container-md">
       <div className="row justify-content-between">
-        <div className="col-3 col-md-2">
+        <div className="col-3 col-lg-2">
           <BlogMenu />
         </div>
 

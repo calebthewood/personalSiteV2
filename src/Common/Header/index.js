@@ -15,13 +15,13 @@ export default function Header() {
       title: "Fullstack Portfolio",
       subtitle: "Click through the tabs to learn more about each app.",
       text: "This section is devoted to my deployed and maintained fullstack apps. Take a moment to click through and read a little about each one, or click the link to visit the deployed site.",
-      width: "col-8"
+      width: "col-12 col-md-8"
     },
     projects: {
       title: "Project Library",
       subtitle: "Click on a project to interact with it.",
       text: "A place to show off the apps, programs, and concepts that made it to the finish line. Each project will have an associated blog that walks through the design and my implementation choices.",
-      width: "col-8"
+      width: "col-12 col-md-8"
     },
     blog: {
       title: "Project Pith",
