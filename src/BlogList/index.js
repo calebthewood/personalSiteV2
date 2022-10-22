@@ -49,15 +49,15 @@ export default function BlogList({ isLoading, allPosts, tweets }) {
 
   return (
     <div className="container-md">
-      <div className="row">
-        <div className="col-3">
+      <div className="row justify-content-between">
+        <div className="col-3 col-md-2">
           <BlogMenu />
         </div>
 
         <div id="blog-list" className="col-9">
           {isLoading ?
             <div><h2>Loading...</h2></div> :
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush border-dark rounded">
               {showList([...allPosts], tweets, showing)}
             </ul>}
 
