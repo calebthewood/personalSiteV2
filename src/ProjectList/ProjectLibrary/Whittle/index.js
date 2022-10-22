@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { fiveLetterWords } from "./wordList";
-import WhittleHeader from "./WhittleHeader";
+import { WhittleHeader } from "./WhittleHeader";
 import "./whittle.css";
 import { WhittleList } from "./WhittleList";
 import _ from "lodash";
@@ -12,7 +12,7 @@ import _ from "lodash";
  *    characters, and refulter the whole list if previous characters change?
  * 3) Move wordlist to db?
  */
-export default function Whittle() {
+export function Whittle() {
   const [filteredWords, setFilteredWords] = useState(fiveLetterWords);
   const [grid, setGrid] = useState(createBoard());
   const [chars, setChars] = useState(createFormData());

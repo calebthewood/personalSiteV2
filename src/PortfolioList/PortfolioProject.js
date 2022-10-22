@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function PortfolioProject({ project }) {
+export function PortfolioProject({ project }) {
 
   const [activeTab, setActiveTab] = useState("summary");
 

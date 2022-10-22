@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import useLocalStorage from "../../CustomHooks/useLocalStorage";
+import { useLocalStorage } from "../../CustomHooks/useLocalStorage";
 import axios from "axios";
 
 /** Metrics
@@ -13,7 +13,7 @@ import axios from "axios";
  * 2) Sends current path to backend to update metrics
  *
  * */
-export default function Metrics() {
+export function Metrics() {
 
   const [token, setToken] = useLocalStorage("passerby");
   const { pathname } = useLocation();
@@ -25,7 +25,7 @@ export default function Metrics() {
       if (!token) {
         console.log("GET: /metrics/token");
         let res = await axios.get('https://project-pith.herokuapp.com/metrics/token');
-        console.log("useEffect new token ", res.status)
+        console.log("useEffect new token ", res.status);
         setToken(res.data.token);
       }
     }
@@ -49,7 +49,7 @@ export default function Metrics() {
             'Content-Type': 'application/json'
           }
         });
-        console.log("useEffect /metrics ", res.status)
+        console.log("useEffect /metrics ", res.status);
       } catch {
         console.error("Failed to light the beacons of Gondor.");
       }
@@ -63,6 +63,5 @@ export default function Metrics() {
     width: "1px",
     backgroundColor: "#00000000"
   };
-
   return <div style={styles}></div>;
 }

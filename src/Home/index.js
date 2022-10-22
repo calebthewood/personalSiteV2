@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import "./home.css";
 
-export default function Home() {
+export function Home() {
 
   return (
     <div id="home-container" className="container">
-
       <div id="home-row" className="row align-items-end mb-5">
 
         <div className="col-12">

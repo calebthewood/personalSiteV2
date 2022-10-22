@@ -1,10 +1,10 @@
 import { ProjectLibrary } from "./ProjectLibrary/ProjectLibrary";
 import { useParams } from "react-router-dom";
-import ProjectCard from "./ProjectCard";
-import ProjectDetail from "./ProjectDetail";
+import { ProjectCard } from "./ProjectCard";
+import { ProjectDetail } from "./ProjectDetail";
 import { Link } from "react-router-dom";
 
-export default function ProjectList() {
+export function ProjectList() {
   const { param } = useParams();
   const [currentProject] = ProjectLibrary.filter(project => project.id === param);
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
-import TopTodo from "./TopTodo";
-import EditableTodoList from "./EditableTodoList";
-import TodoForm from "./TodoForm";
-import useLocalStorage from "../../../CustomHooks/useLocalStorage";
+import { TopTodo } from "./TopTodo";
+import { EditableTodoList } from "./EditableTodoList";
+import { TodoForm } from "./TodoForm";
+import { useLocalStorage } from "../../../CustomHooks/useLocalStorage";
 
 /** App for managing a todo list.
  *
@@ -16,7 +16,7 @@ import useLocalStorage from "../../../CustomHooks/useLocalStorage";
  * App -> TodoApp -> { TodoForm, EditableTodoList }
  */
 
-export default function TodoApp({ initialTodos }) {
+export function TodoApp({ initialTodos }) {
 
 
   const [localTodos, setLocalTodos] = useLocalStorage("todos");

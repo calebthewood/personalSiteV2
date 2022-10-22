@@ -1,4 +1,4 @@
-import Todo from "./Todo";
+import { Todo } from "./Todo";
 
 /** Shows the top todo.
  *
@@ -7,8 +7,7 @@ import Todo from "./Todo";
  *
  * TodoApp -> TopTodo
  */
-
- export default function TopTodo({ todos, finishTodo }) {
+export function TopTodo({ todos, finishTodo }) {
   // lowest-priority # is the highest priority
 
   let unfinished = todos.filter((todo) => !todo.isDone);

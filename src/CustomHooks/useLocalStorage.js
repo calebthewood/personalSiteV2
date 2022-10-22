@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
  *   const [myThing, setMyThing] = useLocalStorage("myThing")
  */
 
-export default function useLocalStorage(key, firstValue = null) {
+export function useLocalStorage(key, firstValue = null) {
   const initialValue = localStorage.getItem(key) || firstValue;
 
   const [item, setItem] = useState(initialValue);

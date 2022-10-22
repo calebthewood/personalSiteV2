@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./navigation.css";
 
-export default function Navigation() {
+export function Navigation() {
 
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">

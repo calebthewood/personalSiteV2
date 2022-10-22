@@ -1,13 +1,13 @@
-import TodoApp from "./TodoApp";
+import { TodoApp } from "./TodoApp";
 import "./productiv.css";
-import QuoteApp from "./QuoteApp";
+import { QuoteApp } from "./QuoteApp";
 
 /** Productiv application.
  *
  * Productiv -> TodoApp, QuoteApp
  **/
 
-export default function Productiv() {
+export function Productiv() {
   return (
     <main className="productiv">
       <header className="container-fluid pt-4 pb-1">

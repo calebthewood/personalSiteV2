@@ -10,7 +10,7 @@ import { patterns } from "./patternData";
  *  3) User created patterns, stored in local storage
  *      - button w/ function that saves the coords of every live cell
  */
-export default function GameOfLife({ width = 39, height = 23, defaultChance = .5 }) {
+export function GameOfLife({ width = 39, height = 23, defaultChance = .5 }) {
 
   const [board, setBoard] = useState(initializeBoard(defaultChance));
   const [isRunning, setIsRunning] = useState(false);

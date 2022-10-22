@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import Quote from "./Quote";
+import { Quote } from "./Quote";
 const API_URL = "https://inspo-quotes-api.herokuapp.com/quotes/random";
 
-export default function QuoteApp() {
+export function QuoteApp() {
   const [quoteShowing, setQuoteShowing] = useState(false);
   const [quote, setQuote] = useState("");
 
@@ -13,7 +13,6 @@ export default function QuoteApp() {
     const quote = data.data.quote;
     setQuote(quote);
   }
-
 
   return (
     <div className="container">

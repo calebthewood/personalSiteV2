@@ -1,6 +1,6 @@
 import { classListFromAnnotations } from "./blockUtils";
 
-export default function TitleBlock({ block, author, date }) {
+export function TitleBlock({ block, author, date }) {
   const { annotations, plain_text } = block.content.rich_text[0];
   const classList = classListFromAnnotations(annotations,["card-title"])
   return (

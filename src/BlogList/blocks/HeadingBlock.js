@@ -1,6 +1,6 @@
 import { classListFromAnnotations } from "./blockUtils";
 
-export default function HeadingBlock({ block }) {
+export function HeadingBlock({ block }) {
   const { annotations, plain_text } = block.content.rich_text[0];
   const classList = classListFromAnnotations(annotations)
   return (

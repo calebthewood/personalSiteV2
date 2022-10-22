@@ -1,10 +1,10 @@
-import ReturnButton from "../Common/ReturnButton";
+import { ReturnButton } from "../Common/ReturnButton";
 
-export default function ProjectDetail({ project }) {
+export function ProjectDetail({ project }) {
   return (
-    <div className="row justify-content-center" style={{width: "fit-content"}} >
+    <div className="row justify-content-center" style={{ width: "fit-content" }} >
       <ReturnButton />
-        {project.component}
+      {project.component}
     </div>
   );
 }
