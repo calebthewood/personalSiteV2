@@ -26,7 +26,7 @@ export const ProjectLibrary = [
   {
     title: "Whittle",
     id: "whittle",
-    description: "A wordle assist app that whittles down a list of potential answers based on your previous guesses. This was the first app I ever deployed, and I've rebuilt it here in React.",
+    description: "A wordle assist app that whittles down a list of potential answers based on your previous guesses. This was the first app I ever deployed, and I've rebuilt it here in React. Please note that this is currently unplayable on mobile.",
     component: <Whittle />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/Screen+Shot+2022-10-18+at+12.31.56+AM.png",
     tags: ["JavaScript", "React"],
