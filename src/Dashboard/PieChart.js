@@ -43,7 +43,7 @@ export default function PieChart({ results }) {
         })}
       </div>
 
-      <div className="row justify-content-around">
+      <div className="row text-center">
         <div id="pie-chart" className="col-md-auto">
           <canvas width="200" height="200" ref={canvasRef} />
         </div>

@@ -24,7 +24,7 @@ export default function Dashboard() {
     <div className="container-md">
       <div className="row mb-2">
 
-        <div className="col-md-5 col-12">
+        <div className="col-12 col-md-5 col-12 mb-4">
           <div className="card text-bg-dark">
             <div className="card-body">
               <h2 className="card-title">Route Traffic</h2>
@@ -34,7 +34,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="col-3">
+        <div className="col-12 col-md-3 mb-4">
           <div className="card text-bg-dark">
             <div className="card-body">
               <h2>
@@ -48,7 +48,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="col-4">
+        <div className="col-12 col-md-4 mb-4">
           <div className="card text-bg-dark">
             <div className="card-body">
               <h2>Top Ten Pages</h2>

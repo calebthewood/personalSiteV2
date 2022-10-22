@@ -31,14 +31,14 @@ export default function AboutMe() {
           <div className="col-12 col-md-4 col-lg-3">
             <div className="row ">
 
-              <div className="col-5 col-md-12 mb-4">
+              <div className="col-xs-12 col-sm-4 col-md-12 mb-4">
                 <div
                   className="card text-bg-dark about-card">
                   <img className="card-img-top" src="https://s3.us-west-1.amazonaws.com/pix.ly/selfie.jpg" alt="Caleb's Selfie" />
                 </div>
               </div>
 
-              <div className="col-7 col-md-12 mb-4">
+              <div className="col-xs-12 col-sm-8 col-md-12 mb-4">
                 <div className="card text-bg-dark">
                   <div className="card-body">
                     <h5 className="card-title">
@@ -48,7 +48,7 @@ export default function AboutMe() {
                       San Francisco, CA
                     </h6>
                   </div>
-                  <ul className="list-group text-center list-group-flush">
+                  <ul className="list-group text-center list-group-flush flex-column">
                     <li className="list-group-item d-grid gap-2 text-bg-dark">
                       <a type="button" className="btn btn-dark" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
                         <h6 className="card-subtitle">View Resume  <i className="fa-solid fa-arrow-up-right-from-square"></i></h6>
@@ -81,14 +81,14 @@ export default function AboutMe() {
                 <br />
                 <li className="list-group-item text-bg-dark">
                   I'm a fullstack web developer and software engineer. This site is
-                  my "workshop". Check back to see new features, projects, and blog
-                  posts being added weekly. I've had a lot of fun building it,
-                  I hope you enjoy it!
+                  my something like a workshop for me. Check back to see new features,
+                  projects, and blog posts being added weekly. I've had a lot of fun building it,
+                  I hope you enjoy it.
                 </li>
                 <li className="list-group-item text-bg-dark">
                   When I'm not coding up programs for mundane problems I like
-                  biking around the city, baking my way towards the perfect baguette
-                  and, as an avid learner, of course, reading.
+                  biking to parks and cafes around the city, baking my way towards
+                  the perfect baguette, and, as an avid learner, of course, reading.
                 </li>
                 <li className="list-group-item text-bg-dark">
                   See <a className="plain-link" href="/public/Caleb_Wood_Resume.pdf">resume</a> for
