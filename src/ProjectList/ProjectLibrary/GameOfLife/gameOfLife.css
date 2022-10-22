@@ -1,12 +1,46 @@
-.cell {
-  width: 1rem;
-  height: 1rem;
-  background-color: #212529;
-  border-radius: 30%;
-  border: 1px solid #2f343b;
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .cell {
+    width: .5rem;
+    height: .5rem;
+    background-color: #212529;
+    border-radius: 30%;
+    border: 1px solid #2f343b;
+  }
+
+  .cell.alive {
+    background-color: #f8f9fa;
+    border-radius: 30%;
+  }
 }
 
-.cell.alive {
-  background-color: #f8f9fa;
-  border-radius: 30%;
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .cell {
+    width: .7rem;
+    height: .7rem;
+    background-color: #212529;
+    border-radius: 30%;
+    border: 1px solid #2f343b;
+  }
+
+  .cell.alive {
+    background-color: #f8f9fa;
+    border-radius: 30%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .cell {
+    width: 1rem;
+    height: 1rem;
+    background-color: #212529;
+    border-radius: 30%;
+    border: 1px solid #2f343b;
+  }
+
+  .cell.alive {
+    background-color: #f8f9fa;
+    border-radius: 30%;
+  }
 }
