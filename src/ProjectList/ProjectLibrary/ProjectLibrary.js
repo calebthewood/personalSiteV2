@@ -1,7 +1,7 @@
-import LightsOut from "./LightsOut";
-import GameOfLife from "./GameOfLife";
-import Productiv from "./Productiv";
-import Whittle from "./Whittle";
+import { LightsOut } from "./LightsOut";
+import { GameOfLife } from "./GameOfLife";
+import { Productiv } from "./Productiv";
+import { Whittle } from "./Whittle";
 
 
 export const ProjectLibrary = [
@@ -20,7 +20,7 @@ export const ProjectLibrary = [
     description: "A Scandinavian themed todo app with priority settings and an inspirational quote fetcher. ",
     component: <Productiv />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/Screen+Shot+2022-10-16+at+5.14.16+PM.png",
-    tags: ["useState", "AJAX", "axios", "Rithm", ],
+    tags: ["useState", "AJAX", "axios", "Rithm",],
     url: "/productiv"
   },
   {

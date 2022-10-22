@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Todo from "./Todo";
-import TodoForm from "./TodoForm";
+import { Todo } from "./Todo";
+import { TodoForm } from "./TodoForm";
 
 /** Show editable todo item.
  *
@@ -12,7 +12,7 @@ import TodoForm from "./TodoForm";
  * EditableTodoList -> EditableTodo -> { Todo, TodoForm }
  */
 
-function EditableTodo({ todo, remove, update, finishTodo }) {
+export function EditableTodo({ todo, remove, update, finishTodo }) {
   const [formShowing, setFormShowing] = useState(false);
   /** Toggle if this is being edited */
   function toggleEdit() {
@@ -58,4 +58,3 @@ function EditableTodo({ todo, remove, update, finishTodo }) {
   );
 }
 
-export default EditableTodo;

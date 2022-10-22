@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 
 
-export default function Header() {
+export function Header() {
   // get first resource in a pathname
   const path = useLocation().pathname.split("/")[1];
   const headerData = {

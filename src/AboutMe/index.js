@@ -1,9 +1,9 @@
-import SectionCard from "./SectionCard";
+import { SectionCard } from "./SectionCard";
 import { sectionData } from "./sectionData";
 import "./AboutMe.css";
 
 
-export default function AboutMe() {
+export function AboutMe() {
   return (
     <section id="about">
       <div className="container-md col">

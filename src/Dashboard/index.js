@@ -1,8 +1,8 @@
-import PieChart from "./PieChart";
-import DashboardAPI from "./dashboardAPI";
+import { PieChart } from "./PieChart";
+import { DashboardAPI } from "./dashboardAPI";
 import { useEffect, useState } from "react";
 
-export default function Dashboard() {
+export function Dashboard() {
 
   let [results, setResults] = useState(null);
   // TODO: parse results into session data and route data
@@ -16,7 +16,8 @@ export default function Dashboard() {
     getMetrics();
   }, []);
 
-  if (!results) return <div>Loading...</div>;
+  if (!results) return <div className="container"><div className="row">Loading...</div></div>;
+
   let pieChartData = DashboardAPI.generateRouteChart(results);
   let visitorCount = DashboardAPI.uniqueVisitorCount(results);
   let topPages = DashboardAPI.rankPages(results);

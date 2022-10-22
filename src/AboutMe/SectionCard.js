@@ -7,7 +7,7 @@ section = {
   description: "maybe more"
 }
 */
-export default function SectionCard({ section }) {
+export function SectionCard({ section }) {
 
   return (
     <div className="col-sm-4 mb-2">

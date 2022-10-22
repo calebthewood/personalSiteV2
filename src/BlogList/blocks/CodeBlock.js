@@ -1,7 +1,7 @@
 import "./block.css"
 import { classListFromAnnotations } from "./blockUtils";
 
-export default function CodeBlock({ block }) {
+export function CodeBlock({ block }) {
   const languages = {
     'javascript': 'JavaScript',
     'python': 'Python',
@@ -18,5 +18,4 @@ export default function CodeBlock({ block }) {
       </pre>
     </div>
   );
-
 }

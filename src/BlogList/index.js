@@ -1,13 +1,13 @@
 import "./Blog.css";
-import BlogMenu from "./BlogMenu";
-import BlogSummary from "./BlogSummary";
+import { BlogMenu } from "./BlogMenu";
+import { BlogSummary } from "./BlogSummary";
 import { BlogAPI } from "./BlogAPI";
-import BlogPost from "./BlogPost";
+import { BlogPost } from "./BlogPost";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 
-export default function BlogList({ isLoading, allPosts, tweets }) {
+export function BlogList({ isLoading, allPosts, tweets }) {
   const { showing } = useParams();
   let [paginateRange, setPaginateRange] = useState([0, 10]);
 

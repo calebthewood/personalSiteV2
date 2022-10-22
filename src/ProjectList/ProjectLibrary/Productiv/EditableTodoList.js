@@ -1,4 +1,4 @@
-import EditableTodo from "./EditableTodo";
+import { EditableTodo } from "./EditableTodo";
 
 /** Show list of editable todos.
  *
@@ -10,7 +10,7 @@ import EditableTodo from "./EditableTodo";
  * TodoApp -> EditableTodoList -> [ EditableTodo, ... ]
  */
 
-function EditableTodoList({ todos, update, remove, finishTodo }) {
+export function EditableTodoList({ todos, update, remove, finishTodo }) {
   return (
     <div>
       {todos.map((todo) => (
@@ -25,5 +25,3 @@ function EditableTodoList({ todos, update, remove, finishTodo }) {
     </div>
   );
 }
-
-export default EditableTodoList;

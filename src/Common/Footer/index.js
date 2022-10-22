@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-export default function Footer() {
+export function Footer() {
   const currentYear = new Date().getFullYear();
   const { pathname } = useLocation();
 

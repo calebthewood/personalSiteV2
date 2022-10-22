@@ -1,12 +1,12 @@
-import CodeBlock from "./blocks/CodeBlock";
-import HeadingBlock from "./blocks/HeadingBlock";
-import ParagraphBlock from "./blocks/ParagraphBlock";
-import TitleBlock from "./blocks/TitleBlock";
-import ReturnButton from "../Common/ReturnButton";
+import { CodeBlock } from "./blocks/CodeBlock";
+import { HeadingBlock } from "./blocks/HeadingBlock";
+import { ParagraphBlock } from "./blocks/ParagraphBlock";
+import { TitleBlock } from "./blocks/TitleBlock";
+import { ReturnButton } from "../Common/ReturnButton";
 import { Link } from "react-router-dom";
 
 
-export default function BlogPost({ post }) {
+export function BlogPost({ post }) {
 
   const blocks = post.blocks.map(block => {
     if (block.type === "paragraph") {
@@ -30,10 +30,10 @@ export default function BlogPost({ post }) {
         {blocks}
       </div>
       <div className="m-2">
-      {post.tags.map(tag => <Link
-            key={tag.id}
-            to={`/blog/posts/${tag.name}`}
-            className={`tags ${tag.color} mx-1`}> {tag.name} </Link>)}
+        {post.tags.map(tag => <Link
+          key={tag.id}
+          to={`/blog/posts/${tag.name}`}
+          className={`tags ${tag.color} mx-1`}> {tag.name} </Link>)}
       </div>
     </div>
   );

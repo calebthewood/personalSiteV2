@@ -2,11 +2,11 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { BlogAPI } from "./BlogList/BlogAPI";
 import { TwitterAPI } from "./TwitterAPI";
-import Navigation from "./RoutesNav/Navigation";
-import RoutesList from "./RoutesNav/RoutesList";
-import Footer from "./Common/Footer";
-import Header from "./Common/Header";
-import Metrics from "./Common/Metric";
+import { Navigation } from "./RoutesNav/Navigation";
+import { RoutesList } from "./RoutesNav/RoutesList";
+import { Footer } from "./Common/Footer";
+import { Header } from "./Common/Header";
+import { Metrics } from "./Common/Metric";
 
 
 export default function App() {

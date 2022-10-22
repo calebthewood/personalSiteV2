@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default class DashboardAPI {
+export class DashboardAPI {
 
   static async fetchMetricData() {
     let response;

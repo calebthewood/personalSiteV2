@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function BlogMenu() {
+export function BlogMenu() {
 
   return (
     <nav className="nav flex-column">

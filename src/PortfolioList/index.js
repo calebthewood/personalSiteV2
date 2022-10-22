@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import "./portfolio.css";
 import { portfolio } from "./portfolioData";
-import PortfolioProject from "./PortfolioProject";
+import { PortfolioProject } from "./PortfolioProject";
 
 
-export default function PortfolioList() {
+export function PortfolioList() {
 
   return (
     <div className="container col-12 col-md-8 mb-4">

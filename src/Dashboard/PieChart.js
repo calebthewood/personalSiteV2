@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import "./dashboard.css";
 
 
-export default function PieChart({ results }) {
+export function PieChart({ results }) {
 
   const canvasRef = useRef(null);
 

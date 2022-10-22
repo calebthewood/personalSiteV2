@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function BlogSummary({ post }) {
+export function BlogSummary({ post }) {
   // <Link to={"/blog-posts/" + summary.id}></Link>
   // const description = post.blocks[1].paragraph.plain_text[0].slice(0,50)
   return (

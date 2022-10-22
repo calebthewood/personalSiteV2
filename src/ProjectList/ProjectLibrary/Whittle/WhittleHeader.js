@@ -1,6 +1,6 @@
 
 
-export default function WhittleHeader() {
+export function WhittleHeader() {
   return (
     <div id="title">
       <h1><b><em>whittle</em></b></h1>

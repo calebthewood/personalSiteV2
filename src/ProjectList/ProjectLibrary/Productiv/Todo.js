@@ -7,7 +7,7 @@
  * { EditableTodo, TopTodo } -> Todo
  **/
 
-export default function Todo({ todo, finishTodo }) {
+export function Todo({ todo, finishTodo }) {
   return (
     <div className="Todo">
       <div onClick={() => finishTodo(todo)}>

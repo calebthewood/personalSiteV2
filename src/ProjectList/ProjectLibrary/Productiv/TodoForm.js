@@ -10,7 +10,7 @@ const INITIAL_FORM_DATA = { title: "", description: "", priority: 1 };
  * { TodoApp, EditableTodo } -> TodoForm
  */
 
-function TodoForm({ initialValues = INITIAL_FORM_DATA, handleSave }) {
+export function TodoForm({ initialValues = INITIAL_FORM_DATA, handleSave }) {
   const [formData, setFormData] = useState(initialValues);
 
   /** Update form input. */
@@ -80,4 +80,3 @@ function TodoForm({ initialValues = INITIAL_FORM_DATA, handleSave }) {
   );
 }
 
-export default TodoForm;
