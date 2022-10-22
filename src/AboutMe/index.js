@@ -1,27 +1,9 @@
 import SectionCard from "./SectionCard";
+import { sectionData } from "./sectionData";
 import "./AboutMe.css";
 
 
 export default function AboutMe() {
-  const sectionData = [{
-    url: "/portfolio",
-    title: "View Portfolio",
-    icon: <i className="fa-solid fa-layer-group"></i>,
-    description: "Click to see my portfolio of fullstack applications"
-  },
-  {
-    url: "/projects",
-    title: "View Projects",
-    icon: <i className="fa-solid fa-gears"></i>,
-    description: "Click to see a collection of projects and components"
-  },
-  {
-    url: "/blog/posts",
-    title: "View Blog",
-    icon: <i className="fa-solid fa-shapes"></i>,
-    description: "Click to see my articles on development, and more"
-  },
-  ];
   return (
     <section id="about">
       <div className="container-md col">
@@ -81,9 +63,9 @@ export default function AboutMe() {
                 <br />
                 <li className="list-group-item text-bg-dark">
                   I'm a fullstack web developer and software engineer. This site is
-                  my something like a workshop for me. Check back to see new features,
-                  projects, and blog posts being added weekly. I've had a lot of fun building it,
-                  I hope you enjoy it.
+                  bit of a workshop for me. Check back to see new features,
+                  projects, and blog posts being added weekly. I've had a lot of
+                  fun building it, I hope you enjoy it.
                 </li>
                 <li className="list-group-item text-bg-dark">
                   When I'm not coding up programs for mundane problems I like
