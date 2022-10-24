@@ -4,17 +4,16 @@ export const portfolio = [
   {
     title: "This site",
     id: "personalSite",
-    summary: "This site is v2 of my personal website. It's quite an upgrade from the old site, and is the most complex frontend application I've developed to date. In addition to this portfolio it contains a library of frontend projects, and a blog that turns my Notion pages into blog posts. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
+    summary: "This site is the second iteration of my personal website. It's quite an upgrade from the old site, and is one of the most complex frontend applications I've developed to date. In addition to this portfolio it contains a library of frontend projects, a blog that turns my Notion pages into posts, and a Dashboard with realtiome metric information. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
     frontend: [
       "React Frontend",
       "Features my own content management system based on the Notion SDK",
       "React-Router-Dom keeps the URL relevant and handles navigation around the app",
-      "Developed the Metric component that forms 1 part of my fillstack metrics system",
-      "Implemented a custom local storage hook to stash and retrieve a JWT",
+      "Developed the Metric component that forms one part of my fullstack metrics system",
+      "Implemented a custom local storage hook to stash and retrieve a token",
       "The Dashboard contains up-to-date metrics on visitor behavior, and pie chart drawn with HTML canvas",
       "Bootstrap 5.2 provides the styling and layout of the site",
       "Due to minimal blog content at launch, some search features of the blog are disabled. Expect to see more added over the next couple months",
-      "I'm most proud of the Notion system I developed which allows me to publish blog posts straight from the Notion app."
     ],
     backend: [
       "Node-Express Backend",
