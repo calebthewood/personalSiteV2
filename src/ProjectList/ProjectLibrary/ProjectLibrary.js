@@ -20,7 +20,7 @@ export const ProjectLibrary = [
     description: "A Scandinavian themed todo app with priority settings and an inspirational quote fetcher. ",
     component: <Productiv />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/Screen+Shot+2022-10-16+at+5.14.16+PM.png",
-    tags: ["useState", "AJAX", "axios", "Rithm",],
+    tags: ["Local Storage", "AJAX", "React", "Rithm",],
     url: "/productiv"
   },
   {
@@ -35,7 +35,7 @@ export const ProjectLibrary = [
   {
     title: "Lights Out!",
     id: "lights-out",
-    description: "Lights Out! is a logic/puzzle game, played on a gird of individual lights, which can either be lit or unlit. The puzzle is won when when all of the lights are turned off.",
+    description: "Lights Out! is a logic/puzzle game, played on grid of individual lights, which can either be lit or unlit. The puzzle is won when when all of the lights are turned off.",
     component: <LightsOut />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/lights-out-react.png",
     tags: ["JavaScript", "React", "Rithm"],

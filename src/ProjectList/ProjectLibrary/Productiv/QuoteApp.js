@@ -16,7 +16,7 @@ export function QuoteApp() {
 
   return (
     <div className="container">
-      {quoteShowing && <Quote quote={quote} />}
+      {quoteShowing ? quote === "" ? "Loading quote..."  : <Quote quote={quote} /> : false }
       <button onClick={showNewQuote} className="quoteBtn">
         {quoteShowing ? "Nu quote" : "Click here for an inspirational quote!"}{" "}
       </button>
