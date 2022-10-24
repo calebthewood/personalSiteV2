@@ -1,70 +1,190 @@
-# Getting Started with Create React App
+<div id="top"></div>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<h1 align="center">Personal Website</h3>
 
-### `npm test`
+[![Product Name Screen Shot][product-screenshot]](https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/personal-site-screenshot.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  <p align="center">
+    My personal portfolio, project library, and blog.
+    <br />
+    <a href="https://github.com/calebthewood/personalSiteV2"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://www.calebwood.dev/">Visit Site</a>
+    ·
+    <a href="https://github.com/calebthewood/personalSiteV2/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/calebthewood/personalSiteV2/issues">Request Feature</a>
+  </p>
+</div>
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This repo is home to the ReactJS frontend of my personal website 2.0. I Launched it
+towards the end of October 2022. It relies on the backend, a Node-Express REST API I've nicknamed Project Pith, to process content from 3rd party APIs like Notion, and Twitter to provide content for the site. If you're reading this in October or November, the blog section will still be mostly void of content, I hope to add some delightful, informative content that will provide context for my project and protfolio work, if I do it right it'll even be a little entertaining. Thanks for visiting!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Basic diagram of the current site:
+<img width="300px" src="https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/simple-site-diagram.png">
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Built With
 
-### Code Splitting
+* [React.js](https://reactjs.org/)
+* [Bootstrap](https://getbootstrap.com)
+* [JWT](https://jwt.io/)
+* [React-Router](https://reactrouter.com/)
+* [Axios](https://axios-http.com/docs/req_config)
+* [React-Twitter-Widgets](https://www.npmjs.com/package/react-twitter-widgets)
+* [Project Pith](https://github.com/calebthewood/ProjectPith)
+  - [Node](https://nodejs.org/en/)
+  - [Express](https://expressjs.com/)
+  - [MongoDB](https://www.mongodb.com/atlas/database)
+  - [NotionHQ SDK](https://github.com/makenotion/notion-sdk-js)
+  - [Twitter API V2](https://www.npmjs.com/package/twitter-api-v2)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+<!-- ROADMAP -->
+## Roadmap
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Many of these features were left out of the initial build simply because the site doesn't yet have enough content to warrant great search, tagging, or pagination.
 
-### Advanced Configuration
+- [ ] Homescreen design
+- [ ] Add project menu
+    - [ ] search
+    - [ ] tags/categories
+- [ ] Blog Features
+    - [ ] Improve Pagination
+    - [ ] Improve Search
+    - [ ] Tweet components to avoid embedding
+    - [ ] Better Tags
+    - [ ] More block types
+    - [ ] Comments?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+See the [open issues](https://github.com/calebthewood/personalSiteV2/issues) for a full list of proposed features (and known issues).
 
-### Deployment
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+<!-- CONTRIBUTING -->
+## Contributing
 
-### `npm run build` fails to minify
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## Contact
+
+Your Name - [@calebthewood](https://twitter.com/calebthewood) - calebwood.cs@gmail.com.com
+
+Project Link: [https://github.com/calebthewood/personalSiteV2](https://github.com/calebthewood/personalSiteV2)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Font Awesome](https://fontawesome.com/v6/search)
+* [Rithm School](https://www.rithmschool.com/)
+* [Eloquent JavaScript](https://eloquentjavascript.net/)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/calebthewood/personalSiteV2.svg?style=for-the-badge
+[contributors-url]: https://github.com/calebthewood/personalSiteV2/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/calebthewood/personalSiteV2.svg?style=for-the-badge
+[forks-url]: https://github.com/calebthewood/personalSiteV2/network/members
+[stars-shield]: https://img.shields.io/github/stars/calebthewood/personalSiteV2.svg?style=for-the-badge
+[stars-url]: https://github.com/calebthewood/personalSiteV2/stargazers
+[issues-shield]: https://img.shields.io/github/issues/calebthewood/personalSiteV2.svg?style=for-the-badge
+[issues-url]: https://github.com/calebthewood/personalSiteV2/issues
+[license-shield]: https://img.shields.io/github/license/calebthewood/personalSiteV2.svg?style=for-the-badge
+[license-url]: https://github.com/calebthewood/personalSiteV2/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/caleb-wood-440b37168
+[product-screenshot]: https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/personal-site-screenshot.png
