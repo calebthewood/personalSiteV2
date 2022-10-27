@@ -18,7 +18,7 @@ See [Notion Blocks Page](https://developers.notion.com/reference/block) for the 
 - Text Annotations
 
 ### Example Block
-If the text in a block is unbroken it will generally have one element in the roch_text field. If there are links, or type annotations then the text will be broken up into multiple elements.
+If the text in a block is unbroken it will generally have one element in the rich_text field. If there are links, or type annotations then the text will be broken up into multiple elements.
 ```
 const block = {
   id: "f6e7a307-bdf2-49ed-851b-f73fd527149e",
