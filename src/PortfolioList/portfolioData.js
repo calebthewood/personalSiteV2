@@ -4,7 +4,7 @@ export const portfolio = [
   {
     title: "This site",
     id: "personalSite",
-    summary: "This site is the second iteration of my personal website. It's quite an upgrade from the old site, and is one of the most complex frontend applications I've developed to date. In addition to this portfolio it contains a library of frontend projects, a blog that turns my Notion pages into posts, and a Dashboard with realtiome metric information. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
+    summary: "This site is the second iteration of my personal website. It's quite an upgrade from the old site, and is one of the most complex frontend applications I've developed to date. In addition to this portfolio it contains a library of frontend projects, a blog that turns my Notion pages into posts, and a Dashboard with realtime metric information. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
     frontend: [
       "React Frontend",
       "Features my own content management system based on the Notion SDK",
