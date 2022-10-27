@@ -27,6 +27,8 @@ export function BlogPost({ post }) {
     <div className="card text-bg-dark">
       <ReturnButton />
       <div className="card-body">
+        <h2 className="card-title">{post.title}</h2>
+        <h6 className="card-subtitle mb-2 text-muted">{post.author} - {post.date}</h6>
         {blocks}
       </div>
       <div className="m-2">

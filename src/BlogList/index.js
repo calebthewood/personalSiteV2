@@ -50,11 +50,11 @@ export function BlogList({ isLoading, allPosts, tweets }) {
   return (
     <div className="container-md">
       <div className="row justify-content-between">
-        <div className="col-xs-12 col-sm-4 col-lg-2">
+        <div className="col-xs-12 col-sm-3 col-lg-2">
           <BlogMenu />
         </div>
 
-        <div id="blog-list" className="col-12 col-sm-8">
+        <div id="blog-list" className="col-12 col-sm-9">
           {isLoading ?
             <div><h2>Loading...</h2></div> :
             <ul class="list-group list-group-flush border-dark rounded">
