@@ -131,14 +131,14 @@ export function Whittle() {
   }
 
   return (
-    <div className="container">
+    <div id="whittle-container" className="container">
       <div className="row justify-content-center">
         <WhittleHeader />
       </div>
-      <div className="row justify-content-around">
+      <div className="row justify-content-center">
         <div className="col" style={{ width: "270px" }}>
 
-          <table className="whittle">
+          <table className="whittle mb-4">
             <tbody onClick={handleClick}>
               {grid.map((row, y) => {
                 return (
