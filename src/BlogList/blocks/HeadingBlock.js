@@ -5,7 +5,7 @@ export function HeadingBlock({ block }) {
   const classList = classListFromAnnotations(annotations)
   return (
     (block.type === "heading_2") ?
-      <h4 className={"my-4 " + classList}>{plain_text}</h4> :
+      <h4 className={"heading " + classList}>{plain_text}</h4> :
       <h5 className={classList}>{plain_text}</h5>
   );
 }
