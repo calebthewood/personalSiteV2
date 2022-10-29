@@ -3,6 +3,7 @@ import { fiveLetterWords } from "./wordList";
 import { WhittleHeader } from "./WhittleHeader";
 import "./whittle.css";
 import { WhittleList } from "./WhittleList";
+import { WhittleButton } from "./WhittleButton";
 import _ from "lodash";
 
 /**
@@ -16,10 +17,12 @@ export function Whittle() {
   const [filteredWords, setFilteredWords] = useState(fiveLetterWords);
   const [grid, setGrid] = useState(createBoard());
   const [chars, setChars] = useState(createFormData());
+
   const debouncedFilter = _.debounce(() => runFilter(), 500);
 
   function getFilterData() {
-    let data = [];
+    const data = [];
+    const included = {};
     let char, type;
     for (let y = 0; y < 5; y++) {
       for (let x = 0; x < 5; x++) {
@@ -27,19 +30,28 @@ export function Whittle() {
         type = grid[y][x];
         if (char !== "" && type !== "white") {
           data.push({ char, type, index: x });
+          if (type !== "grey") included[char] = x;
         }
       }
     }
-    return data;
+    return [data, included];
   }
 
   function runFilter() {
-    const filterData = getFilterData();
+    const [filterData, included] = getFilterData();
     setFilteredWords(fiveLetterWords.filter(word => {
       for (let { char, type, index } of filterData) {
-        if (type === 'grey' && word.includes(char)) {
-          return false;
-        } else if (type === 'yellow' && !word.includes(char)) {
+        let charIdx = word.indexOf(char);
+        console.log("charIdx: ", charIdx);
+        if (type === 'grey' && charIdx >= 0) {
+          if (char in included) {
+            if (included[char] !== charIdx) {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else if (type === 'yellow' && charIdx >= 0) {
           if (word[index] === char) return false;
         } else if (type === 'green') {
           if (word[index] !== char) return false;
@@ -83,7 +95,6 @@ export function Whittle() {
     const [x, y] = evt.target.name.match(/\d+/g).map(Number);
     console.log("clicked xy ", x, y);
     if (!evt.target.value.length) return;
-    debouncedFilter();
     changeColor(x, y);
   }
 
@@ -93,7 +104,6 @@ export function Whittle() {
       handleFocus(x, y, "backward");
       changeColor(x, y);
     } else if (e.key === "Enter" && chars[y][x].length) {
-      debouncedFilter();
       changeColor(x, y);
     } else if (e.key !== "Backspace" && chars[y][x]) {
       handleFocus(x, y, "forward");
@@ -107,7 +117,6 @@ export function Whittle() {
     newChars[y][x] = value;
     if (!value) changeColor(x, y);
     setChars([...newChars]);
-    debouncedFilter();
   }
 
   function handleFocus(x, y, direction) {
@@ -156,7 +165,8 @@ export function Whittle() {
         </div>
 
         <div className="col">
-          <WhittleList wordList={filteredWords} />
+          <WhittleButton listLen={filteredWords.length} onClick={() => debouncedFilter()} />
+          <WhittleList wordList={filteredWords} handleClick={debouncedFilter} />
         </div>
       </div>
     </div>
