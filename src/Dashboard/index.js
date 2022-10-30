@@ -1,6 +1,7 @@
 import { PieChart } from "./PieChart";
 import { DashboardAPI } from "./dashboardAPI";
 import { useEffect, useState } from "react";
+import { LoadingSpinner } from "../Common/LoadingSpinner";
 
 export function Dashboard() {
 
@@ -16,7 +17,7 @@ export function Dashboard() {
     getMetrics();
   }, []);
 
-  if (!results) return <div className="container"><div className="row">Loading...</div></div>;
+  if (!results) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
 
   let pieChartData = DashboardAPI.generateRouteChart(results);
   let visitorCount = DashboardAPI.uniqueVisitorCount(results);
@@ -24,6 +25,7 @@ export function Dashboard() {
   return (
     <div className="container-md">
       <div className="row mb-2">
+
 
         <div className="col-12 col-sm-8 col-md-5 col-12 mb-4">
           <div className="card text-bg-dark">

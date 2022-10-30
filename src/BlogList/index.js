@@ -5,6 +5,7 @@ import { BlogAPI } from "./BlogAPI";
 import { BlogPost } from "./BlogPost";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { LoadingSpinner } from "../Common/LoadingSpinner";
 
 
 export function BlogList({ isLoading, allPosts, tweets }) {
@@ -56,7 +57,7 @@ export function BlogList({ isLoading, allPosts, tweets }) {
 
         <div id="blog-list" className="col-12 col-sm-9">
           {isLoading ?
-            <div><h2>Loading...</h2></div> :
+            <LoadingSpinner /> :
             <ul class="list-group list-group-flush border-dark rounded">
               {showList([...allPosts], tweets, showing)}
             </ul>}
