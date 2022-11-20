@@ -16,7 +16,7 @@ export function BlogSummary({ post }) {
           {post.tags.map(tag => <Link
             key={tag.id}
             to={`/blog/posts/${tag.name}`}
-            className={`tags ${tag.color} mx-1`}> {tag.name} </Link>)}
+            className={`tags badge rounded-pill text-bg-secondary mx-1`}> {tag.name} </Link>)}
 
         </div>
       </div>

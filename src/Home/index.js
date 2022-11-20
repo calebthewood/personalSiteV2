@@ -4,7 +4,7 @@ import "./home.css";
 export function Home() {
 
   return (
-    <div id="home-container" className="container">
+    <div id="home-container" className="container col-12 col-md-8 mb-4">
       <div id="home-row" className="row align-items-end mb-5">
 
         <div className="col-12">
@@ -16,7 +16,7 @@ export function Home() {
         </div>
       </div>
 
-      <div className="row justify-content-center mb-5">
+      <div className="row justify-content-between mb-5">
         <div className="col-sm-2 col-5 m-2">
           <Link to="/about">
             <button
