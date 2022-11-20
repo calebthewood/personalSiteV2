@@ -107,7 +107,17 @@ Basic diagram of the current site:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- Features -->
+## Features
 
+The site contains several interesting or unique features.
+
+### Notion API
+
+The Notion integration involves features written in both React and Node. The React API I built handles requesting and parsing a JSON object containing all the data for a blog post. The data comes from my Notion account, so the system is basically packaging a blog post I've written on my desktop Notion app, passing it to the server and database so that the client can request the data and transform it back into JSX. Each blog posts is received by the client as an array of objects. my API parses this array, checking the type of each object in the array. It then passes the object into a corresponding component. For example  paragraph object is passed to a Paragraph component. This allows me to implement features incrementally. Currently, I can post blogs with simple formatting requirements without the need to replciate every feature in Notion. It also allows me to organize and encapsulate the functionality required for each block. As of November, I've added Headings, Paragraphs, Code Blocks, Links, and Images. Next, I would like to add Lists, and improve the formatting.
+### Project Library
+
+This section is more for the fun projects. It's also a bit of a ReactJS workshop. Some of the items you'll see here were originally built in React, others I built in vanilla JS, and have converted. I'd like to keep adding to it. It's a lot of fun building out these component/mini-app projects, and displaying them.
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -154,9 +164,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@calebthewood](https://twitter.com/calebthewood) - calebwood.cs@gmail.com.com
+Caleb Wood - [@calebthewood](https://twitter.com/calebthewood) or calebwood.cs@gmail.com.com
 
 Project Link: [https://github.com/calebthewood/personalSiteV2](https://github.com/calebthewood/personalSiteV2)
+
+Live Site Link: [https://www.calebwood.dev/](https://www.calebwood.dev/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
