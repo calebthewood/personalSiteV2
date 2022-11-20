@@ -119,6 +119,16 @@ The Notion integration involves features written in both React and Node. The Rea
 
 This section is more for the fun projects. It's also a bit of a ReactJS workshop. Some of the items you'll see here were originally built in React, others I built in vanilla JS, and have converted. I'd like to keep adding to it. It's a lot of fun building out these component/mini-app projects, and displaying them.
 
+- Conway's Game of Life: My GoL implementation I added a powerful set of controls that allows you to run a traditional game, or clear the board and place premade patterns discovered by researchers over the years.
+
+- Productiv: A fun little react themed todo app. Complete with a AJAX powered quote generator. This project was an excellent learning lesson in form control and state management in React.
+
+- Whittle: my first ever, original app. It's a Wordle assist program that shows you a list possible words based on your existing guesses. Getting the UX for this just right was been tougher than I expected. This required me to write some efficient sorting algos to filter the list opf about 8500 5 letter words in the english language.
+
+- Lights Out!: My first practice building a game board in react. It's a fairly simple app that makes for an fairly amusing game. Not that great, but I learned how to hold state and render a game board throughout the course of a game.
+
+- I've a backlog of projects I need to rebuild in react, and I'd love to add some novel stuff here as well.
+
 <!-- ROADMAP -->
 ## Roadmap
 
