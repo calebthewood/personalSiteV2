@@ -3,13 +3,19 @@
   text-decoration: none;
 }
 
+li>div>div.card-body {
+  border: transparent 4px solid;
+  border-radius: 2px;
+}
+
 li>div>div.card-body:hover {
   background-color: #2b2f34;
+  border-left: whitesmoke 4px solid;
+  border-right: whitesmoke 4px solid;
 }
 
 div.card.blog-summary {
   border: none;
-  left: 5px;
 }
 
 /* Return Btn */

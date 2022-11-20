@@ -60,7 +60,7 @@ export function BlogList({ isLoading, allPosts, tweets }) {
           <BlogMenu />
         </div>
 
-        <div id="blog-list" className="col-12 col-sm-9">
+        <div id="blog-list" className="col-10 col-sm-9">
           {isLoading ?
             <LoadingSpinner /> :
             <ul class="list-group list-group-flush border-dark rounded">
@@ -74,7 +74,7 @@ export function BlogList({ isLoading, allPosts, tweets }) {
                   onClick={() => updatePagination("back")}
                   type="button"
                   className="btn btn-outline-secondary mx-3">Back</button>
-                <span className="text-light">{`${paginateRange[0] + 1} to ${paginateRange[1] + 1} of ${tweets.length}`}</span>
+                <span className="text-dark">{`${paginateRange[0] + 1} to ${paginateRange[1] + 1} of ${tweets.length}`}</span>
                 <button
                   onClick={() => updatePagination("next")}
                   type="button"
