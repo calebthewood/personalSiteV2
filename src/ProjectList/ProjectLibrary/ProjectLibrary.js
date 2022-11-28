@@ -2,6 +2,7 @@ import { LightsOut } from "./LightsOut";
 import { GameOfLife } from "./GameOfLife";
 import { Productiv } from "./Productiv";
 import { Whittle } from "./Whittle";
+import { AegeanCalculator } from "./AegeanCalculator";
 
 
 export const ProjectLibrary = [
@@ -40,6 +41,15 @@ export const ProjectLibrary = [
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/lights-out-react.png",
     tags: ["JavaScript", "React", "Rithm"],
     url: "/lights-out"
+  },
+  {
+    title: "Aegean Calculator",
+    id: "aegeanCalculator",
+    description: "Calculate the how much grain you still owe Mykonos.",
+    component: <AegeanCalculator />,
+    img: "",
+    tags: [],
+    url: "/aegean-calculator"
   },
   {
     title: "Future Projects",
