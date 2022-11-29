@@ -1,7 +1,7 @@
 import "./AegeanCalculator.css";
 import { useState } from "react";
 
-
+/** */
 export function AegeanCalculator() {
   const initMemory = {
     currentVal: "",
@@ -11,41 +11,66 @@ export function AegeanCalculator() {
   const [memory, setMemory] = useState(initMemory);
   const [display, setDisplay] = useState(memory.currentVal);
 
+  function handleAdd() {}
+
+  function handleSubtract() {}
+
+  function handleDivide() {}
+
+  function handleMultiply() {}
+
+  function handleClear() {}
+
+  function handleSignChange() {}
+
+  function handleCompute() {}
+
+
   function handleClick(evt) {
     const { value } = evt.target;
     let { currentVal, nextVal, operator } = memory;
     let newDisplay;
+    let baseVal = currentVal;
+    let newVal;
+    console.log("handleClcik ",value)
 
     if (value === "ac") {
       currentVal = "";
       nextVal = "";
       operator = "";
-    } else if (operator && value === "=") {
+
+    } else if (value === "=" && typeof Number(nextVal) === 'number') {
+      console.log("currentVal ", currentVal)
+      console.log("nextVal ", nextVal)
+
       if (operator === "-") {
-        currentVal = Number(currentVal) - Number(nextVal);
+        newVal = Number(baseVal) - Number(nextVal);
       } else if (operator === "+") {
-        currentVal = Number(currentVal) + Number(nextVal);
+        newVal = Number(baseVal) + Number(nextVal);
       } else if (operator === "/") {
-        currentVal = Number(currentVal) / Number(nextVal);
+        newVal = Number(baseVal) / Number(nextVal);
       } else if (operator === "x") {
-        currentVal = Number(currentVal) * Number(nextVal);
+        newVal = Number(baseVal) * Number(nextVal);
       }
-      newDisplay = currentVal;
+      newDisplay = newVal;
       operator = ""
+
     } else if ("0123456789".includes(value)) {
       if (operator) {
         nextVal += value;
-        newDisplay = `${currentVal} ${operator} ${nextVal}`
+        newDisplay = `${baseVal} ${operator} ${nextVal}`
         operator = "";
       } else {
         currentVal += value;
-        newDisplay = currentVal;
+        newDisplay = baseVal;
       }
-    } else {
+
+    } else if (value !== "=") {
       operator = value;
-      newDisplay = `${currentVal} ${operator}`;
+      newDisplay = `${baseVal} ${operator}`;
     }
 
+    console.log("handleClick currentVal end: ",currentVal)
     setMemory({
       currentVal: String(currentVal),
       nextVal: String(nextVal),
@@ -141,7 +166,7 @@ export function AegeanCalculator() {
             className="rounded-0 btn btn-light" disabled>.</button>
           <button
             type="button"
-            value="+"
+            value="="
             className="rounded-0 btn btn-warning">=</button>
         </div>
       </div>
