@@ -5,78 +5,71 @@ import { useState } from "react";
 export function AegeanCalculator() {
   const initMemory = {
     currentVal: "",
-    nextVal: "",
     operator: "",
+    nextVal: "",
   };
   const [memory, setMemory] = useState(initMemory);
   const [display, setDisplay] = useState(memory.currentVal);
 
-  function handleAdd() {}
+  function handleAdd(val1, val2) {
+    return Number(val1) + Number(val2);
+  }
 
-  function handleSubtract() {}
+  function handleSubtract(val1, val2) {
+    return Number(val1) - Number(val2);
+  }
 
-  function handleDivide() {}
+  function handleDivide(val1, val2) {
+    return Number(val1) / Number(val2);
+  }
 
-  function handleMultiply() {}
+  function handleMultiply(val1, val2) {
+    return Number(val1) * Number(val2);
+  }
 
-  function handleClear() {}
+  function handleSignChange(val) {
+    if (val === 0) return 0;
+    if (val > 0) return -1 * val;
+    return Math.abs(val);
+  }
 
-  function handleSignChange() {}
-
-  function handleCompute() {}
+  function handleCompute(baseVal, nextVal, operator) {
+    let newVal;
+    if (operator === "+") {
+      newVal = handleAdd(baseVal, nextVal)
+    } else if (operator === "-") {
+      newVal = handleSubtract(baseVal, nextVal)
+    } else if (operator === "*") {
+      newVal = handleMultiply(baseVal, nextVal)
+    } else if (operator === "/") {
+      newVal = handleDivide(baseVal, nextVal)
+    }
+    return newVal
+  }
 
 
   function handleClick(evt) {
     const { value } = evt.target;
     let { currentVal, nextVal, operator } = memory;
-    let newDisplay;
-    let baseVal = currentVal;
-    let newVal;
-    console.log("handleClcik ",value)
 
-    if (value === "ac") {
-      currentVal = "";
-      nextVal = "";
-      operator = "";
+    console.log("handleClick ", value);
 
-    } else if (value === "=" && typeof Number(nextVal) === 'number') {
-      console.log("currentVal ", currentVal)
-      console.log("nextVal ", nextVal)
+    // clicked number
+      // update base value
+      // or if operator, update 2nd value
+    // clicked operator
+      // if base val exists update operator state
+      // else ignore
+    // clicked compute
+      // if base val, next val, and operator perform calc
+      // if no next val, undo reset operator
+    // clicked clear
+      // reset state
+    //clicked sign change
+      // if no next val, invert base val
+      // else inverse next val
 
-      if (operator === "-") {
-        newVal = Number(baseVal) - Number(nextVal);
-      } else if (operator === "+") {
-        newVal = Number(baseVal) + Number(nextVal);
-      } else if (operator === "/") {
-        newVal = Number(baseVal) / Number(nextVal);
-      } else if (operator === "x") {
-        newVal = Number(baseVal) * Number(nextVal);
-      }
-      newDisplay = newVal;
-      operator = ""
-
-    } else if ("0123456789".includes(value)) {
-      if (operator) {
-        nextVal += value;
-        newDisplay = `${baseVal} ${operator} ${nextVal}`
-        operator = "";
-      } else {
-        currentVal += value;
-        newDisplay = baseVal;
-      }
-
-    } else if (value !== "=") {
-      operator = value;
-      newDisplay = `${baseVal} ${operator}`;
-    }
-
-    console.log("handleClick currentVal end: ",currentVal)
-    setMemory({
-      currentVal: String(currentVal),
-      nextVal: String(nextVal),
-      operator: String(operator),
-    });
-    setDisplay(newDisplay);
+      //some edge cases around creating smooth behavior whenever clicking btns out of order, but not important for basic functionality.
   }
 
 
