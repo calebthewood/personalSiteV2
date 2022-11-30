@@ -2,8 +2,7 @@
   width: 280px;
 }
 
-.display {
-  font-size: 2rem;
+.display-area {
   height: 80px;
   background-color: rgb(161, 161, 161);
   border-radius: 5px 5px 0 0;

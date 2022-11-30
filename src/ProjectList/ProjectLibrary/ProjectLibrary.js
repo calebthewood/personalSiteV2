@@ -45,10 +45,10 @@ export const ProjectLibrary = [
   {
     title: "Aegean Calculator",
     id: "aegean-calculator",
-    description: "Calculate the how much grain you still owe Mykonos.",
+    description: "Calculate the how much grain you still owe Mykonos with this handy Linear-B calculator",
     component: <AegeanCalculator />,
-    img: "",
-    tags: [],
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/aegean-calculator.png",
+    tags: ["JavaScript", "React"],
     url: "/aegean-calculator"
   },
   {
