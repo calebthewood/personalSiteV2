@@ -32,7 +32,7 @@ export function AboutMe() {
                   </div>
                   <ul className="list-group text-center list-group-flush flex-column">
                     <li className="list-group-item d-grid gap-2 text-bg-dark">
-                      <a type="button" className="btn btn-dark" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
+                      <a type="button" className="btn btn-dark" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume_12_17.pdf">
                         <h6 className="card-subtitle">View Resume  <i className="fa-solid fa-arrow-up-right-from-square"></i></h6>
                       </a>
                     </li>
@@ -73,7 +73,7 @@ export function AboutMe() {
                   the perfect baguette, and, as an avid learner, of course, reading.
                 </li>
                 <li className="list-group-item text-bg-dark">
-                  See <a className="plain-link" href="/public/Caleb_Wood_Resume.pdf">resume</a> for
+                  See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume_12_17.pdf">resume</a> for
                   professional experience.
                 </li>
               </ul>
