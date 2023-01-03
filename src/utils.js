@@ -8,8 +8,17 @@ export function dateToNum(date) {
   return Number(numString);
 }
 
+export function sortDates(a, b) {
+  const dateA = new Date(a.date);
+  const dateB = new Date(b.date);
+  if (dateA > dateB) return -1;
+  if (dateA < dateB) return 1;
+  return 0;
+}
+
 function isNumber(char) {
-  return /^\d$/.test(char);
+  // /^\d$/.test(char)
+  return "0123456789".includes(char);
 }
 
 export function getResourceFromPath(path) {
