@@ -1,6 +1,6 @@
 export const patterns = {
   single: {
-    icon: <i class="fa-solid fa-arrow-pointer"></i>,
+    icon: <i className="fa-solid fa-arrow-pointer"></i>,
     coords: [[0, 0]]
   },
   glider: {
@@ -12,31 +12,31 @@ export const patterns = {
     coords: [[-3, 0], [-2, 0], [-1, 0], [0, 0], [-4, -1], [0, -1], [0, -2], [-1, -3], [-4, -3]],
   },
   mwss: {
-    icon: <i class="fa-brands fa-space-awesome"></i>,
+    icon: <i className="fa-brands fa-space-awesome"></i>,
     coords: [[-4, 0], [-3, 0], [-2, 0], [-1, 0], [0, 0], [-5, -1], [0, -1], [0, -2], [-5, -3], [-1, -3], [-3, -4]],
   },
   toad: {
-    icon: <i class="fa-solid fa-frog"></i>,
+    icon: <i className="fa-solid fa-frog"></i>,
     coords: [[0, 0], [-1, 0], [-2, 0], [-1, -1], [0, -1], [1, -1]],
   },
   pentaDec: {
-    icon: <i class="fas fa-running"></i>,
+    icon: <i className="fas fa-running"></i>,
     coords: [[0, 3], [0, 2], [0, 0], [0, -1], [0, -2], [0, -3], [0, -5], [0, -6], [-1, 1], [1, 1], [-1, -4], [1, -4]],
   },
   pulsar: {
-    icon: <i class="fas fa-star-of-life"></i>,
+    icon: <i className="fas fa-star-of-life"></i>,
     coords: [[-2, -1], [-3, -1], [-4, -1], [-6, -2], [-6, -3], [-6, -4], [-2, -6], [-3, -6], [-4, -6], [-1, -4], [-1, -3], [-1, -2], [-2, 1], [-3, 1], [-4, 1], [-6, 2], [-6, 3], [-6, 4], [-2, 6], [-3, 6], [-4, 6], [-1, 4], [-1, 3], [-1, 2], [2, -1], [3, -1], [4, -1], [6, -2], [6, -3], [6, -4], [2, -6], [3, -6], [4, -6], [1, -4], [1, -3], [1, -2], [2, 1], [3, 1], [4, 1], [6, 2], [6, 3], [6, 4], [2, 6], [3, 6], [4, 6], [1, 4], [1, 3], [1, 2]],
   },
   diehard: {
-    icon: <i class="fa-solid fa-skull"></i>,
+    icon: <i className="fa-solid fa-skull"></i>,
     coords: [[-3, 0], [1, 0], [2, 0], [3, 0], [-4, -1], [-3, -1], [2, -2]],
   },
   acorn: {
-    icon: <i class="fa-solid fa-seedling"></i>,
+    icon: <i className="fa-solid fa-seedling"></i>,
     coords: [[0, 0], [-3, 0], [-4, 0], [-3, -2], [-1, -1], [1, 0], [2, 0]],
   },
   gosper: {
-    icon: <i class="fas fa-dragon"></i>,
+    icon: <i className="fas fa-dragon"></i>,
     coords: [[0, 0], [-1, 0], [-1, -1], [-1, 1], [-2, -2], [-2, 2], [-3, 0], [-4, -3], [-4, 3], [-5, -3], [-5, 3], [-6, -2], [-6, 2], [-7, -1], [-7, 0], [-7, 1], [-16, 0], [-17, 0], [-17, -1], [-16, -1], [3, -1], [3, -2], [3, -3], [4, -1], [4, -2], [4, -3], [5, 0], [5, -4], [7, 0], [7, 1], [7, -4], [7, -5], [17, -2], [18, -2], [17, -3], [18, -3]],
   }
 };

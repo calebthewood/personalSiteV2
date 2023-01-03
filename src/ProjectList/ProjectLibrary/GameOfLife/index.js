@@ -114,7 +114,7 @@ export function GameOfLife({ width = 39, height = 23, defaultChance = .5 }) {
     <div className="card text-bg-dark" style={{maxWidth: "764px"}}>
       <div className="card-body">
         <h2 className="cart-title">Conway's Game of Life</h2>
-        <p class="card-text">
+        <p className="card-text">
           My implementation of Conway's Game of Life in React. It's what's
           called a 0-player game, or simulation. There are many iterations,
           but the fundamental game is based on just 3 rules, and from that
@@ -148,18 +148,18 @@ export function GameOfLife({ width = 39, height = 23, defaultChance = .5 }) {
                 className="btn btn-lg btn-outline-light"
                 htmlFor="btncheck1">
                 {isRunning ?
-                  <i class="fa-solid fa-pause"></i> :
-                  <i class="fa-solid fa-play"></i>}
+                  <i className="fa-solid fa-pause"></i> :
+                  <i className="fa-solid fa-play"></i>}
               </label>
               <button
                 className="btn btn-lg btn-outline-light"
                 onClick={handleReset}>
-                <i class="fa-solid fa-arrow-rotate-left"></i>
+                <i className="fa-solid fa-arrow-rotate-left"></i>
               </button>
               <button
                 className="btn btn-lg btn-outline-light"
                 onClick={clearBoard}>
-                <i class="fa-solid fa-trash"></i>
+                <i className="fa-solid fa-trash"></i>
               </button>
             </div>
           </div>
@@ -188,7 +188,7 @@ export function GameOfLife({ width = 39, height = 23, defaultChance = .5 }) {
           </div>
 
           <div className="col-3 col-md-3 text-center">
-            <h4 className="card-title">{generation}  <i class="fa-solid fa-repeat"></i></h4>
+            <h4 className="card-title">{generation}  <i className="fa-solid fa-repeat"></i></h4>
           </div>
 
         </div>

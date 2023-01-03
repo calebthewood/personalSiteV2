@@ -17,13 +17,13 @@ export function Todo({ todo, finishTodo }) {
               <s>{todo.title}</s>
             </b>
             <small>
-              <span class="badge rounded-pill text-bg-light"><small>prioritet: {todo.priority}</small></span>
+              <span className="badge rounded-pill text-bg-light"><small>prioritet: {todo.priority}</small></span>
             </small>
           </>
         ) : (
           <>
             <b>{todo.title}</b>
-            <span class="badge rounded-pill text-bg-light"><small>prioritet: {todo.priority}</small></span>
+            <span className="badge rounded-pill text-bg-light"><small>prioritet: {todo.priority}</small></span>
           </>
         )}
       </div>
