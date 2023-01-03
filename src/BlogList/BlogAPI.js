@@ -1,5 +1,5 @@
 import axios from "axios";
-import { dateToNum } from "../utils";
+import { dateToNum, sortDates } from "../utils";
 import { Tweet } from 'react-twitter-widgets';
 
 const BLOG_URL = "https://project-pith.herokuapp.com/blog";
@@ -53,14 +53,12 @@ export class BlogAPI {
 
   /** Sorts blog posts by date, doubles as the default on load */
   static filterRecentPosts(posts, [start, end]) {
-    return posts.sort((a, b) => dateToNum(b.date) - dateToNum(a.date));
+    return posts.sort(sortDates);
   }
 
   /** Filters for Blog posts connected to a project, sorts by date. */
   static filterProjectPosts(posts, [start, end]) {
-    return posts.filter(post => post.project_id).sort((a, b) => {
-      return dateToNum(b.date) - dateToNum(a.date);
-    });
+    return posts.filter(post => post.project_id).sort(sortDates);
   }
 
   /** Get all posts with a given tag.
@@ -70,7 +68,7 @@ export class BlogAPI {
     return posts.filter(post => {
       for (let t of post.tags) if (t.name === showing) return true;
       return false;
-    }).sort((a, b) => dateToNum(b.date) - dateToNum(a.date));
+    }).sort(sortDates);
   }
 
   static filterPostsBySlug(posts, showing) {
