@@ -54,17 +54,15 @@ export function AboutMe() {
             </div>
           </div>
 
-
           <div className="col-12 col-md-8 col-lg-9">
             <div
               className="card text-bg-dark p-4 mb-4">
               <h5 className="card-title">A little about myself, and the site</h5>
               <ul className="list-group list-group-flush">
-                <br />
                 <li className="list-group-item text-bg-dark">
-                  I'm a fullstack web developer and software engineer. This site is
+                  I'm Caleb, a full stack web developer and software engineer. This site is
                   bit of a workshop for me. Check back to see new features,
-                  projects, and blog posts being added weekly. I've had a lot of
+                  projects, and blog posts being added occasionally. I've had a lot of
                   fun building it, I hope you enjoy it.
                 </li>
                 <li className="list-group-item text-bg-dark">
@@ -73,7 +71,7 @@ export function AboutMe() {
                   the perfect baguette, and, as an avid learner, of course, reading.
                 </li>
                 <li className="list-group-item text-bg-dark">
-                  See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume_12_17.pdf">resume</a> for
+                  See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">resume</a> for
                   professional experience.
                 </li>
               </ul>
