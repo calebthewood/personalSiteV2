@@ -27,8 +27,8 @@ export const portfolio = [
     database: [
       "Databases: AWS S3, MongoDB",
       "All files stored in in AWS S3 bucket",
+      "Blog posts and metrics data stored in MongoDB",
       "MongoDB allows for rapid storage and retrieval for metric data and blog posts",
-      "Upcoming: as I add more content I'll also develop better search capabilities for the blog",
     ],
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/site-shot.png"
   },
@@ -57,7 +57,7 @@ export const portfolio = [
       "Global 404 and generic error handler ensure predictable behavior"
     ],
     database: [
-      "PostgreSQL Database",
+      "AWS RDS Postgres Database",
       "Interfaced with db via PG, a lightweight Postgres driver for Node",
       "Database consists of tables for Company, User, and Job",
       "Developed Job table as a through-table for many-to-many relationship between Company and User",
@@ -90,11 +90,12 @@ export const portfolio = [
       "Used the ORM SQLALchemy to define object oriented models that interface with the database",
     ],
     database: [
-      "PostgreSQL Database with ORM",
-      "Seeded a database using data from CSV files and a Python script",
-      "Database consists of tables for Follows, Likes, Users, and Messages",
-      "Implemented Follows through-table as many-to-many relationship between Users",
-      "Implemented Likes through-table as many-to-many relationship between Users and Messages",
+      "AWS RDS Postgres Database",
+      "Seeded via a Python script and data from CSV files",
+      "Leveraged ORM, SQLAlchemy to interface with database",
+      "Database contains tables for Follows, Likes, Users, and Messages",
+      "Implemented Follows table as many-to-many relationship between Users",
+      "Implemented Likes table as many-to-many relationship between Users and Messages",
       "Stored passwords as bcrypt hashes. Referenced hash during login to avoid hold plain text passwords",
     ],
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/warbler.png",
