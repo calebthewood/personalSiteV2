@@ -22,7 +22,7 @@ export function Home() {
             <button
               id="about-btn"
               type="button"
-              class="btn btn-lg btn-outline-dark">About</button>
+              className="btn btn-lg btn-outline-dark">About</button>
           </Link>
         </div>
 
@@ -31,7 +31,7 @@ export function Home() {
             <button
               id="portfolio-btn"
               type="button"
-              class="btn btn-lg btn-outline-dark">Portfolio</button>
+              className="btn btn-lg btn-outline-dark">Portfolio</button>
           </Link>
         </div>
 
@@ -40,7 +40,7 @@ export function Home() {
             <button
               id="projects-btn"
               type="button"
-              class="btn btn-lg btn-outline-dark">Projects</button>
+              className="btn btn-lg btn-outline-dark">Projects</button>
           </Link>
         </div>
 
@@ -49,7 +49,7 @@ export function Home() {
             <button
               id="blog-btn"
               type="button"
-              class="btn btn-lg btn-outline-dark">Blog</button>
+              className="btn btn-lg btn-outline-dark">Blog</button>
           </Link>
         </div>
 

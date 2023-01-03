@@ -4,7 +4,7 @@ export function WhittleButton({ listLen }) {
   const [message, setMessage] = useState(`${listLen} words to choose from`);
 
   return (
-    <div class="d-grid gap-2">
+    <div className="d-grid gap-2">
       <button
         className="btn btn-outline-dark"
         onMouseOver={() => setMessage("Whittle 'em down!")}
