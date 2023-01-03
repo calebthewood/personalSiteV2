@@ -32,7 +32,7 @@ export function AboutMe() {
                   </div>
                   <ul className="list-group text-center list-group-flush flex-column">
                     <li className="list-group-item d-grid gap-2 text-bg-dark">
-                      <a type="button" className="btn btn-dark" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume_12_17.pdf">
+                      <a type="button" className="btn btn-dark" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
                         <h6 className="card-subtitle">View Resume  <i className="fa-solid fa-arrow-up-right-from-square"></i></h6>
                       </a>
                     </li>
