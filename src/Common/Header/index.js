@@ -20,7 +20,7 @@ export function Header() {
     projects: {
       title: "Project Library",
       subtitle: "Click on a project to interact with it.",
-      text: "A place to show off the apps, programs, and concepts that made it to the finish line. Each project will have an associated blog that walks through the design and my implementation choices.",
+      text: "A place to show off the frontend React projects that made it to the finish line. Check my github or the blog for more info on other projects.",
       width: "col-12 col-md-8"
     },
     blog: {
