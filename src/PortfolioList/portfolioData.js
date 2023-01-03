@@ -4,7 +4,7 @@ export const portfolio = [
   {
     title: "This site",
     id: "personalSite",
-    summary: "This site is the second iteration of my personal website. It's quite an upgrade from the old site, and is one of the most complex frontend applications I've developed to date. In addition to this portfolio it contains a library of frontend projects, a blog that turns my Notion pages into posts, and a Dashboard with realtime metric information. I plan to update the blog and project sections weekly so be sure to bookmark and check back!",
+    summary: "This site is the second iteration of my personal website. It's quite an upgrade from the old site static site! In addition to this portfolio it contains a library of amusing frontend projects, a unique blog built with Node and the Notion SDK, and a Dashboard with realtime metric information",
     frontend: [
       "React Frontend",
       "Features my own content management system based on the Notion SDK",
@@ -35,7 +35,7 @@ export const portfolio = [
   {
     title: "Jobly",
     id: "jobly",
-    summary: "Jobly is a fullstack job-board web app featuring a ReactJS frontend, NodeJS REST API backend, and PostgreSQL database containing mock data. It is deployed on Heroku and Surge. I built Jobly over the course of two, weeklong sprints while attending Rithm School bootcamp in San Francisco.",
+    summary: "Jobly is a fullstack job-board web app featuring a ReactJS frontend, NodeJS REST API backend, and PostgreSQL database containing mock data. It is deployed on Heroku and Surge.",
     frontend: [
       "React Frontend",
       "Client side routing with React-Router-Dom",
@@ -70,7 +70,7 @@ export const portfolio = [
   {
     title: "Warbler",
     id: "warbler",
-    summary: "Warbler is a fullstack Twitter clone built on Python-Flask. It is the result of a weeklong sprint to extend an existing, semi-functional app. During this project I worked to uncover bugs, write tests, and extend the app with new features.",
+    summary: "Warbler is a fullstack Twitter clone built on Python's Flask web framework. It leverages the ORM, SQLAlchemy to build the interconnected database required for a social media application.",
     frontend: [
       "Flask-Jinja Frontend",
       "Server-side-rendered pages using the Jinja II templating engine:",

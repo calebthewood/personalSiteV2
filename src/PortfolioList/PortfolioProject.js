@@ -40,7 +40,7 @@ export function PortfolioProject({ project }) {
             className={activeTab === "summary" ? "tab-pane fade show active" : "tab-pane fade"}
             role="tabpanel"
             aria-labelledby="summary-tab" tabIndex="0">{project.summary}
-            {project.link ? <a type="button" className="btn btn-sm btn-dark" href={project.link}> Visit Demo <i className="fa-solid fa-arrow-up-right-from-square"></i></a> : ""}</div>
+            {project.link ? <div className="d-flex justify-content-center"><hr/><a type="button" className="btn btn-sm btn-dark" href={project.link}> Visit Demo <i className="fa-solid fa-arrow-up-right-from-square"></i></a></div> : ""}</div>
           <div
             id="frontend-tab-pane"
             className={activeTab === "frontend" ? "tab-pane fade show active" : "tab-pane fade"}
