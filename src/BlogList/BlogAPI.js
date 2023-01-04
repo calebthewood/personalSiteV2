@@ -1,5 +1,5 @@
 import axios from "axios";
-import { dateToNum, sortDates } from "../utils";
+import { sortDates } from "../utils";
 import { Tweet } from 'react-twitter-widgets';
 
 const BLOG_URL = "https://project-pith.herokuapp.com/blog";
