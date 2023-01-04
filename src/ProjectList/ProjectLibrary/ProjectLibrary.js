@@ -3,6 +3,7 @@ import { GameOfLife } from "./GameOfLife";
 import { Productiv } from "./Productiv";
 import { Whittle } from "./Whittle";
 import { AegeanCalculator } from "./AegeanCalculator";
+import { RatingElement } from "./RatingElement"
 
 
 export const ProjectLibrary = [
@@ -50,6 +51,15 @@ export const ProjectLibrary = [
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/aegean-calculator.png",
     tags: ["JavaScript", "React"],
     url: "/aegean-calculator"
+  },
+  {
+    title: "Five Point Rating Component",
+    id: "rating-element",
+    description: "Rate anything on a scale from 1 to 5",
+    component: <RatingElement />,
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/logo192.png",
+    tags: ["JavaScript", "React"],
+    url: "/rating-element"
   },
   {
     title: "Future Projects",
