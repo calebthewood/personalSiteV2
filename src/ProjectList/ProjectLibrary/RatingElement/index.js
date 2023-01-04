@@ -69,8 +69,8 @@ export function RatingElement() {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   onMouseDown={handleClick}
-                >{star ? <i className="fa-solid fa-star"></i>
-                  : <i className="fa-regular fa-star"></i>}</button>
+                >{star ? <i className="fa-solid fa-star star-icon"></i>
+                  : <i className="fa-regular fa-star star-icon"></i>}</button>
               )}
             </div>
           </div>
