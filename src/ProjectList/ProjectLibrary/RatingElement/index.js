@@ -30,6 +30,9 @@ export function RatingElement() {
     if (evt.target.nodeName === 'BUTTON') {
       const score = Number(evt.target.id[1]);
       setScore(score);
+    } else {
+      const score = Number(evt.target.parentNode.id[1]);
+      setScore(score);
     }
   }
 
@@ -66,8 +69,8 @@ export function RatingElement() {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   onMouseDown={handleClick}
-                >{star ? <i class="fa-solid fa-star"></i>
-                  : <i class="fa-regular fa-star"></i>}</button>
+                >{star ? <i className="fa-solid fa-star"></i>
+                  : <i className="fa-regular fa-star"></i>}</button>
               )}
             </div>
           </div>
