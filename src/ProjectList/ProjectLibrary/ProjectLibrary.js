@@ -55,7 +55,7 @@ export const ProjectLibrary = [
   {
     title: "Five Point Rating Component",
     id: "rating-element",
-    description: "Rate anything on a scale from 1 to 5",
+    description: "Rate anything... on a scale from 1 to 5",
     component: <RatingElement />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/five-star-rating.png",
     tags: ["JavaScript", "React"],
