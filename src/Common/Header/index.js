@@ -21,7 +21,7 @@ export function Header() {
       title: "Project Library",
       subtitle: "Click on a project to interact with it.",
       text: "A place to show off the frontend React projects that made it to the finish line. Check my github or the blog for more info on other projects.",
-      width: "col-12 col-md-8"
+      width: "col-10 col-md-12 col-lg-8"
     },
     blog: {
       title: "Project Pith",

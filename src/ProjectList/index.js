@@ -9,7 +9,7 @@ export function ProjectList() {
   const [currentProject] = ProjectLibrary.filter(project => project.id === param);
 
   return (
-    <div className="container col-12 col-md-8">
+    <div className="container col-12 col-md-12 col-lg-8">
       <div className="row row justify-content-center" >
         {currentProject ? <ProjectDetail project={currentProject} /> :
           <div className="col">

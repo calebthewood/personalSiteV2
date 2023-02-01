@@ -26,8 +26,7 @@ export function Dashboard() {
     <div className="container-md">
       <div className="row mb-2">
 
-
-        <div className="col-12 col-sm-8 col-md-5 col-12 mb-4">
+        <div className="col col-sm-8 col-md-5 mb-4">
           <div className="card text-bg-dark">
             <div className="card-body">
               <h2 className="card-title">Route Traffic</h2>

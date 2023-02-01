@@ -1,4 +1,4 @@
-import { has } from "lodash";
+
 
 export function dateToNum(date) {
   let numString = "";

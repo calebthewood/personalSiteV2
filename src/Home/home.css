@@ -1,6 +1,14 @@
 /* #home-container {
   height: 50vw;
 } */
+
+#home-animation {
+  height: 300px;
+  width: 400px;
+  align-items: center;
+  justify-content: end;
+}
+
 #home-row {
   min-height: 50vh;
 }
