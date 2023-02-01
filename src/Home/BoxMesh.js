@@ -9,8 +9,8 @@ export function BoxMesh(props) {
   const [clicked, click] = useState(false);
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) => {
-    ref.current.rotation.x += delta
-    ref.current.rotation.y += delta
+    ref.current.rotation.x += delta/6
+    ref.current.rotation.y += delta/6
   })
   // Return the view, these are regular Threejs elements expressed in JSX
   return (
