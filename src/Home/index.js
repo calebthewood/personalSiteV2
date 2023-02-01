@@ -1,19 +1,27 @@
 import { Link } from "react-router-dom";
 import "./home.css";
+import { BoxCanvas } from "./BoxCanvas";
 
 export function Home() {
 
   return (
     <div id="home-container" className="container col-12 col-md-8 mb-4">
+
       <div id="home-row" className="row align-items-end mb-5">
 
-        <div className="col-12">
+        <div className="col-12 col-md-6">
           <h1>
             Welcome
           </h1>
           <h2>I'm Caleb Wood,</h2>
-          <h2>Fullstack Engineer and Web Developer</h2>
+          <h2>Full Stack Web Developer</h2>
         </div>
+
+
+        <div className="col-12 col-md-5" id="home-animation">
+          <BoxCanvas />
+        </div>
+
       </div>
 
       <div className="row justify-content-between mb-5">
