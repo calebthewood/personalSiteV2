@@ -6,9 +6,10 @@ export const portfolio = [
     title: "This site",
     id: "personalSite",
     summary:
-    "This site is the second iteration of my personal website, and I've added quite a lot! This 'Portfolio' section contains info on each of my full stack projects currently hosted on the web. The 'Project' library showcases some amusing frontend projects, I built the blog using NodeJS and the NotionSDK. Lastly, I've added a small Dashboard with realtime metric information.",
+    "This site is the second iteration of my personal website, and I've added quite a lot! This 'Portfolio' section contains info on each of my full stack projects currently hosted on the web. The 'Project' library showcases some amusing frontend projects, the blog incorporates the NotionSDK, and I've added a small Dashboard with realtime metric information.",
     frontend: [
       "React JS with Hooks",
+      "Landing page features a dodecahedron rendered with three.js",
       "'Blog' converts JSON page objects from NotionSDK jsx",
       "'Projects' features mini-react apps and toy programs",
       "Navigation handled via React-Router-Dom",
@@ -43,7 +44,6 @@ export const portfolio = [
       "Carefully planned component heirarchy and state management",
       "A user system with full login, signup, update, and role functionality",
       "Custom hook for storing and retrieving from local storage",
-      "Currently in the process of converting the app to TypeScript",
     ],
     backend: [
       "Node-Express REST API backend",

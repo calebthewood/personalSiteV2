@@ -23,7 +23,6 @@ export function BoxMesh(props) {
         onPointerOut={(event) => hover(false)}>
         <dodecahedronGeometry args={[1,0]} />
         <meshStandardMaterial metalness={.4} color={hovered ? "#f5cd79" : "#596275"} />
-
       </mesh>
   );
 }

@@ -15,7 +15,7 @@ export function Header() {
       title: "Fullstack Portfolio",
       subtitle: "Click through the tabs to learn more about each app.",
       text: "This section is devoted to my deployed and maintained fullstack apps. Take a moment to click through and read a little about each one, or click the link to visit the deployed site.",
-      width: "col-12 col-md-8"
+      width: "col-12 col-lg-8"
     },
     projects: {
       title: "Project Library",
