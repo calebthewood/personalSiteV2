@@ -10,12 +10,9 @@ export function PortfolioProject({ project }) {
   }
 
   return (
-    <>
-      <div className="col-12 col-md-3">
-        <img src={project.img} className="img-fluid rounded img-thumbnail align-end " alt="project-screenshot" />
-      </div>
+    <div className="row">
 
-      <div className="col-12 col-md-9">
+      <div className="col-12 col-sm-9 mb-4 gx-4">
         <div className="card col-12 col-md-auto">
           <div className="card-header">
             <ul className="nav nav-pills nav-fill" onClick={handleTabs}>
@@ -85,6 +82,12 @@ export function PortfolioProject({ project }) {
           </div>
         </div>
       </div>
-      </>
+
+
+      <div className="col-12 col-md-3 mb-4 gx-4">
+        <img src={project.img} className="img-fluid rounded img-thumbnail align-end " alt="project-screenshot" />
+      </div>
+
+    </div>
   );
 }
