@@ -7,8 +7,11 @@ import { PortfolioProject } from "./PortfolioProject";
 export function PortfolioList() {
 
   return (
-    <div className="container col-12 col-md-8 mb-4">
-      {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
+    <div className="container col-12 col-md-10 col-lg-8 mb-4">
+
+      <div className="row gy-4 gx-4">
+        {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
+      </div>
 
       <div className="row">
         <div className="d-grid gap-2">
@@ -17,6 +20,7 @@ export function PortfolioList() {
           </Link>
         </div>
       </div>
+
     </div>
   );
 }
