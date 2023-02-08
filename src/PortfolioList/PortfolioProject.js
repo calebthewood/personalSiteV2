@@ -11,7 +11,6 @@ export function PortfolioProject({ project }) {
 
   return (
     <>
-
       <div className="col-12 col-md-3">
         <img src={project.img} className="img-fluid rounded img-thumbnail align-end " alt="project-screenshot" />
       </div>
