@@ -2,15 +2,18 @@ import { Link } from "react-router-dom";
 import "./portfolio.css";
 import { portfolio } from "./portfolioData";
 import { PortfolioProject } from "./PortfolioProject";
-
+import { Bio } from "../Common/Bio/Bio";
 
 export function PortfolioList() {
 
   return (
-    <div className="container col-12 col-md-12 col-lg-8 mb-4">
+    <div className="container col-12 mb-4">
 
-      <div className="row mt-3 gy-4 gx-4">
-        {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
+      <div className="row">
+        <Bio />
+        <div className="col-12 col-md-9">
+          {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
+        </div>
       </div>
 
       <div className="row mt-5">

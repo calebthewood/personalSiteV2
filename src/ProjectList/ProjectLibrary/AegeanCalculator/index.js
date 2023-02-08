@@ -133,101 +133,105 @@ export function AegeanCalculator() {
 
 
   return (
-    <div className="calculator">
-      <div className="row px-2 display-area text-end align-content-end justify-content-end">
-        {memory.baseVal.length < 10 ?
-          <span className="display-2">{aegean ? displayAegeanNum() : displayNumber()}</span> :
-          <span className="display-6">{aegean ? displayAegeanNum() : displayNumber()} </span>}
-      </div>
-      <div onClick={handleClick} className="buttons">
-        <div className="row calc-btns">
-          <button
-            type="button"
-            value="ac"
-            className="rounded-0 btn btn-secondary">AC</button>
-          <button
-            type="button"
-            value="+/-"
-            className="rounded-0 btn btn-secondary">+/-</button>
-          <button
-            type="button"
-            value="aegean"
-            className="rounded-0 btn btn-secondary">{memory.aegean ? "123..." : "𐁅"}</button>
-          <button
-            type="button"
-            value="/"
-            className="rounded-0 btn btn-warning">/</button>
+    <div className="row justify-content-center">
+
+      <div className="calculator">
+        <div className="row px-2 display-area text-end align-content-end justify-content-end">
+          {memory.baseVal.length < 10 ?
+            <span className="display-2">{aegean ? displayAegeanNum() : displayNumber()}</span> :
+            <span className="display-6">{aegean ? displayAegeanNum() : displayNumber()} </span>}
         </div>
-        <div className="row calc-btns">
-          <button
-            type="button"
-            value="7"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["7"] : "7"}</button>
-          <button
-            type="button"
-            value="8"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["8"] : "8"}</button>
-          <button
-            type="button"
-            value="9"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["9"] : "9"}</button>
-          <button
-            type="button"
-            value="x"
-            className="rounded-0 btn btn-warning">x</button>
-        </div>
-        <div className="row calc-btns">
-          <button
-            type="button"
-            value="4"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["4"] : "4"}</button>
-          <button
-            type="button"
-            value="5"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["5"] : "5"}</button>
-          <button
-            type="button"
-            value="6"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["6"] : "6"}</button>
-          <button
-            type="button"
-            value="-"
-            className="rounded-0 btn btn-warning">-</button>
-        </div>
-        <div className="row calc-btns">
-          <button
-            type="button"
-            value="1"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["1"] : "1"}</button>
-          <button
-            type="button"
-            value="2"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["2"] : "2"}</button>
-          <button
-            type="button"
-            value="3"
-            className="rounded-0 btn btn-light">{aegean ? aegeanNums["3"] : "3"}</button>
-          <button
-            type="button"
-            value="+"
-            className="rounded-0 btn btn-warning">+</button>
-        </div>
-        <div className="row calc-btns">
-          <button
-            id="calc-0"
-            type="button"
-            value="0"
-            className="rounded-0 btn btn-light">0</button>
-          <button
-            type="button"
-            value="."
-            className="rounded-0 btn btn-light" disabled>.</button>
-          <button
-            type="button"
-            value="="
-            className="rounded-0 btn btn-warning">=</button>
+        <div onClick={handleClick} className="buttons">
+          <div className="row calc-btns">
+            <button
+              type="button"
+              value="ac"
+              className="rounded-0 btn btn-secondary">AC</button>
+            <button
+              type="button"
+              value="+/-"
+              className="rounded-0 btn btn-secondary">+/-</button>
+            <button
+              type="button"
+              value="aegean"
+              className="rounded-0 btn btn-secondary">{memory.aegean ? "123..." : "𐁅"}</button>
+            <button
+              type="button"
+              value="/"
+              className="rounded-0 btn btn-warning">/</button>
+          </div>
+          <div className="row calc-btns">
+            <button
+              type="button"
+              value="7"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["7"] : "7"}</button>
+            <button
+              type="button"
+              value="8"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["8"] : "8"}</button>
+            <button
+              type="button"
+              value="9"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["9"] : "9"}</button>
+            <button
+              type="button"
+              value="x"
+              className="rounded-0 btn btn-warning">x</button>
+          </div>
+          <div className="row calc-btns">
+            <button
+              type="button"
+              value="4"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["4"] : "4"}</button>
+            <button
+              type="button"
+              value="5"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["5"] : "5"}</button>
+            <button
+              type="button"
+              value="6"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["6"] : "6"}</button>
+            <button
+              type="button"
+              value="-"
+              className="rounded-0 btn btn-warning">-</button>
+          </div>
+          <div className="row calc-btns">
+            <button
+              type="button"
+              value="1"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["1"] : "1"}</button>
+            <button
+              type="button"
+              value="2"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["2"] : "2"}</button>
+            <button
+              type="button"
+              value="3"
+              className="rounded-0 btn btn-light">{aegean ? aegeanNums["3"] : "3"}</button>
+            <button
+              type="button"
+              value="+"
+              className="rounded-0 btn btn-warning">+</button>
+          </div>
+          <div className="row calc-btns">
+            <button
+              id="calc-0"
+              type="button"
+              value="0"
+              className="rounded-0 btn btn-light">0</button>
+            <button
+              type="button"
+              value="."
+              className="rounded-0 btn btn-light" disabled>.</button>
+            <button
+              type="button"
+              value="="
+              className="rounded-0 btn btn-warning">=</button>
+          </div>
         </div>
       </div>
     </div>
+
   );
 }

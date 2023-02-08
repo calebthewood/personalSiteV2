@@ -8,7 +8,6 @@ export function Home() {
     <div id="home-container" className="container col-12 col-md-8 mb-4">
 
       <div id="home-row" className="row align-items-end mb-5">
-
         <div className="col-12 col-md-6">
           <h1>
             Welcome
@@ -16,12 +15,9 @@ export function Home() {
           <h2>I'm Caleb Wood,</h2>
           <h2>Full Stack Web Developer</h2>
         </div>
-
-
         <div className="col-12 col-md-5" id="home-animation">
           <BoxCanvas />
         </div>
-
       </div>
 
       <div className="row justify-content-around mb-5">
@@ -63,6 +59,5 @@ export function Home() {
 
       </div>
     </div>
-
   );
 }

@@ -2,9 +2,13 @@ import { ReturnButton } from "../Common/ReturnButton";
 
 export function ProjectDetail({ project }) {
   return (
-    <div className="row justify-content-center" style={{ width: "fit-content" }} >
-      <ReturnButton />
-      {project.component}
+    <div className="row">
+      <div className="col col-md-1">
+        <ReturnButton />
+      </div>
+      <div className="col-12 col-md-11">
+        {project.component}
+      </div>
     </div>
   );
 }
