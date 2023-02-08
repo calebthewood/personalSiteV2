@@ -24,8 +24,8 @@ export function Home() {
 
       </div>
 
-      <div className="row justify-content-between mb-5">
-        <div className="col-sm-2 col-5 m-2">
+      <div className="row justify-content-around mb-5">
+        <div className="col-sm-2 col-5 x">
           <Link to="/about">
             <button
               id="about-btn"
@@ -34,7 +34,7 @@ export function Home() {
           </Link>
         </div>
 
-        <div className="col-sm-2 col-5 m-2">
+        <div className="col-sm-2 col-5 mx-2">
           <Link to="/portfolio">
             <button
               id="portfolio-btn"
@@ -43,7 +43,7 @@ export function Home() {
           </Link>
         </div>
 
-        <div className="col-sm-2 col-5 m-2">
+        <div className="col-sm-2 col-5 mx-2">
           <Link to="/projects">
             <button
               id="projects-btn"
@@ -52,7 +52,7 @@ export function Home() {
           </Link>
         </div>
 
-        <div className="col-sm-2 col-5 m-2">
+        <div className="col-sm-2 col-5 mx-2">
           <Link to="/blog/posts/recent">
             <button
               id="blog-btn"
