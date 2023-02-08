@@ -1,41 +1,40 @@
+import { isContentEditable } from "@testing-library/user-event/dist/utils";
 
 
 export const portfolio = [
   {
     title: "This site",
     id: "personalSite",
-    summary: "This site is the second iteration of my personal website. It's quite an upgrade from the old site static site! In addition to this portfolio it contains a library of amusing frontend projects, a unique blog built with Node and the Notion SDK, and a Dashboard with realtime metric information",
+    summary:
+    "This site is the second iteration of my personal website, and I've added quite a lot! This 'Portfolio' section contains info on each of my full stack projects currently hosted on the web. The 'Project' library showcases some amusing frontend projects, I built the blog using NodeJS and the NotionSDK. Lastly, I've added a small Dashboard with realtime metric information.",
     frontend: [
-      "React Frontend",
-      "Features my own content management system based on the Notion SDK",
-      "React-Router-Dom keeps the URL relevant and handles navigation around the app",
-      "Developed the Metric component that forms one part of my fullstack metrics system",
-      "Implemented a custom local storage hook to stash and retrieve a token",
-      "The Dashboard contains up-to-date metrics on visitor behavior, and pie chart drawn with HTML canvas",
-      "Bootstrap 5.2 provides the styling and layout of the site",
-      "Due to minimal blog content at launch, some search features of the blog are disabled. Expect to see more added over the next couple months",
+      "React JS with Hooks",
+      "'Blog' converts JSON page objects from NotionSDK jsx",
+      "'Projects' features mini-react apps and toy programs",
+      "Navigation handled via React-Router-Dom",
+      "Dashboard displays metrics and chart drawn with HTML canvas",
+      "Styles and layout implemented with Bootstrap 5.2",
     ],
     backend: [
-      "Node-Express Backend",
-      "Integrated Notion SDK to publish blogs from my dekstop Notion app to this site",
-      "Wrote an OOP class to parse Notion Page Objects before uploading to db",
+      "Node-Express Server",
+      "Notion SDK integration allows me to publish from my desktop",
+      "Wrote a class to parse Notion's 'Page Objects' before uploading to db",
       "Integrated Twitter API to embed my programming related tweets",
       "Developed my own fullstack system for measuring site metrics",
-      "Implemented auth endpoint to provide tokens for counting unique visitors",
-      "By using a local token, I can track user path and page visits",
+      "Metrics system tracks unique visitor count, user path, and page visits",
     ],
     database: [
-      "Databases: AWS S3, MongoDB",
-      "All files stored in in AWS S3 bucket",
-      "Blog posts and metrics data stored in MongoDB",
-      "MongoDB allows for rapid storage and retrieval for metric data and blog posts",
+      "AWS S3 and MongoDB Atlas Databases",
+      "Image files and resume stored in AWS S3 bucket",
+      "Blog posts and metrics data stored in MongoDB Atlas",
+      "Interface with MongoDB using MongoClient",
     ],
-    img: "https://s3.us-west-1.amazonaws.com/pix.ly/site-shot.png"
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/personal-site-square.png"
   },
   {
     title: "Jobly",
     id: "jobly",
-    summary: "Jobly is a fullstack job-board web app featuring a ReactJS frontend, NodeJS REST API backend, and PostgreSQL database containing mock data. It is deployed on Heroku and Surge.",
+    summary: "Jobly is a fullstack job-board web app featuring a ReactJS frontend, NodeJS REST API backend, and PostgreSQL database containing mock data. It is deployed on Heroku and Surge. In December I succesully migrated the database from a Heroku Hobby dyno to AWS RDS.",
     frontend: [
       "React Frontend",
       "Client side routing with React-Router-Dom",
@@ -64,13 +63,13 @@ export const portfolio = [
       "OOP methods dynamically build SQL queries based on search parameters",
       "Implemented parameterized queries to prevent against SQL injection",
     ],
-    img: "https://s3.us-west-1.amazonaws.com/pix.ly/jobly.png",
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/jobly-square.png",
     link: "https://jobly-r25.surge.sh/",
   },
   {
     title: "Warbler",
     id: "warbler",
-    summary: "Warbler is a fullstack Twitter clone built on Python's Flask web framework. It leverages the ORM, SQLAlchemy to build the interconnected database required for a social media application.",
+    summary: "Warbler is a fullstack Twitter clone built on Python's Flask web framework. It leverages the ORM, SQLAlchemy to build the interconnected database tables required for a social media application. I developed Warbler while attending Rithm School, a full stack software development bootcamp based here in San Francisco.",
     frontend: [
       "Flask-Jinja Frontend",
       "Server-side-rendered pages using the Jinja II templating engine:",
@@ -98,7 +97,7 @@ export const portfolio = [
       "Implemented Likes table as many-to-many relationship between Users and Messages",
       "Stored passwords as bcrypt hashes. Referenced hash during login to avoid hold plain text passwords",
     ],
-    img: "https://s3.us-west-1.amazonaws.com/pix.ly/warbler.png",
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/warbler-square.png",
     link: "https://r-warble.herokuapp.com/",
   },
 ];
