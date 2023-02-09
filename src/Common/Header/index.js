@@ -13,13 +13,13 @@ export function Header() {
     },
     portfolio: {
       title: "Fullstack Portfolio",
-      subtitle: "Click through the tabs to learn more about each app.",
-      text: "This section is devoted to my deployed and maintained fullstack apps. Take a moment to click through and read a little about each one, or click the link to visit the deployed site.",
+      subtitle: "Click through the tabs to learn more about each app",
+      text:  "",
       width: "col"
     },
     projects: {
       title: "Project Library",
-      subtitle: "Click on a project to interact with it.",
+      subtitle: "Click on a project to interact with it",
       text: "",
       width: "col-12"
     },
