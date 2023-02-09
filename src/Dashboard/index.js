@@ -10,8 +10,7 @@ export function Dashboard() {
   useEffect(() => {
     async function getMetrics() {
       let res = await DashboardAPI.fetchMetricData();
-      console.log("Dashboard useEffect getMetrics", res);
-
+      console.log("Dashboard useEffect getMetrics", res.status);
       setResults(res.data.response);
     }
     getMetrics();
@@ -56,7 +55,9 @@ export function Dashboard() {
               <h2>Top Ten Pages</h2>
               <hr />
               <ol className="list-group list-group-flush list-group-numbered">
-                {topPages.filter((page, i) => i < 10).map(page => <li className="text-bg-dark list-group-item">{page.route.slice(12)}</li>)}
+                {topPages
+                  .filter((page, i) => i < 10)
+                  .map((page, j) => <li key={"top-ten-" + j} className="text-bg-dark list-group-item">{page.route.slice(12)}</li>)}
               </ol>
             </div>
           </div>

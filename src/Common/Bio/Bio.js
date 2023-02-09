@@ -6,7 +6,7 @@ export function Bio() {
   console.log("Param: ", param)
 
   return (
-    <div className="col-xs-12 col-sm-3 gx-4">
+    <div className="col-xs-12 col-sm-6 col-md-3 gx-4">
       <div
         className="card text-bg-dark gy-4 gx-4 mb-4">
         <img className="card-img" src="https://s3.us-west-1.amazonaws.com/pix.ly/selfie.jpg" alt="Caleb's Selfie" />

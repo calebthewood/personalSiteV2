@@ -49,9 +49,7 @@ export function TodoApp({ initialTodos }) {
   }
 
   function finishTodo(todoDone) {
-    console.log(todoDone);
     todoDone.isDone = !todoDone.isDone;
-
     setTodos(() =>
       todos.map((todo) => (todo.id === todoDone.id ? todoDone : todo))
     );
