@@ -1,10 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Home } from "../Home";
 import { AboutMe } from "../AboutMe";
 import { PortfolioList } from "../PortfolioList";
 import { ProjectList } from "../ProjectList";
 import { BlogList } from "../BlogList";
-import { Dashboard } from "../Dashboard";
+
 // import ProjectDetail from "../projects/ProjectDetail";
 // import BlogPost from "../blog/BlogPost";
 
@@ -21,7 +20,6 @@ export function RoutesList({ isLoading, allPosts, tweets }) {
   //     {/* <Route path="/blog/:id" element={<BlogPost />} /> */}
   return (
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutMe />} />
         <Route path="/portfolio" element={<PortfolioList />} />
         <Route path="/projects" element={<ProjectList />} />
@@ -30,8 +28,7 @@ export function RoutesList({ isLoading, allPosts, tweets }) {
           isLoading={isLoading}
           allPosts={allPosts}
           tweets={tweets} />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* <Route path="*" element={<Navigate to="/" />} /> */}
       </Routes>
   );
 }

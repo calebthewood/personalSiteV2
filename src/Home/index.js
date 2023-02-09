@@ -5,17 +5,18 @@ import { BoxCanvas } from "./BoxCanvas";
 export function Home() {
 
   return (
-    <div id="home-container" className="container col-12 col-md-8 mb-4">
+    <div id="home-container" className="container col mb-4">
 
-      <div id="home-row" className="row align-items-end mb-5">
-        <div className="col-12 col-md-6">
+      <div id="home-row" className="row justify-content-between align-items-end mb-5">
+
+        <div className="col-12 col-md-6 mt-5">
           <h1>
             Welcome
           </h1>
           <h2>I'm Caleb Wood,</h2>
           <h2>Full Stack Web Developer</h2>
         </div>
-        <div className="col-12 col-md-5" id="home-animation">
+        <div className="col" id="home-animation">
           <BoxCanvas />
         </div>
       </div>
