@@ -20,19 +20,19 @@ export function Header() {
     projects: {
       title: "Project Library",
       subtitle: "Click on a project to interact with it.",
-      text: "A place to show off the frontend React projects that made it to the finish line. Check my github or the blog for more info on other projects.",
+      text: "",
       width: "col-12"
     },
     blog: {
       title: "Project Pith",
       subtitle: "A blog",
-      text: "Expect to see detailed project walkthroughs, conference notes, my twitter feed, and the occasional musing on what makes a good baguette.",
+      text: "",
       width: "col"
     },
     dashboard: {
       title: "My Dashboard",
       subtitle: "Site-wide metrics, updated on load",
-      text: "All data here was generated with my own fullstack metrics system",
+      text: "",
       width: "col"
     }
   };

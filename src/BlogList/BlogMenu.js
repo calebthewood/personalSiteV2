@@ -1,9 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 
 export function BlogMenu() {
-
   const { showing } = useParams();
-  console.log(showing);
 
   return (
     <ul className="nav nav-pills nav-fill justify-content-evenly mb-4">

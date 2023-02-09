@@ -32,9 +32,6 @@ export default function App() {
     getPosts(); // Recent is the default
   }, []);
 
-
-  console.log(path)
-
   return (
     <div className="App">
       <Navigation />

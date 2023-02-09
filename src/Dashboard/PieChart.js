@@ -33,10 +33,10 @@ export function PieChart({ results }) {
   return (
     <div>
       <div className="row">
-        {results.map(item => {
+        {results.map((item, i) => {
           let style = { background: item.color };
           return (
-            <div className="col-6 card-subtitle mb-1 text-muted">
+            <div key={"pie-slice-" + i} className="col-6 card-subtitle mb-1 text-muted">
               <div className="legend" style={style}></div>
               {" /" + item.name}
             </div>);

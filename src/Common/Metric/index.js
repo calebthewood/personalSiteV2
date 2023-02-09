@@ -21,11 +21,8 @@ export function Metrics() {
   /** Hydration: monitors for change to token state */
   useEffect(function getLocalToken() {
     async function getToken() {
-      console.log("Metric useEffect getToken");
       if (!token) {
-        console.log("GET: /metrics/token");
         let res = await axios.get('https://project-pith.herokuapp.com/metrics/token');
-        console.log("useEffect new token ", res.status);
         setToken(res.data.token);
       }
     }
