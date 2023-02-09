@@ -12,18 +12,13 @@ export function AboutMe() {
           <h5 className="card-title">A little about myself, and the site</h5>
           <ul className="list-group list-group-flush">
             <li className="list-group-item text-bg-dark">
-              I'm Caleb, a full stack web developer and software engineer. This site is
-              bit of a workshop for me. Check back to see new features,
-              projects, and blog posts being added occasionally. I've had a lot of
-              fun building it, I hope you enjoy it.
+            I'm Caleb, a full-stack web developer and software engineer. This site is a bit of a workshop for me. In its current iteration, it is a React App with a Node-Express server to support the blog and dashboard features. I've had a lot of fun building it; I hope you enjoy it.
             </li>
             <li className="list-group-item text-bg-dark">
-              When I'm not coding up programs for mundane problems I like
-              biking to parks and cafes around the city, baking my way towards
-              the perfect baguette, and, as an avid learner, of course, reading.
+            When I'm not coding up programs for mundane problems, I spend my time biking up and down the San Francisco hills, baking my way towards the perfect baguette, and enjoying a good book, movie, or game.
             </li>
             <li className="list-group-item text-bg-dark">
-              See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">resume</a> for
+              See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">resumé</a> for
               professional experience.
             </li>
           </ul>
