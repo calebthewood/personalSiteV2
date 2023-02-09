@@ -24,7 +24,7 @@ export function PortfolioProject({ project }) {
                       id={name}
                       className={activeTab === name ? "nav-link active text-light bg-dark border-dark" : "nav-link text-muted"}
                       aria-current="true"
-                      href={"#" + name}>{tabName}</a>
+                      href={"#" + name}>{i === 0 ? project.title: tabName}</a>
                   </li>
                 );
               })}

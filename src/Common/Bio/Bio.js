@@ -1,6 +1,9 @@
+import { useParams } from "react-router-dom";
 
 
 export function Bio() {
+  const { param } = useParams();
+  console.log("Param: ", param)
 
   return (
     <div className="col-xs-12 col-sm-3 gx-4">
@@ -37,6 +40,10 @@ export function Bio() {
           </li>
         </ul>
       </div>
+
+
+
+
     </div>
   );
 }
