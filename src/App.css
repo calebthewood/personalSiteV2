@@ -39,3 +39,7 @@ a.navigation-link:active {
   justify-content: center;
   text-align: center;
 }
+
+.locale {
+  font-size: 1rem;
+}

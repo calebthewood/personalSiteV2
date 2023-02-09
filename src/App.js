@@ -38,7 +38,7 @@ export default function App() {
       <Header />
       {path === "/" || path === "/dashboard" ? <NonBioRoutesList />
       :
-      (<div className="container-fluid">
+      (<div className="container">
         <div className="row">
           <Bio />
           <div className="col-12 col-md-9">

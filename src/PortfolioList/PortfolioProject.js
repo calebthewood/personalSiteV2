@@ -11,8 +11,8 @@ export function PortfolioProject({ project }) {
 
   return (
     <div className="row">
+      <div className="col-12 col-md-9 mb-4 gx-4">
 
-      <div className="col-12 col-sm-9 mb-4 gx-4">
         <div className="card col-12 col-md-auto">
           <div className="card-header">
             <ul className="nav nav-pills nav-fill" onClick={handleTabs}>
@@ -24,7 +24,7 @@ export function PortfolioProject({ project }) {
                       id={name}
                       className={activeTab === name ? "nav-link active text-light bg-dark border-dark" : "nav-link text-muted"}
                       aria-current="true"
-                      href={"#" + name}>{i === 0 ? project.title: tabName}</a>
+                      href={"#" + name}>{i === 0 ? project.title : tabName}</a>
                   </li>
                 );
               })}
@@ -83,8 +83,7 @@ export function PortfolioProject({ project }) {
         </div>
       </div>
 
-
-      <div className="col-12 col-md-3 mb-4 gx-4">
+      <div className="col-12 col-md-3 mb-4">
         <img src={project.img} className="img-fluid rounded img-thumbnail align-end " alt="project-screenshot" />
       </div>
 

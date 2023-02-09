@@ -7,7 +7,7 @@ import { PortfolioProject } from "./PortfolioProject";
 export function PortfolioList() {
 
   return (
-    <div className="container col-12 mb-4">
+    <div className="container mb-4">
           {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
 
       <div className="row mt-5">
