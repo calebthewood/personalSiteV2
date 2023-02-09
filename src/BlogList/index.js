@@ -54,13 +54,10 @@ export function BlogList({ isLoading, allPosts, tweets }) {
   }
 
   return (
-    <div className="container-md">
+    <div >
       <div className="row justify-content-between">
-        <div className="col-xs-12 col-sm-3 col-lg-2">
           <BlogMenu />
-        </div>
-
-        <div id="blog-list" className="col-10 col-sm-9">
+        <div id="blog-list" className="col">
           {isLoading ?
             <LoadingSpinner /> :
             <ul className="list-group list-group-flush border-dark rounded">

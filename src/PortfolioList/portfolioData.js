@@ -3,7 +3,7 @@ import { isContentEditable } from "@testing-library/user-event/dist/utils";
 
 export const portfolio = [
   {
-    title: "This site",
+    title: "This",
     id: "personalSite",
     summary:
     "This site is the second iteration of my personal website, and I've added quite a lot! This 'Portfolio' section contains info on each of my full stack projects currently hosted on the web. The 'Project' library showcases some amusing frontend projects, the blog incorporates the NotionSDK, and I've added a small Dashboard with realtime metric information.",

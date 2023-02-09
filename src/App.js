@@ -7,6 +7,7 @@ import { RoutesList } from "./RoutesNav/RoutesList";
 import { Footer } from "./Common/Footer";
 import { Header } from "./Common/Header";
 import { Metrics } from "./Common/Metric";
+import { Bio } from "./Common/Bio/Bio";
 
 
 export default function App() {
@@ -32,7 +33,15 @@ export default function App() {
     <div className="App">
       <Navigation />
       <Header />
-      <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+      <div className="container">
+        <div className="row">
+          <Bio />
+          <div className="col-12 col-md-9">
+            <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+          </div>
+        </div>
+      </div>
+
       <Footer />
       <Metrics />
     </div>

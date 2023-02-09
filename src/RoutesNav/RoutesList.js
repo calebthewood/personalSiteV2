@@ -20,7 +20,6 @@ export function RoutesList({ isLoading, allPosts, tweets }) {
   //     {/* <Route path="/projects/:project" element={<ProjectDetail />} /> */}
   //     {/* <Route path="/blog/:id" element={<BlogPost />} /> */}
   return (
-    <div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutMe />} />
@@ -34,6 +33,5 @@ export function RoutesList({ isLoading, allPosts, tweets }) {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </div>
   );
 }
