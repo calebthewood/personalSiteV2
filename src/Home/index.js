@@ -21,8 +21,8 @@ export function Home() {
         </div>
       </div>
 
-      <div className="row justify-content-around mb-5">
-        <div className="col-sm-2 col-5 x">
+      <div className="row justify-content-around gy-4">
+        <div className="col-sm-2 col-5">
           <Link to="/about">
             <button
               id="about-btn"
