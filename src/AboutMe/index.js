@@ -15,11 +15,10 @@ export function AboutMe() {
             I'm Caleb, a full-stack web developer and software engineer. This site is a bit of a workshop for me. In its current iteration, it is a React App with a Node-Express server to support the blog and dashboard features. I've had a lot of fun building it; I hope you enjoy it.
             </li>
             <li className="list-group-item text-bg-dark">
-            When I'm not coding up programs for mundane problems, I spend my time biking up and down the San Francisco hills, baking my way towards the perfect baguette, and enjoying a good book, movie, or game.
+            When I'm not coding up programs for mundane problems, you can find me biking up and down the San Francisco hills, baking my way towards the perfect baguette, or enjoying a good book, movie, or game.
             </li>
             <li className="list-group-item text-bg-dark">
-              See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">resumé</a> for
-              professional experience.
+              See <a className="plain-link" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">resumé</a> for professional experience.
             </li>
           </ul>
         </div>
