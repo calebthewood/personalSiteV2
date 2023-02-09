@@ -10,7 +10,7 @@ export function PortfolioList() {
     <div className="container mb-4">
           {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
 
-      <div className="row mt-5">
+      <div className="row">
         <div className="d-grid gap-2">
           <Link to="/projects" type="button" className="btn btn-dark pt-3">
             <h5 className="he">To Projects</h5>
