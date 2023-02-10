@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 
 
 export function BlogPost({ post }) {
-
+  if (!post) return "Error"
+  console.log("BlogPost: ",post)
   const blocks = post.blocks.map(block => {
     if (block.type === "paragraph") {
       return <ParagraphBlock key={block.id} block={block} />;

@@ -81,7 +81,7 @@ export class BlogAPI {
       dnt: true,
     };
     return tweets.filter((post, i) => i >= start && i <= end)
-      .map(tweet => <Tweet tweetId={tweet.id} options={options} />);
+      .map(tweet => <Tweet key={tweet.id} tweetId={tweet.id} options={options} />);
   }
 
 }
