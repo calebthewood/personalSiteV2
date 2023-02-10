@@ -5,6 +5,8 @@ export function PortfolioProject({ project }) {
   const [activeTab, setActiveTab] = useState("summary");
 
   function handleTabs(e) {
+    const id = e.target.id
+    if (id === "demo-link") return
     e.preventDefault();
     setActiveTab(e.target.id);
   }
@@ -29,7 +31,7 @@ export function PortfolioProject({ project }) {
                 );
               })}
               {project.link
-                ? <a type="button" className="nav-link" href={project.link}>Visit Demo  <i className="fa-solid fa-arrow-up-right-from-square"></i></a>
+                ? <li className="nav-item"><a id="demo-link" type="button" className="nav-link" href={project.link}>Visit Demo  <i className="fa-solid fa-arrow-up-right-from-square"></i></a>  </li>
                 : ""}
             </ul>
           </div>
