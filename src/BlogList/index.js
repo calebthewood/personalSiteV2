@@ -32,7 +32,8 @@ export function BlogList({ isLoading, allPosts, tweets }) {
    */
   function showList(posts, tweets, showing) {
     let postList;
-    const tags = new Set(["React", "Node", "JavaScript", "Notion", "OOP", "DSA"]);
+    const tags = new Set(["React", "Node", "JavaScript", "Notion", "OOP", "DSA", "Events", "Python", "Database", "Postgres", "SQL", "AWS", "Flask", "Warbler"]);
+
     if (showing === 'projects') {
       postList = BlogAPI.filterProjectPosts(posts, showing, paginateRange);
     } else if (tags.has(showing)) {
@@ -45,17 +46,15 @@ export function BlogList({ isLoading, allPosts, tweets }) {
       let post = BlogAPI.filterPostsBySlug(posts, showing);
       return <BlogPost post={post} previous={showing} />;
     }
-
     if (postList.length === 0) {
       return <div>No blog posts match your request.</div>
     }
-
     return postList.map(post => <BlogSummary key={post._id} post={post} />);
   }
 
   return (
     <div >
-      <div className="row justify-content-between">
+      <div className="row justify-content-center">
           <BlogMenu />
         <div id="blog-list" className="col">
           {isLoading ?
