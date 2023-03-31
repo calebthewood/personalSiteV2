@@ -4,8 +4,8 @@ export function BlogSummary({ post }) {
   // <Link to={"/blog-posts/" + summary.id}></Link>
   const description = post.blocks[0].content.rich_text[0].plain_text.slice(0,120)
   return (
-    <li className="list-group-item text-bg-dark">
-      <div className="card blog-summary text-bg-dark">
+    <li className="bg-light list-group-item">
+      <div className="card bg-light blog-summary">
         <div className="card-body">
           <Link className="navigation-link" to={`/blog/posts/${post.slug}`}>
             <h5 className="card-title">{post.title}</h5>

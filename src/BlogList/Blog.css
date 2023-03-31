@@ -9,9 +9,9 @@ li>div>div.card-body {
 }
 
 li>div>div.card-body:hover {
-  background-color: #2b2f34;
-  border-left: whitesmoke 4px solid;
-  border-right: whitesmoke 4px solid;
+  background-color: #d1d8e0;
+  border-left: #212121 4px solid;
+  border-right: #212121 4px solid;
 }
 
 div.card.blog-summary {
