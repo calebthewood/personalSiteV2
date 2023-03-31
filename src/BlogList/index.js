@@ -53,13 +53,13 @@ export function BlogList({ isLoading, allPosts, tweets }) {
   }
 
   return (
-    <div >
-      <div className="row justify-content-center">
+    <div>
+      <div className="row col-12" >
           <BlogMenu />
-        <div id="blog-list" className="col">
+        <div id="blog-list" className="bg-light border-dark border rounded border-3 justify-content-center">
           {isLoading ?
             <LoadingSpinner /> :
-            <ul className="list-group list-group-flush border-dark rounded">
+            <ul className="list-group list-group-flush border-dark rounded ">
               {showList([...allPosts], tweets, showing)}
             </ul>}
 

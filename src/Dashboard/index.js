@@ -26,7 +26,7 @@ export function Dashboard() {
       <div className="row mb-2">
 
         <div className="col col-sm-8 col-md-5 mb-4">
-          <div className="card text-bg-dark">
+          <div className="card bg-light border-dark border rounded border-3">
             <div className="card-body">
               <h2 className="card-title">Route Traffic</h2>
               <hr />
@@ -36,7 +36,7 @@ export function Dashboard() {
         </div>
 
         <div className="col-12 col-sm-4 col-md-3 mb-4">
-          <div className="card text-bg-dark">
+          <div className="card bg-light border-dark border rounded border-3">
             <div className="card-body">
               <h2>
                 Unique Visitors
@@ -50,14 +50,14 @@ export function Dashboard() {
         </div>
 
         <div className="col-12 col-md-4 mb-4">
-          <div className="card text-bg-dark">
+          <div className="card bg-light border-dark border rounded border-3">
             <div className="card-body">
               <h2>Top Ten Pages</h2>
               <hr />
               <ol className="list-group list-group-flush list-group-numbered">
                 {topPages
                   .filter((page, i) => i < 10)
-                  .map((page, j) => <li key={"top-ten-" + j} className="text-bg-dark list-group-item">{page.route.slice(12)}</li>)}
+                  .map((page, j) => <li key={"top-ten-" + j} className="bg-light list-group-item">{page.route.slice(12)}</li>)}
               </ol>
             </div>
           </div>

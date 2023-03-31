@@ -5,12 +5,12 @@ export function ProjectCard({ project }) {
   /* TODO: if I get more than like 10 projects, allow for filtering by tags
   Also, if this gets bigger, look into lazy loading project components */
   return (
-    <div className="card text-bg-dark mb-3">
+    <div className="card border-dark border border-3 mb-4">
       <Link className="navigation-link" to={"/projects" + project.url}>
         <div className="row g-0">
-          <div className="col-md-3">
+          <div className="col-md-3 bg-dark">
             {project.img ?
-              <img src={project.img} className="img-fluid rounded-start" alt="Project Logo" /> :
+              <img src={project.img} className="img-fluid bg-dark rounded-start" alt="Project Logo" /> :
               <i className="fa-solid fa-image img-fluid rounded-start"></i>}
           </div>
           <div className="col-md-9">

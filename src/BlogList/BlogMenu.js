@@ -4,7 +4,7 @@ export function BlogMenu() {
   const { showing } = useParams();
 
   return (
-    <ul className="nav nav-pills nav-fill justify-content-evenly mb-4">
+    <ul className="nav nav-pills nav-fill justify-content-evenly rounded bg-light border-dark border border-3 mb-4">
       <li class="nav-item m-2">
         <Link to="/blog/posts/recent"
         className={showing === "recent" ? "nav-link text-light bg-dark border-dark" : "nav-link text-dark"}

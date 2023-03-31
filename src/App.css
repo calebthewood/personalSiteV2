@@ -44,7 +44,7 @@ a.navigation-link:visited {
 /* mouse over link */
 a.navigation-link:hover {
   color: inherit;
-  background-color: #212121;
+  background-color: #dcdde1;
 }
 
 /* selected link */
