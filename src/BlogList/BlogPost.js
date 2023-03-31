@@ -26,7 +26,7 @@ export function BlogPost({ post }) {
   });
 
   return (
-    <div className="card text-bg-dark">
+    <div className="card bg-light border-0">
       <ReturnButton />
       <div className="card-body">
         <h2 className="card-title">{post.title}</h2>
