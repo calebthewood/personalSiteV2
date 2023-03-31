@@ -11,8 +11,8 @@ export function SectionCard({ section }) {
 
   return (
     <div className="col-sm-4 mb-2">
-      <div className="card text-bg-dark">
-        <Link to={section.url} type="button" className="btn btn-dark">
+      <div className="card bg-light border-dark border border-3">
+        <Link to={section.url} type="button" className="btn">
           <div className="card-body">
             <h5 className="section-icon card-title">{section.icon}</h5>
             <hr/>

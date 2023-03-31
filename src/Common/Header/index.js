@@ -42,7 +42,7 @@ export function Header() {
   return (
     <header id="header">
       <div className={"container-md " + headerData[path].width}>
-        <div className="card text-bg-dark mb-3 mt-3">
+        <div className="card border-dark border border-3 mb-4 mb-3 mt-3">
           <div className="card-body">
             <h1 className="card-title">{headerData[path].title}</h1>
             <h5 className="card-subtitle mb-2 text-muted">{headerData[path].subtitle}</h5>
