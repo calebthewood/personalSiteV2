@@ -4,7 +4,7 @@ import "./navigation.css";
 export function Navigation() {
 
   return (
-    <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-sm navbar-outline-dark bg-light border-dark border-bottom border-3">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/"><img style={{ "width": "35px" }} src="/favicon_io/android-chrome-192x192.png" alt="CW" /></NavLink>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

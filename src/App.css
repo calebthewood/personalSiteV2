@@ -3,6 +3,11 @@
   src: url('../public/fonts/OpenSauceSans-SemiBold.ttf');
 }
 
+@font-face {
+  font-family: 'OSS-Bold';
+  src: url('../public/fonts/OpenSauceSans-Bold.ttf');
+}
+
 .nav-link.active {
   font-weight: bold;
   color: black;
