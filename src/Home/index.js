@@ -5,10 +5,9 @@ import { BoxCanvas } from "./BoxCanvas";
 export function Home() {
   return (
     <div id="home-container" className="wrapper">
-      <div id="home-row" className="hero">
+      <div id="home-row" className="hero nb-card">
         <h1>Welcome</h1>
         <h2>I'm <b>Caleb</b> Wood,<br/>Full Stack Web Developer</h2>
-        <h2></h2>
       </div>
       <div id="home-animation" className="geometry" >
         <BoxCanvas />
