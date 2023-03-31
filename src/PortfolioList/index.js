@@ -12,8 +12,8 @@ export function PortfolioList() {
 
       <div className="row">
         <div className="d-grid gap-2">
-          <Link to="/projects" type="button" className="btn btn-dark pt-3">
-            <h5 className="he">To Projects</h5>
+          <Link to="/projects" type="button" className=" pt-3">
+            <button className="home-btns">To Projects</button>
           </Link>
         </div>
       </div>

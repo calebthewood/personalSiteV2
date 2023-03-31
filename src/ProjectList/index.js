@@ -18,8 +18,8 @@ export function ProjectList() {
       {!currentProject &&
         <div className="row">
           <div className="d-grid gap-2">
-            <Link to="/blog/posts/recent" type="button" className="btn btn-dark pt-3">
-              <h5 className="he">To Blog</h5>
+            <Link to="/blog/posts/recent" type="button" className="pt-3">
+            <button className="home-btns">To Blog</button>
             </Link>
           </div>
         </div>}
