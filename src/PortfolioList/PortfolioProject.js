@@ -15,8 +15,8 @@ export function PortfolioProject({ project }) {
     <div className="row">
       <div className="col-12 col-md-9 mb-4 gx-4">
 
-        <div className="card col-12 col-md-auto">
-          <div className="card-header">
+        <div className="card border-dark border border-3 mb-4 col-12 col-md-auto">
+          <div className="card-header border-dark border-bottom border-3 mb-2">
             <ul className="nav nav-pills nav-fill" onClick={handleTabs}>
               {["Summary", "Frontend", "Backend", "Database"].map((tabName, i) => {
                 let name = tabName.toLowerCase();
@@ -37,7 +37,7 @@ export function PortfolioProject({ project }) {
           </div>
 
           <div className="card-body">
-            <div className="tab-content" id="myTabContent">
+            <div className="tab-content mb-2" id="myTabContent">
               <div
                 id="summary-tab-pane"
                 className={activeTab === "summary" ? "tab-pane fade show active" : "tab-pane fade"}
@@ -86,7 +86,7 @@ export function PortfolioProject({ project }) {
       </div>
 
       <div className="col-12 col-md-3 mb-4">
-        <img src={project.img} className="img-fluid rounded img-thumbnail align-end " alt="project-screenshot" />
+        <img src={project.img} className="img-fluid align-end border-dark rounded border border-3" alt="project-screenshot" />
       </div>
 
     </div>
