@@ -9,7 +9,6 @@ export function PortfolioList() {
   return (
     <div className="container mb-4">
           {portfolio.map((project, i) => <PortfolioProject key={`${project.id}-${i}`} project={project} />)}
-
       <div className="row">
         <div className="d-grid gap-2">
           <Link to="/projects" type="button" className=" pt-3">
@@ -17,7 +16,6 @@ export function PortfolioList() {
           </Link>
         </div>
       </div>
-
     </div>
   );
 }
