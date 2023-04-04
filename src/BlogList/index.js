@@ -55,6 +55,7 @@ export function BlogList({ isLoading, allPosts, tweets }) {
   return (
     <div>
       <div className="row col-12" >
+
           <BlogMenu />
         <div id="blog-list" className="bg-light border-dark border rounded border-3 justify-content-center">
           {isLoading ?

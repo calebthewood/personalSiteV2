@@ -6,7 +6,7 @@ export function Bio() {
   console.log("Param: ", param);
 
   return (
-    <div className="col-12 col-md-3 gx-4">
+    <div className="col-12 col-md-3 gx-3">
       <div className="row justify-content-around">
 
         <div className="col-5 col-md-12">
