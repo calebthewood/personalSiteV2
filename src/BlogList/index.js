@@ -47,41 +47,43 @@ export function BlogList({ isLoading, allPosts, tweets }) {
       return <BlogPost post={post} previous={showing} />;
     }
     if (postList.length === 0) {
-      return <div>No blog posts match your request.</div>
+      return <div>No blog posts match your request.</div>;
     }
     return postList.map(post => <BlogSummary key={post._id} post={post} />);
   }
 
   return (
     <div>
-      <div className="row col-12" >
-
+      <div className="row">
+        <div className="col-12">
           <BlogMenu />
-        <div id="blog-list" className="bg-light border-dark border rounded border-3 justify-content-center">
-          {isLoading ?
-            <LoadingSpinner /> :
-            <ul className="list-group list-group-flush border-dark rounded ">
-              {showList([...allPosts], tweets, showing)}
-            </ul>}
+        </div>
+        <div className="col-12">
+          <div id="blog-list" className="bg-light border-dark border rounded border-3">
+            {isLoading ?
+              <LoadingSpinner /> :
+              <ul className="list-group list-group-flush border-dark rounded">
+                {showList([...allPosts], tweets, showing)}
+              </ul>}
 
-          {showing === "tweets" ?
-            <div className="row justify-content-around">
-              <div className="col-md-auto">
-                <button
-                  onClick={() => updatePagination("back")}
-                  type="button"
-                  className="btn btn-outline-secondary mx-3">Back</button>
-                <span className="text-dark">{`${paginateRange[0] + 1} to ${paginateRange[1] + 1} of ${tweets.length}`}</span>
-                <button
-                  onClick={() => updatePagination("next")}
-                  type="button"
-                  className="btn btn-outline-secondary mx-3">Next</button>
-              </div >
-            </div > : ""
-          }
+            {showing === "tweets" ?
+              <div className="row justify-content-around my-3">
+                <div className="col-md-auto">
+                  <button
+                    onClick={() => updatePagination("back")}
+                    type="button"
+                    className="btn btn-outline-secondary mx-3">Back</button>
+                  <span className="text-dark">{`${paginateRange[0] + 1} to ${paginateRange[1] + 1} of ${tweets.length}`}</span>
+                  <button
+                    onClick={() => updatePagination("next")}
+                    type="button"
+                    className="btn btn-outline-secondary mx-3">Next</button>
+                </div >
+              </div > : ""
+            }
 
-        </div >
-
+          </div >
+        </div>
       </div>
     </div >
   );
