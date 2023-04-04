@@ -32,7 +32,7 @@ export function BlogList({ isLoading, allPosts, tweets }) {
    */
   function showList(posts, tweets, showing) {
     let postList;
-    const tags = new Set(["React", "Node", "JavaScript", "Notion", "OOP", "DSA", "Events", "Python", "Database", "Postgres", "SQL", "AWS", "Flask", "Warbler"]);
+    const tags = new Set(["React", "Node", "JavaScript", "Notion", "OOP", "DSA", "Events", "Python", "Database", "Postgres", "SQL", "AWS", "Flask", "Warbler", "LeetCode"]);
 
     if (showing === 'projects') {
       postList = BlogAPI.filterProjectPosts(posts, showing, paginateRange);

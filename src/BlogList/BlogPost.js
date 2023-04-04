@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export function BlogPost({ post }) {
   // Come up with a better "404: Not Found" page
-  if (!post) return "Post Not Found"
+  if (!post) return <h5 className="not-found">Post Not Found</h5>
   console.log("BlogPost: ",post)
   const blocks = post.blocks.map(block => {
     if (block.type === "paragraph") {

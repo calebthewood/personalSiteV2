@@ -51,3 +51,7 @@ i.search-icon {
   color: inherit;
   color: #eb5757;
 }
+
+.not-found{
+  padding: 2rem;
+}
