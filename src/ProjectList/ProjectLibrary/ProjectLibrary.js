@@ -10,7 +10,7 @@ export const ProjectLibrary = [
   {
     title: "Conway's Game of Life",
     id: "gameOfLife",
-    description: "My version of Conway's Game of Life, written for React. It includes a control panel to play, pause, +/- speed, clear or reset screen, and premade patterns.",
+    description: "My implementation of Conway's Game of Life in React. It's what's called a 0-player game, or simulation. There are many iterations, but the fundamental game is based on just 3 rules, and from that all sorts of fascinating pattterns may emerge.",
     component: <GameOfLife />,
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/game-of-life.png",
     tags: ["JavaScript", "React"],

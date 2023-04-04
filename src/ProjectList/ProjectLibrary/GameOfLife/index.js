@@ -111,14 +111,11 @@ export function GameOfLife({ width = 39, height = 23, defaultChance = .5 }) {
   }, [isRunning, board]);
 
   return (
-    <div className="card text-bg-dark" style={{maxWidth: "764px"}}>
+    <div className="card text-bg-dark" style={{maxWidth: "764px", margin: "auto"}}>
       <div className="card-body">
         <h2 className="cart-title">Conway's Game of Life</h2>
         <p className="card-text">
-          My implementation of Conway's Game of Life in React. It's what's
-          called a 0-player game, or simulation. There are many iterations,
-          but the fundamental game is based on just 3 rules, and from that
-          all sorts of fascinating pattterns may emerge.
+          Use the control panel to play, pause, +/- generation speed, clear or reset screen, and place premade patterns.
         </p>
         <div className="row mb-4">
           <table className="game-of-life">
