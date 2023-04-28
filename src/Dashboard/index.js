@@ -2,6 +2,8 @@ import { PieChart } from "./PieChart";
 import { DashboardAPI } from "./dashboardAPI";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Common/LoadingSpinner";
+import { Outlet } from "react-router-dom";
+import { DashboardMenu } from "./DashboardMenu";
 
 export function Dashboard() {
 
@@ -21,12 +23,22 @@ export function Dashboard() {
   let pieChartData = DashboardAPI.generateRouteChart(results);
   let visitorCount = DashboardAPI.uniqueVisitorCount(results);
   let topPages = DashboardAPI.rankPages(results);
-  return (
-    <div className="container-md">
-      <div className="row mb-2">
 
-        <div className="col col-sm-8 col-md-5 mb-4">
-          <div className="card bg-light border-dark border rounded border-3">
+  return (
+      <div className="row mb-2 ">
+        <div className="col-4">
+          <DashboardMenu />
+        </div>
+        <div className="col-8 bg-light border-dark border rounded border-3">
+          <Outlet />
+        </div>
+      </div>
+  );
+}
+
+
+/* The old dashboard, hold for now...
+  <div className="card bg-light border-dark border rounded border-3">
             <div className="card-body">
               <h2 className="card-title">Route Traffic</h2>
               <hr />
@@ -60,9 +72,4 @@ export function Dashboard() {
                   .map((page, j) => <li key={"top-ten-" + j} className="bg-light list-group-item">{page.route.slice(12)}</li>)}
               </ol>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+          </div> */
