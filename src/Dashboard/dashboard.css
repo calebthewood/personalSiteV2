@@ -3,3 +3,11 @@
   width: .8rem;
   height: .8rem;
 }
+
+.nav-pills .nav-link.active {
+  background-color: rgb(33, 37, 41);
+}
+
+.nav-pills .nav-link {
+  color: rgb(33, 37, 41);
+}
