@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 
 export function Bio() {
-  const { param } = useParams();
-  console.log("Param: ", param);
+  const { pathname } = useLocation();
+  const hiddenBioRoutes = ['/', '/dashboard'];
+  if (hiddenBioRoutes.includes(pathname)) return null;
 
   return (
     <div className="col-12 col-md-3 gx-3">
@@ -40,7 +41,7 @@ export function Bio() {
                   <i className="fa-brands fa-instagram"></i>
                 </a>
                 <a type="button" className="btn btn-light" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
-                <i class="fa-regular fa-file"></i>
+                  <i class="fa-regular fa-file"></i>
                 </a>
               </li>
             </ul>
