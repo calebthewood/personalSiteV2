@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import { BlogAPI } from "./BlogList/BlogAPI";
 import { TwitterAPI } from "./TwitterAPI";
 import { Navigation } from "./RoutesNav/Navigation";
+import { useLocation } from "react-router-dom";
 import { RoutesList } from "./RoutesNav/RoutesList";
 import { Footer } from "./Common/Footer";
 import { Header } from "./Common/Header";
 import { Metrics } from "./Common/Metric";
 import { Bio } from "./Common/Bio/Bio";
-import { useLocation } from "react-router-dom";
 
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
   const [allPosts, setAllPosts] = useState(null);
   const [tweets, setTweets] = useState(null);
   const { pathname } = useLocation();
-  const hideBio = ['/', '/dashboard'].includes(pathname);
+  const hideBio = pathname === '/' || pathname.split('/').includes('dashboard');
 
 
   /** Populates Blog Posts & Tweets state */
@@ -37,18 +37,17 @@ export default function App() {
       <Navigation />
       <Header />
       <div className="container">
-        <div className="row">
-          {
-            hideBio ?
-              <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
-              : <>
-                <Bio />
-                <div className="col-12 col-md-9">
-                  <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
-                </div>
-              </>
-          }
-        </div>
+        {
+          hideBio ?
+            <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+            :
+            <div className="row">
+              <Bio />
+              <div className="col-12 col-md-9">
+                <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+              </div>
+            </div>
+        }
       </div>
 
       <Footer />

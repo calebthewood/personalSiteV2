@@ -4,7 +4,11 @@ import { PortfolioList } from "../PortfolioList";
 import { ProjectList } from "../ProjectList";
 import { BlogList } from "../BlogList";
 import { Home } from "../Home";
+
 import { Dashboard } from "../Dashboard";
+import { VisitorCount } from "../Dashboard/VisitorCount";
+import { UserPaths } from "../Dashboard/UserPaths";
+import { BlogRank } from "../Dashboard/BlogRank";
 
 // import ProjectDetail from "../projects/ProjectDetail";
 // import BlogPost from "../blog/BlogPost";
@@ -21,18 +25,24 @@ export function RoutesList({ isLoading, allPosts, tweets }) {
   //     {/* <Route path="/projects/:project" element={<ProjectDetail />} /> */}
   //     {/* <Route path="/blog/:id" element={<BlogPost />} /> */}
   return (
-      <Routes>
-        <Route path="/about" element={<AboutMe />} />
-        <Route path="/portfolio" element={<PortfolioList />} />
-        <Route path="/projects" element={<ProjectList />} />
-        <Route path="/projects/:param" element={<ProjectList />} />
-        <Route path="/blog/posts/:showing" element={<BlogList
-          isLoading={isLoading}
-          allPosts={allPosts}
-          tweets={tweets} />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<AboutMe />} />
+      <Route path="/portfolio" element={<PortfolioList />} />
+      <Route path="/projects" element={<ProjectList />} />
+      <Route path="/projects/:param" element={<ProjectList />} />
+      <Route path="/blog/posts/:showing" element={<BlogList
+        isLoading={isLoading}
+        allPosts={allPosts}
+        tweets={tweets} />} />
+      <Route path="dashboard" element={<Dashboard />} >
+        <Route index element={<VisitorCount />} />
+        <Route path="visitors" element={<VisitorCount />} />
+        <Route path="user-paths" element={<UserPaths />} />
+        <Route path="blog-ranks" element={<BlogRank />} />
         {/* <Route path="*" element={<Navigate to="/" />} /> */}
-      </Routes>
+      </Route>
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
