@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BlogAPI } from "./BlogList/BlogAPI";
+import { DashboardAPI } from "./Dashboard/dashboardAPI";
 import { TwitterAPI } from "./TwitterAPI";
 import { Navigation } from "./RoutesNav/Navigation";
 import { useLocation } from "react-router-dom";
@@ -15,21 +16,29 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [allPosts, setAllPosts] = useState(null);
   const [tweets, setTweets] = useState(null);
+  const [metrics, setMetrics] = useState(null);
+
   const { pathname } = useLocation();
   const hideBio = pathname === '/' || pathname.split('/').includes('dashboard');
 
 
-  /** Populates Blog Posts & Tweets state */
+  /** Populates Blog Posts, Tweets, Metrics state */
   useEffect(function () {
-    async function getPosts() {
+    async function getData() {
+
       let posts = await BlogAPI.fetchPosts();
       setAllPosts(posts);
+
       let tweets = await TwitterAPI.getTweetsByTag("hundredDays");
       setTweets(tweets);
+
+      let metrics = await DashboardAPI.fetchMetricData();
+      console.log("APP", metrics)
+      setMetrics(metrics.data.response);
+
       setIsLoading(false);
     }
-    console.debug("BlogList useEffect getPostsOnMount");
-    getPosts(); // Recent is the default
+    getData();
   }, []);
 
   return (
@@ -39,12 +48,12 @@ export default function App() {
       <div className="container">
         {
           hideBio ?
-            <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+            <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} metrics={metrics} />
             :
             <div className="row">
               <Bio />
               <div className="col-12 col-md-9">
-                <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} />
+                <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} metrics={metrics} />
               </div>
             </div>
         }

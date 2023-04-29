@@ -17,7 +17,6 @@ export function sortDates(a, b) {
 }
 
 function isNumber(char) {
-  // /^\d$/.test(char)
   return "0123456789".includes(char);
 }
 
