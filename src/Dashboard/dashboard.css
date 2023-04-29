@@ -11,3 +11,13 @@
 .nav-pills .nav-link {
   color: rgb(33, 37, 41);
 }
+
+#visitor-count {
+  font-size: 6rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.dashboard-container {
+  max-height: 70vh;
+}

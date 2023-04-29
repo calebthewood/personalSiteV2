@@ -8,6 +8,10 @@
   src: url('../public/fonts/OpenSauceSans-Bold.ttf');
 }
 
+body {
+  min-height: 100vh;
+}
+
 .nb-card {
   background-color: white;
   border: 2px solid black;
@@ -50,12 +54,6 @@ a.navigation-link:hover {
 /* selected link */
 a.navigation-link:active {
   color: #555749;
-}
-
-#visitor-count {
-  font-size: 6rem;
-  justify-content: center;
-  text-align: center;
 }
 
 .locale {

@@ -1,5 +1,10 @@
+import { DashboardAPI } from './dashboardAPI';
+import { LoadingSpinner } from '../Common/LoadingSpinner';
 
-export function BlogRank() {
+export function BlogRank({ metrics }) {
+  let pieChartData = DashboardAPI.generateRouteChart(metrics);
+  let topPages = DashboardAPI.rankPages(metrics);
 
-  return  <p>Blog Rank Page</p>
+  if (!metrics) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
+  return <p>Blog Rank Page</p>;
 }
