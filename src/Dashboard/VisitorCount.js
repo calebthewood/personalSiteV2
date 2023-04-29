@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { DashboardAPI } from './dashboardAPI';
 import { LoadingSpinner } from '../Common/LoadingSpinner';
 
-export function VisitorCount({ metrics }) {
-  if (!metrics) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
+export function VisitorCount({ metrics, isLoading }) {
+  // if (isLoading) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
 
   const visitorCount = DashboardAPI.uniqueVisitorCount(metrics);
   const { first, last } = DashboardAPI.getFirstLast(metrics);

@@ -1,8 +1,8 @@
 import { LoadingSpinner } from "../Common/LoadingSpinner";
 import { DashboardAPI } from "./dashboardAPI";
 
-export function UserPaths({ metrics }) {
-  if (!metrics) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
+export function UserPaths({ metrics, isLoading }) {
+  // if (isLoading) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
   const paths = DashboardAPI.getPaths(metrics);
 
   return (
