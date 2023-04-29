@@ -1,5 +1,33 @@
 
 
+/** Removes numbers and white space from the end of a string then title cases it */
+export function toTitleCase(str) {
+  let stack = str.split('');
+  while (' 0123456789'.includes(stack[stack.length-1])) stack.pop()
+  str = stack.join('')
+  return str.toLowerCase().replace(/(?:^|\s|-)\w/g, function(match) {
+    return match.toUpperCase();
+  });
+}
+
+/** Converts a yyyy-mm-dd date to better format
+ *  ex: 2023-3-1 --> 2023-03-01T12:00:00-08:00
+ *
+ * Ensures dates are properly parse by new Date()
+ */
+export function formatDateString(str) {
+  let [year, month, day] = str.split('-');
+  if (month.length === 1) {
+    month = `0${month}`
+  }
+  if (day.length === 1) {
+    day = `0${day}`;
+  }
+  return `${year}/${month}/${day}T00:00:00`
+}
+
+
+
 export function dateToNum(date) {
   let numString = "";
   for (let char of date) {

@@ -33,7 +33,7 @@ export default function App() {
       setTweets(tweets);
 
       let metrics = await DashboardAPI.fetchMetricData();
-      console.log("APP", metrics)
+      console.log("APP", metrics);
       setMetrics(metrics.data.response);
 
       setIsLoading(false);
@@ -58,7 +58,6 @@ export default function App() {
             </div>
         }
       </div>
-
       <Footer />
       <Metrics />
     </div>
