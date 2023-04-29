@@ -20,15 +20,13 @@ import './dashboard.css';
  */
 export function Dashboard({ isLoading }) {
 
-  if (isLoading) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
-
   return (
     <div className="row">
       <div className="col-xs-12 col-md-3 mb-4">
         <DashboardMenu />
       </div>
       <div className="col-xs-12 col-md-9 mb-4">
-        <Outlet />
+        {isLoading ?  <LoadingSpinner /> : <Outlet />}
       </div>
     </div>
   );
