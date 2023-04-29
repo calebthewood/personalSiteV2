@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toTitleCase, formatDateString, sortDates } from "../utils";
 
 /**
  * Much of this will be moved to server! But for now, I have two metric data types
@@ -33,9 +34,34 @@ export class DashboardAPI {
     return response;
   }
 
-  static rankPages(data) {
+  static rankAllPages(data) {
     return data.filter(doc => "visits" in doc).sort(
       (a, b) => b.visits - a.visits);
+  }
+
+  /**
+   * @param {*} data
+   * @returns a sorted array of blog titles and their visit count
+   */
+  static rankBlogPosts(data) {
+    const blogRanks = [];
+    const ignoreList = ['Recent', 'Tweets', 'Posts', '', 'What%e2%80%99s In A Button'];
+    // parse and move posts data to array for sorting
+    for (let record of data) {
+      if ('route' in record && record.route.includes('posts')) {
+        let path = record.route.split('/');
+        let slug = path[path.length - 1];
+        let title = slug.split('-').join(' ');
+        title = toTitleCase(title);
+
+        let count = record.visits;
+        blogRanks.push({ slug, title, count });
+      }
+    }
+    // sorts said array in place
+    const filtered = blogRanks.filter(item => !ignoreList.includes(item.title));
+    filtered.sort((a, b) => b.count - a.count);
+    return filtered;
   }
 
   // makes a pie chart for visitations to about, portfolio, project, blog
@@ -105,26 +131,27 @@ export class DashboardAPI {
     for (let record of data) {
       // excludes most of my own visits
       if ('sessions' in record && record.uuid !== "ab45196a-a6df-41c4-802c-fd89bd541e87") {
-        let { date, pages } = record.sessions
-          let path = [];
-          for (let page of pages) {
-            let pageArr = page.split('/');
-            let len = pageArr.length;
-            let last = pageArr[len - 1];
-            if (len === 2 && last === '') {
-              path.push('home');
-            } else {
-              path.push(pageArr[len - 1]);
-            }
+        let { date, pages } = record.sessions;
+        let path = [];
+        for (let page of pages) {
+          let pageArr = page.split('/');
+          let len = pageArr.length;
+          let last = pageArr[len - 1];
+          if (len === 2 && last === '') {
+            path.push('home');
+          } else {
+            path.push(pageArr[len - 1]);
           }
-          paths.push({
-            date: date,
-            path: path.join(' > ')
-          });
+        }
+
+        paths.push({
+          date: formatDateString(date),
+          path: path.join(' > ')
+        });
       }
     }
-    // would be neat to roll my own sort, but this is... so easy.
-    paths.sort((a, b) => new Date(b.date) - new Date(a.date));
-    return paths;
+
+    paths.sort(sortDates);
+    return paths.reverse();
   }
 }

@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import './footer.css'
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

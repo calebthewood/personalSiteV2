@@ -9,6 +9,7 @@ import { Dashboard } from "../Dashboard";
 import { VisitorCount } from "../Dashboard/VisitorCount";
 import { UserPaths } from "../Dashboard/UserPaths";
 import { BlogRank } from "../Dashboard/BlogRank";
+import { RouteTraffic } from "../Dashboard/RouteTraffic"
 
 // import ProjectDetail from "../projects/ProjectDetail";
 // import BlogPost from "../blog/BlogPost";
@@ -40,6 +41,7 @@ export function RoutesList({ isLoading, allPosts, tweets, metrics }) {
         <Route path="visitors" element={<VisitorCount metrics={metrics} />} />
         <Route path="user-paths" element={<UserPaths metrics={metrics} />} />
         <Route path="blog-ranks" element={<BlogRank metrics={metrics} />} />
+        <Route path="route-traffic" element={<RouteTraffic metrics={metrics} />} />
         {/* <Route path="*" element={<Navigate to="/" />} /> */}
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
