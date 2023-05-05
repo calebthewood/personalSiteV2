@@ -14,7 +14,7 @@ export function VisitorCount({ metrics, isLoading }) {
         <h2>Unique Visitors</h2>
         <hr />
         <div className="row">
-          <div className="col-xs-12 col-md-4">
+          <div className="col-xs-12 col-md-4 no-wrap">
             <h2 id="visitor-count">
               {visitorCount}
             </h2>
