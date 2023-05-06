@@ -25,7 +25,7 @@ export function Navigation() {
                 <NavLink className="nav-link" to="/blog/posts/recent">Blog</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
+                <NavLink className="nav-link" to="/dashboard/visitors">Dashboard</NavLink>
               </li>
             </ul>
           </div>
