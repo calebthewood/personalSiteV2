@@ -58,7 +58,7 @@ export function BlogList({ isLoading, allPosts, tweets }) {
         <div className="col-12">
           <BlogMenu />
         </div>
-        <div className="col-12">
+        <div className="col-12 mb-4">
           <div id="blog-list" className="bg-light border-dark border rounded border-3">
             {isLoading ?
               <LoadingSpinner /> :
