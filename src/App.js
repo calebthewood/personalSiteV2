@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { BlogAPI } from "./BlogList/BlogAPI";
 import { DashboardAPI } from "./Dashboard/dashboardAPI";
-import { TwitterAPI } from "./TwitterAPI";
+// import { TwitterAPI } from "./TwitterAPI";
 import { Navigation } from "./RoutesNav/Navigation";
 import { useLocation } from "react-router-dom";
 import { RoutesList } from "./RoutesNav/RoutesList";
@@ -29,8 +29,8 @@ export default function App() {
       let posts = await BlogAPI.fetchPosts();
       setAllPosts(posts);
 
-      let tweets = await TwitterAPI.getTweetsByTag("hundredDays");
-      setTweets(tweets);
+      // let tweets = await TwitterAPI.getTweetsByTag("hundredDays");
+      // setTweets(tweets);
 
       let metrics = await DashboardAPI.fetchMetricData();
       console.log("APP", metrics);
