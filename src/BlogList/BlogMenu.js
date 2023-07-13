@@ -7,13 +7,15 @@ export function BlogMenu() {
     <ul className="nav nav-pills nav-fill justify-content-evenly rounded bg-light border-dark border border-3 mb-4">
       <li class="nav-item m-2">
         <Link to="/blog/posts/recent"
-        className={showing === "recent" ? "nav-link text-light bg-dark border-dark" : "nav-link text-dark"}
-        aria-current="page" >Recent Posts</Link>
+          className={showing === "recent" ? "nav-link text-light bg-dark border-dark" : "nav-link text-dark"}
+          aria-current="page" >Recent Posts</Link>
       </li>
       <li class="nav-item m-2">
         <Link to="/blog/posts/tweets"
-        className={showing === "tweets" ? "nav-link text-light bg-dark border-dark" : "nav-link text-dark"}
-        aria-current="page"><i className="fa-brands fa-twitter"></i> 100 Days of Code</Link>
+          style={{ pointerEvents: "none" }}
+          className={showing === "tweets" ? "nav-link text-light bg-dark border-dark" : "nav-link text-dark"}
+          aria-current="page"
+          title="Tweets disabled, thanks Elon" ><i className="fa-brands fa-twitter"></i><s>100 Days of Code</s></Link>
       </li>
       <li class="nav-item m-2">
         <Link className="nav-link disabled" >View Tags</Link>
