@@ -40,8 +40,8 @@ export function BlogList({ isLoading, allPosts, tweets }) {
       postList = BlogAPI.filterTaggedPosts(posts, showing, paginateRange);
     } else if (showing === 'recent') {
       postList = BlogAPI.filterRecentPosts(posts, showing, paginateRange);
-    } else if (showing === 'tweets') {
-      return BlogAPI.filterTweets(tweets, paginateRange);
+    // } else if (showing === 'tweets') {
+    //   return BlogAPI.filterTweets(tweets, paginateRange);
     } else {
       let post = BlogAPI.filterPostsBySlug(posts, showing);
       return <BlogPost post={post} previous={showing} />;
