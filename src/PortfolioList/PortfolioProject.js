@@ -12,9 +12,8 @@ export function PortfolioProject({ project }) {
   }
 
   return (
-    <div className="row">
+    <div className="row enter-from-below">
       <div className="col-12 col-md-9 mb-4 gx-4">
-
         <div className="card border-dark border border-3 mb-4 col-12 col-md-auto">
           <div className="card-header border-dark border-bottom border-3 mb-2">
             <ul className="nav nav-pills nav-fill" onClick={handleTabs}>

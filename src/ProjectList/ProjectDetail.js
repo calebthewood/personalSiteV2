@@ -6,7 +6,7 @@ export function ProjectDetail({ project }) {
       <div className="col col-md-1">
         <ReturnButton />
       </div>
-      <div className="col-12 col-md-11 nb-card">
+      <div className="col-12 col-md-11 nb-card enter-from-below">
         {project.component}
       </div>
     </div>

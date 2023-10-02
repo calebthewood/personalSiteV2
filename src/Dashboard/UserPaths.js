@@ -2,11 +2,10 @@ import { LoadingSpinner } from "../Common/LoadingSpinner";
 import { DashboardAPI } from "./dashboardAPI";
 
 export function UserPaths({ metrics, isLoading }) {
-  // if (isLoading) return <div className="container-md"><div className="row mb-2"><LoadingSpinner /></div></div>;
   const paths = DashboardAPI.getPaths(metrics);
 
   return (
-    <div className="card bg-light border-dark border rounded border-3 ">
+    <div className="card bg-light border-dark border rounded border-3 enter-from-below">
       <div className="card-body">
         <h2>User Paths</h2>
         <hr />
