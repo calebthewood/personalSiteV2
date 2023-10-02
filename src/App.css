@@ -9,8 +9,12 @@
 }
 
 body {
-  min-height: 100vh;
   min-width: 375px;
+}
+
+main {
+  min-height: 70vh;
+
 }
 
 .nb-card {

@@ -45,7 +45,7 @@ export default function App() {
     <div className="App">
       <Navigation />
       <Header />
-      <div className="container">
+      <main id="main" className="container">
         {
           hideBio ?
             <RoutesList isLoading={isLoading} allPosts={allPosts} tweets={tweets} metrics={metrics} />
@@ -57,9 +57,9 @@ export default function App() {
               </div>
             </div>
         }
-      </div>
-      <Footer />
+      </main>
       <Metrics />
+      <Footer />
     </div>
   );
 }
