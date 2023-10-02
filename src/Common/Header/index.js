@@ -8,14 +8,15 @@ function Header() {
 
   useEffect(() => setRouteData(headerData[path]), [path]);
 
-  return (routeData &&
+  if (!routeData) return <></>;
+  return (
     <header id="header">
       <div className={"container-md " + routeData.width}>
         <div className="card border-dark border border-3 mb-4 mb-3 mt-3">
-          <div className="card-body fade-in">
-            <h1 className="card-title">{routeData.title}</h1>
-            <h5 className="card-subtitle mb-2 text-muted">{routeData.subtitle}</h5>
-            <p className="card-text">{routeData.text}</p>
+          <div className="card-body">
+            <h1 className="card-title fade-in">{routeData.title}</h1>
+            <h5 className="card-subtitle mb-2 text-muted fade-in">{routeData.subtitle}</h5>
+            <p className="card-text fade-in">{routeData.text}</p>
           </div>
         </div>
       </div>
