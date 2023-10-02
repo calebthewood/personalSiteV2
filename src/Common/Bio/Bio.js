@@ -30,16 +30,16 @@ export function Bio() {
 
             <ul className="list-group text-center list-group-flush flex-column">
               <li id="about-btns" className="list-group-item btn-group bg-light ">
-                <a type="button" className="btn btn-light" href="https://www.linkedin.com/in/caleb-wood-440b37168/">
+                <a title="LinkedIn" type="button" className="btn btn-light" href="https://www.linkedin.com/in/caleb-wood-440b37168/">
                   <i className="fa-brands fa-linkedin"></i>
                 </a>
-                <a type="button" className="btn btn-light" href="https://github.com/calebthewood">
+                <a title="GitHub" type="button" className="btn btn-light" href="https://github.com/calebthewood">
                   <i className="fa-brands fa-github"></i>
                 </a>
-                <a type="button" className="btn btn-light" href="https://www.instagram.com/calebthewood/?hl=en">
+                <a title="Instagram" type="button" className="btn btn-light" href="https://www.instagram.com/calebthewood/?hl=en">
                   <i className="fa-brands fa-instagram"></i>
                 </a>
-                <a type="button" className="btn btn-light" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
+                <a title="Resume" type="button" className="btn btn-light" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
                   <i className="fa-regular fa-file"></i>
                 </a>
               </li>
