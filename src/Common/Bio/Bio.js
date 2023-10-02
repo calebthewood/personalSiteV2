@@ -39,7 +39,7 @@ export function Bio() {
                 <a title="Instagram" type="button" className="btn btn-light" href="https://www.instagram.com/calebthewood/?hl=en">
                   <i className="fa-brands fa-instagram"></i>
                 </a>
-                <a title="Resume" type="button" className="btn btn-light" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.pdf">
+                <a title="Resume" type="button" className="btn btn-light" href="https://s3.us-west-1.amazonaws.com/pix.ly/Caleb_Wood_Resume.docx">
                   <i className="fa-regular fa-file"></i>
                 </a>
               </li>
