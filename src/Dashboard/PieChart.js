@@ -32,7 +32,7 @@ export function PieChart({ results }) {
 
   return (
     <div>
-      <div className="row">
+      <div className="row enter-from-below">
         {results.map((item, i) => {
           let style = { background: item.color };
           return (

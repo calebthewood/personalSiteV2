@@ -8,7 +8,7 @@ export function AboutMe() {
     <section id="about">
       <div className="col">
         <div
-          className="card border-dark border border-3 p-4 mb-4">
+          className="card border-dark border border-3 p-4 mb-4 enter-from-below">
           <h5 className="card-title">A little about myself, and the site</h5>
           <ul className="list-group border-top-1 list-group-flush">
             <li className="list-group-item">
@@ -22,7 +22,7 @@ export function AboutMe() {
             </li>
           </ul>
         </div>
-        <div className="row text-center">
+        <div className="row text-center enter-from-below">
           {sectionData.map((section, i) => <SectionCard key={`${section.title}-${i}`} section={section} />)}
         </div>
       </div>

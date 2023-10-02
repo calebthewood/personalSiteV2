@@ -64,3 +64,37 @@ a.navigation-link:active {
 .locale {
   font-size: 1rem;
 }
+
+.transition-color {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+}
+
+@keyframes slide-in-bottom {
+  from {
+    transform: translatey(10%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 100%;
+  }
+}
+
+.enter-from-below {
+  animation: slide-in-bottom 200ms;
+}
+
+@keyframes fade-in-place {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.fade-in {
+  animation: fade-in-place 200ms;
+}

@@ -6,7 +6,7 @@ export function Bio() {
   if (pathname === "/" || pathname.split("/").includes('dashboard')) return null;
 
   return (
-    <div className="col-12 col-md-3 gx-3">
+    <div className="col-12 col-md-3 gx-3 enter-from-below">
       <div className="row justify-content-around">
 
         <div className="col-5 col-md-12">
