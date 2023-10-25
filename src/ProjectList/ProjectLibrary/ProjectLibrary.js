@@ -4,9 +4,19 @@ import { Productiv } from "./Productiv";
 import { Whittle } from "./Whittle";
 import { AegeanCalculator } from "./AegeanCalculator";
 import { RatingElement } from "./RatingElement"
+import TimeZoneField from "./TimeZoneField/TimeZoneField";
 
 
 export const ProjectLibrary = [
+  {
+    title: "React Select TimeZone",
+    id: "reactSelectTimeZone",
+    description: "A time zone component I built on top of react-select and react-timezone-select.",
+    component: <TimeZoneField />,
+    img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/logo192.png",
+    tags: ["JavaScript", "React", "Legends"],
+    url: "/reactSelectTimeZone"
+  },
   {
     title: "Conway's Game of Life",
     id: "gameOfLife",
