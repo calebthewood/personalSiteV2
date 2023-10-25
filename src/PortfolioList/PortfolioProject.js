@@ -29,9 +29,6 @@ export function PortfolioProject({ project }) {
                   </li>
                 );
               })}
-              {project.link
-                ? <li className="nav-item"><a id="demo-link" type="button" className="nav-link" href={project.link}>Visit Demo  <i className="fa-solid fa-arrow-up-right-from-square"></i></a>  </li>
-                : ""}
             </ul>
           </div>
 

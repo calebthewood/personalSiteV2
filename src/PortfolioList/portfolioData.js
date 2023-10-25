@@ -1,5 +1,3 @@
-import { isContentEditable } from "@testing-library/user-event/dist/utils";
-
 
 export const portfolio = [
   {
@@ -64,7 +62,7 @@ export const portfolio = [
       "Implemented parameterized queries to prevent against SQL injection",
     ],
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/jobly-square.png",
-    link: "https://jobly-r25.surge.sh/",
+    link: "#",
   },
   {
     title: "Warbler",
@@ -98,6 +96,6 @@ export const portfolio = [
       "Stored passwords as bcrypt hashes. Referenced hash during login to avoid hold plain text passwords",
     ],
     img: "https://s3.us-west-1.amazonaws.com/pix.ly/project-shots/warbler-square.png",
-    link: "https://r-warble.herokuapp.com/",
+    link: "#",
   },
 ];
