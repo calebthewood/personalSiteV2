@@ -12,7 +12,7 @@ export function Bio() {
         <div className="col-5 col-md-12">
           <div
             className="card border-dark border border-3 mb-4 bg-dark gy-4 gx-4 mb-4">
-            <img className="card-img" src="https://s3.us-west-1.amazonaws.com/pix.ly/selfie.jpg" alt="Caleb's Selfie" />
+            <img className="card-img" src="https://s3.us-west-1.amazonaws.com/pix.ly/selfie.jpg" alt="Caleb's Selfie" title="Me in a cafe, definitely coding" />
           </div>
         </div>
 
