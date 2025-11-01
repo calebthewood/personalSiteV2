@@ -1,0 +1,22 @@
+.productiv header {
+  background-color: darkgoldenrod;
+  color: white;
+  box-shadow: 3px 3px 10px #333;
+}
+
+.quoteBtn {
+  border: 1px solid white;
+  color: white;
+  background-color: transparent;
+  font-size: smaller;
+  margin: 8px;
+}
+
+.quoteBtn:hover {
+  background-color: white;
+  color: darkgoldenrod;
+}
+
+.Todo {
+  cursor: pointer;
+}

@@ -3,11 +3,11 @@ import "./home.css";
 import { BoxCanvas } from "./BoxCanvas";
 
 export function Home({ path }) {
-
+  const uhero = <><span className="font-serif">UH</span><span className="font-sans">ERO</span></>
   const content = {
     home: {
       title: <h1>Welcome</h1>,
-      body: <h2>I'm Caleb Wood, Lead Dev at<br/> UHERO, and this is my site.</h2>
+      body: <h2>I'm Caleb, Lead Dev at UHERO, and this is my site.</h2>
     },
     about : {
       title: <h1>About me</h1>,

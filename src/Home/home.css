@@ -2,6 +2,14 @@
   height: 50vw;
 } */
 
+.font-serif {
+  font-family: serif;
+}
+
+.font-sans {
+  font-family: sans-serif;
+}
+
 .wrapper {
   width: 1000px;
   margin: 100px auto;
