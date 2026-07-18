@@ -1,15 +1,102 @@
-@import "~bootstrap/dist/css/bootstrap.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body {
-  background-color: #f5be49;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+@font-face {
+  font-family: 'OSS-Bold';
+  src: url('/fonts/OpenSauceSans-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OSS-SemiBold';
+  src: url('/fonts/OpenSauceSans-SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: unset;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: #f5be49;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* the voxel map keeps its own dark world; VoxelMapPage toggles this class */
+body.map-theme {
+  background: #020617;
+}
+
+::selection {
+  background: rgb(34 211 238 / 0.35);
+}
+
+/* slim scrollbars to match the glass panels */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184 / 0.35) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(148 163 184 / 0.35);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(148 163 184 / 0.55);
+}
+
+/* entrance animations for the chrome */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out both;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* neo-brutalist building blocks for the portfolio pages */
+@layer components {
+  .nb-card {
+    @apply rounded-[5px] border-2 border-black bg-white px-10 py-8 text-black shadow-nb;
+  }
+
+  .nb-btn {
+    @apply flex h-[4.5rem] w-full cursor-pointer items-center justify-center rounded-[10px] border-[3px] border-black bg-white font-semi text-[21px] text-black shadow-nb-btn transition-all duration-200 will-change-transform;
+  }
+  .nb-btn:hover {
+    @apply translate-x-[6px] translate-y-[6px] shadow-nb-sm;
+  }
+  .nb-btn:active {
+    @apply translate-x-[8px] translate-y-[10px] bg-[#c3c3c3] shadow-nb-active;
+  }
+  .nb-btn-pressed {
+    @apply translate-x-[6px] translate-y-[6px] shadow-nb-sm;
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "name": "waimea-200m",
+  "crs": "EPSG:3857",
+  "nRows": 43,
+  "nCols": 54,
+  "cellX": 198,
+  "cellY": 198,
+  "col0CenterX": -17600439.15680272,
+  "row0CenterY": 2473647.813835799,
+  "count": 2322
+}
