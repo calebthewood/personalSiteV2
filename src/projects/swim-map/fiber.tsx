@@ -1074,6 +1074,9 @@ function PlaybackBar({ clockRef, playing, onTogglePlay, onRestart, speed, onSpee
         return () => clearInterval(id)
     }, [clockRef, playing, loop, durationMs, onTogglePlay])
 
+    // the replay has run out: the play button restarts instead of resuming
+    const finished = !playing && durationMs > 0 && now >= durationMs
+
     return (
         <div className='pointer-events-auto flex w-[min(560px,calc(100vw-2rem))] flex-col gap-1.5 rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-2.5 shadow-2xl shadow-black/40 backdrop-blur-xl'>
             {/* wraps to two rows on phones: transport + scrubber, then speeds */}
@@ -1082,7 +1085,7 @@ function PlaybackBar({ clockRef, playing, onTogglePlay, onRestart, speed, onSpee
                     className='grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 text-slate-950 shadow-lg shadow-cyan-500/30 transition enabled:hover:brightness-110 enabled:active:scale-95 disabled:opacity-40 disabled:saturate-0'
                     onClick={onTogglePlay}
                     disabled={!hasSwimmers}
-                    title={hasSwimmers ? (playing ? 'Pause' : 'Play') : 'Add swimmers first'}
+                    title={hasSwimmers ? (playing ? 'Pause' : finished ? 'Replay' : 'Play') : 'Add swimmers first'}
                 >
                     {playing ? (
                         <span className='flex gap-[3px]'>
@@ -1268,7 +1271,7 @@ function Control({ label, value, min, max, step, onChange }: ControlProps) {
     )
 }
 
-export function FiberCanvas({ topLeftAccessory }: { topLeftAccessory?: React.ReactNode } = {}) {
+export function FiberCanvas() {
     const [dataset, setDataset] = useState('Waimea 10m')
     // results panel starts open on desktop, collapsed to its toggle on phones
     const [sidebarOpen, setSidebarOpen] = useState(
@@ -1629,7 +1632,8 @@ export function FiberCanvas({ topLeftAccessory }: { topLeftAccessory?: React.Rea
                             )}
                         </>
                     )}
-                    <CameraControls ref={controlsRef} />
+                    {/* clamp at the horizon: the map has no underside worth seeing */}
+                    <CameraControls ref={controlsRef} maxPolarAngle={Math.PI / 2} />
                 </Canvas>
             </div>
 
@@ -1677,18 +1681,6 @@ export function FiberCanvas({ topLeftAccessory }: { topLeftAccessory?: React.Rea
                 />
                 </div>
             </div>
-
-            {/* site chrome (e.g. the back link) rides the top row: next to the
-                open panel on desktop, next to the collapsed toggle otherwise */}
-            {topLeftAccessory && (
-                <div
-                    className={`absolute top-4 z-10 transition-all duration-300 ${sidebarOpen
-                        ? 'hidden sm:left-[22rem] sm:block'
-                        : 'left-16'}`}
-                >
-                    {topLeftAccessory}
-                </div>
-            )}
 
             {/* top-right: camera starting points + settings + help. Drops to a
                 second row on phones so it clears the toggle + accessory. */}
@@ -1816,7 +1808,12 @@ export function FiberCanvas({ topLeftAccessory }: { topLeftAccessory?: React.Rea
                 <PlaybackBar
                     clockRef={raceClock}
                     playing={playing}
-                    onTogglePlay={() => setPlaying(p => !p)}
+                    onTogglePlay={() => {
+                        // once the replay has run out, play doubles as restart
+                        // (same swimmers, same speed — just from the gun again)
+                        if (!playing && durationMs > 0 && raceClock.current >= durationMs) raceClock.current = 0
+                        setPlaying(p => !p)
+                    }}
                     onRestart={() => { raceClock.current = 0 }}
                     speed={speed}
                     onSpeed={setSpeed}

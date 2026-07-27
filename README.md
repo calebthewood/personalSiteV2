@@ -6,7 +6,7 @@ Personal portfolio (neo-brutalist) merged with interactive projects. Vite + Reac
 
 - `/` — home
 - `/projects` — project cards
-  - `/projects/voxel-map` — **Open Water Replay**: a 3D voxel map of Waimea Bay replaying real North Shore Swim Series races (react-three-fiber; keeps its own dark UI)
+  - `/projects/swim-map` — **Open Water Replay**: a 3D voxel map of Waimea Bay replaying real North Shore Swim Series races (react-three-fiber; keeps its own dark UI)
   - `/projects/whittle` — wordle-assist word filter
   - `/projects/game-of-life` — Conway's Game of Life
   - `/projects/aegean-calculator` — Linear-B numeral calculator
@@ -30,4 +30,4 @@ The map loads compact binary heightfields from `public/data/` (`*.bin` + `*.meta
 bun run preprocess
 ```
 
-Race results in `public/results-*.json` are RunSignup exports; courses and camera presets live in `src/projects/voxel-map/races.ts`.
+Race results in `public/results-*.json` are RunSignup exports; courses and camera presets live in `src/projects/swim-map/races.ts`.

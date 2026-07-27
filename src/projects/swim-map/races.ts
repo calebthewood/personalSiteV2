@@ -99,12 +99,25 @@ export const RACES: Record<string, Race> = {
         cameras: DEFAULT_CAMERAS,
         labelAnchor: [21.630398, -158.065208],
     },
+        challenge: {
+        name: "North Shore Challenge",
+        miles: 2.3,
+        course: {
+            waypoints: [[21.66659, -158.052699], [21.655751, -158.064191], [21.643021, -158.067243],[21.640304, -158.063918]],
+            startGateBearing: 140,
+            finishGateBearing: 30,
+            gateWidthM: 120,
+        },
+        resultsUrl: '/results-northshorechallenge.json',
+        cameras: DEFAULT_CAMERAS,
+        labelAnchor: [21.645425, -158.061000],
+    },
 }
 
 /** races on the calendar with no results yet: shown greyed-out in the
  * onboarding, absent from the sidebar switcher */
 export const UPCOMING_RACES: { name: string, miles: number }[] = [
-    { name: 'North Shore Soap Factory North Shore Challenge', miles: 2.3 },
+    // { name: 'North Shore Soap Factory North Shore Challenge', miles: 2.3 },
 ]
 
 /** the featured swimmers spotlighted from the onboarding's Betty Ann Barnett page */

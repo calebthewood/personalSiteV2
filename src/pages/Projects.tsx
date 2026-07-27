@@ -13,7 +13,7 @@ const PROJECTS: Project[] = [
     description:
       'A 3D voxel map of Waimea Bay that replays real North Shore Swim Series races — pick a race, add swimmers, and watch them cross the bay.',
     tags: ['TypeScript', 'Three.js', 'React'],
-    to: '/projects/voxel-map',
+    to: '/projects/swim-map',
   },
   {
     title: 'Whittle',

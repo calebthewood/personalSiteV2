@@ -1,14 +1,14 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { SiteLayout } from './pages/SiteLayout'
-import { Home } from './pages/Home'
-import { Projects } from './pages/Projects'
-import { Portfolio } from './pages/Portfolio'
 import { Contact } from './pages/Contact'
+import { Home } from './pages/Home'
+import { Portfolio } from './pages/Portfolio'
+import { Projects } from './pages/Projects'
+import { SiteLayout } from './pages/SiteLayout'
 
 // each project is its own chunk: three.js, the word list, etc. stay out of the
 // main bundle
-const VoxelMapPage = lazy(() => import('./projects/voxel-map/VoxelMapPage'))
+const VoxelMapPage = lazy(() => import('./projects/swim-map/VoxelMapPage'))
 const Whittle = lazy(() => import('./projects/whittle/Whittle'))
 const GameOfLife = lazy(() => import('./projects/game-of-life/GameOfLife'))
 const AegeanCalculator = lazy(() => import('./projects/aegean-calculator/AegeanCalculator'))
@@ -39,7 +39,7 @@ function App() {
         />
       </Route>
       <Route
-        path='/projects/voxel-map'
+        path='/projects/swim-map'
         element={
           <Suspense
             fallback={
@@ -52,6 +52,7 @@ function App() {
           </Suspense>
         }
       />
+      <Route path='/projects/voxel-map' element={<Navigate to='/projects/swim-map' replace />} />
       <Route path='*' element={<Navigate to='/' replace />} />
     </Routes>
   )
