@@ -49,8 +49,8 @@ export interface Race {
     /** advertised course distance in miles */
     miles: number
     course: Course
-    /** results JSON in public/, RunSignup format (headings + resultSet.results) */
-    resultsUrl: string
+    /** seasons with fetched results (see scripts/fetch-results.mjs), ascending */
+    years: number[]
     /** camera starting points; the first is applied when the race is selected */
     cameras: CameraStart[]
     /** [lat, lng] where the swimmer name label floats, tuned per race so it
@@ -69,7 +69,7 @@ export const RACES: Record<string, Race> = {
             finishGateBearing: 40, // TODO tune
             gateWidthM: 140,
         },
-        resultsUrl: '/results-alohasalads.json',
+        years: [2024, 2025, 2026],
         cameras: SALADS_CAMERAS,
         labelAnchor: [21.667193, -158.045354],
     },
@@ -82,7 +82,7 @@ export const RACES: Record<string, Race> = {
             finishGateBearing: 30, // TODO tune
             gateWidthM: 120,
         },
-        resultsUrl: '/results-choloswaimea.json',
+        years: [2023, 2024, 2025, 2026],
         cameras: DEFAULT_CAMERAS,
         labelAnchor: [21.635984, -158.065193],
     },
@@ -95,7 +95,7 @@ export const RACES: Record<string, Race> = {
             finishGateBearing: 0,
             gateWidthM: 120,
         },
-        resultsUrl: '/results-chuns2waimea.json',
+        years: [2023, 2024, 2025, 2026],
         cameras: DEFAULT_CAMERAS,
         labelAnchor: [21.630398, -158.065208],
     },
@@ -108,11 +108,46 @@ export const RACES: Record<string, Race> = {
             finishGateBearing: 30,
             gateWidthM: 120,
         },
-        resultsUrl: '/results-northshorechallenge.json',
+        years: [2023, 2024, 2025, 2026],
         cameras: DEFAULT_CAMERAS,
         labelAnchor: [21.645425, -158.061000],
     },
+    dukes: {
+        name: "Duke's Waikiki Ocean Mile Swim",
+        miles: 1,
+        course: {
+            // TODO placeholder buoys off Waikiki, replace with real course data
+            waypoints: [[21.271500, -157.822800], [21.269800, -157.829500], [21.272800, -157.831500]],
+            startGateBearing: 90, // TODO tune
+            finishGateBearing: 0, // TODO tune
+            gateWidthM: 120,
+        },
+        years: [2023, 2024, 2025, 2026],
+        cameras: DEFAULT_CAMERAS,
+        labelAnchor: [21.267500, -157.827000], // TODO tune
+    },
+    roughwater: {
+        name: 'Waikiki Rough Water Swim',
+        miles: 2.4,
+        course: {
+            // TODO placeholder buoys (Kaimana Beach -> Duke Kahanamoku Beach), replace with real course data
+            waypoints: [[21.266100, -157.822300], [21.268000, -157.833000], [21.277700, -157.839100]],
+            startGateBearing: 90, // TODO tune
+            finishGateBearing: 0, // TODO tune
+            gateWidthM: 120,
+        },
+        years: [2025, 2026],
+        cameras: DEFAULT_CAMERAS,
+        labelAnchor: [21.263000, -157.831000], // TODO tune
+    },
 }
+
+/** path of a season's results JSON in public/, RunSignup format
+ * (headings + resultSet.results), written by scripts/fetch-results.mjs */
+export const resultsUrl = (raceKey: string, year: number) => `/results/${raceKey}-${year}.json`
+
+/** latest season with results, the default when a race is selected */
+export const latestYear = (race: Race) => race.years[race.years.length - 1]
 
 /** races on the calendar with no results yet: shown greyed-out in the
  * onboarding, absent from the sidebar switcher */
@@ -123,6 +158,7 @@ export const UPCOMING_RACES: { name: string, miles: number }[] = [
 /** the featured swimmers spotlighted from the onboarding's Betty Ann Barnett page */
 export const BETTY_SPOTLIGHT = {
     raceKey: 'cholo',
+    year: 2026, // bibs are season-specific
     bibs: ['1003', '1147', '883'], // Knut (1st place), Betty, Caleb
     labelBib: '1147', // Betty gets the name tooltip
 }

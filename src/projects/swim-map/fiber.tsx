@@ -8,7 +8,7 @@ import * as THREE from 'three'
 import type { Line2 } from 'three-stdlib'
 import ExplosionConfetti from './confetti'
 import { Onboarding } from './onboarding'
-import { BETTY_SPOTLIGHT, RACES, UNITS_PER_METER, type CameraStart, type Course } from './races'
+import { BETTY_SPOTLIGHT, RACES, UNITS_PER_METER, latestYear, resultsUrl, type CameraStart, type Course } from './races'
 import { VoxelWater } from './water'
 
 const safetyOrange = "#FF6600"
@@ -278,6 +278,18 @@ function terrainTopAt(view: View, heightScale: number, x: number, z: number): nu
 // playback speed = course time / wall time; the clock counts course ms, so
 // switching speed mid-race never teleports the swimmers.
 // 2x (120: 1 course minute in 500ms) matches the original fixed speed
+// Tailwind's `sm` breakpoint, as a media query — the layout switches between
+// the phone column and the free-floating desktop chrome here
+const SM_UP = '(min-width: 640px)'
+
+// Auto-fit framing: the fraction of the canvas the buoys should span. Scaling
+// with the viewport (rather than reserving a fixed pixel margin) frames a phone
+// as tightly as a desktop. Vertical is tighter — the playback bar and the top
+// pill overlay the top and bottom of the canvas. The leftover margin is also
+// what keeps wandering swimmers, and the run past the finish gate, in frame.
+const FIT_FRACTION_X = 0.78
+const FIT_FRACTION_Y = 0.70
+
 const SPEED_PRESETS = [
     { label: '1×', factor: 1 }, // real-time
     { label: '120×', factor: 120 }, // ~1 course minute every 500ms (the original fixed speed)
@@ -410,7 +422,7 @@ function makePath(g: Grid, course: Course, rand: SwimmerRand) {
  * low zoom); it shares the visible mesh's instanceMatrix so it's written once.
  * Finished swimmers collapse to zero scale (hides them and kills raycasts).
  */
-function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, loop, positionsRef, onHover }: {
+function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, loop, positionsRef, onHover, onSelect }: {
     view: View
     course: Course
     heightScale: number
@@ -420,6 +432,8 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
     loop: boolean
     positionsRef: React.MutableRefObject<Map<string, THREE.Vector3>>
     onHover: (bib: string, name: string, color: string) => void
+    /** click/tap — pins the label; the only way in on touch, which has no hover */
+    onSelect: (bib: string, name: string, color: string) => void
 }) {
     const meshRef = useRef<THREE.InstancedMesh>(null!)
     const hitRef = useRef<THREE.InstancedMesh>(null!)
@@ -544,17 +558,29 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
         }
     })
 
-    const handlePointer = (e: { instanceId?: number, stopPropagation: () => void }) => {
+    /** resolve an instanced-mesh event to a swimmer, skipping finished (hidden) ones */
+    const simAt = (e: { instanceId?: number, stopPropagation: () => void }) => {
         const id = e.instanceId
-        if (id === undefined || id >= sims.length) return
+        if (id === undefined || id >= sims.length) return null
         const s = sims[id]
-        if (celebrated.current.has(s.bib)) return
+        if (celebrated.current.has(s.bib)) return null
         e.stopPropagation()
+        return { id, s }
+    }
+
+    const handlePointer = (e: { instanceId?: number, stopPropagation: () => void }) => {
+        const hit = simAt(e)
+        if (!hit) return
         setHovered(true)
-        if (lastHover.current !== id) {
-            lastHover.current = id
-            onHover(s.bib, s.name, s.color)
+        if (lastHover.current !== hit.id) {
+            lastHover.current = hit.id
+            onHover(hit.s.bib, hit.s.name, hit.s.color)
         }
+    }
+
+    const handleClick = (e: { instanceId?: number, stopPropagation: () => void }) => {
+        const hit = simAt(e)
+        if (hit) onSelect(hit.s.bib, hit.s.name, hit.s.color)
     }
 
     if (sims.length === 0) return null
@@ -578,6 +604,7 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
                 onPointerOver={handlePointer}
                 onPointerMove={handlePointer}
                 onPointerOut={() => { setHovered(false); lastHover.current = null }}
+                onClick={handleClick}
             >
                 <boxGeometry args={[5, 5, 5]} />
                 <meshBasicMaterial />
@@ -865,11 +892,14 @@ const selectCls = inputCls + ' appearance-none cursor-pointer [&>option]:bg-slat
 const sectionLabelCls = 'text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-500'
 
 function ResultsPanel({
-    raceKey, onSelectRace, racers, selectedBibs, onToggle, onAddGroup, onClear,
+    raceKey, onSelectRace, year, onSelectYear, racers, selectedBibs, onToggle, onAddGroup, onClear,
     pinnedBib, onHoverSwimmer, onPinSwimmer,
 }: {
     raceKey: string
     onSelectRace: (key: string) => void
+    /** season currently shown (always one of the race's `years`) */
+    year: number
+    onSelectYear: (year: number) => void
     racers: Racer[]
     selectedBibs: string[]
     onToggle: (bib: string) => void
@@ -932,6 +962,27 @@ function ResultsPanel({
                         </button>
                     )
                 })}
+            </div>
+
+            {/* year switcher */}
+            <div className='flex flex-col gap-1.5'>
+                <span className={sectionLabelCls}>Year</span>
+                <div className='flex gap-1.5'>
+                    {RACES[raceKey].years.map(y => {
+                        const active = y === year
+                        return (
+                            <button
+                                key={y}
+                                onClick={() => onSelectYear(y)}
+                                className={`flex-1 rounded-lg border px-2 py-1 text-center text-xs tabular-nums transition ${active
+                                    ? 'border-cyan-400/60 bg-gradient-to-r from-cyan-500/25 to-sky-500/15 font-semibold text-white shadow-inner shadow-cyan-500/10'
+                                    : 'border-white/10 bg-white/5 text-slate-300 hover:border-white/20 hover:bg-white/10 hover:text-white'}`}
+                            >
+                                {y}
+                            </button>
+                        )
+                    })}
+                </div>
             </div>
 
             {/* swimmer picker */}
@@ -1121,7 +1172,9 @@ function PlaybackBar({ clockRef, playing, onTogglePlay, onRestart, speed, onSpee
                         <span className='w-14 shrink-0 tabular-nums text-xs text-slate-400'>{formatCourseMs(durationMs)}</span>
                     </>
                 ) : (
-                    <span className='flex-1 text-center text-xs text-slate-500'>Add swimmers from the panel to start the race</span>
+                    // the hint eats the whole bar on a narrow screen; the
+                    // onboarding covers the same ground there
+                    <span className='flex-1 text-center text-xs text-slate-500 max-md:hidden'>Add swimmers from the panel to start the race</span>
                 )}
                 <span className='h-5 w-px shrink-0 bg-white/10 max-sm:hidden' />
                 <div className='flex shrink-0 items-center gap-0.5 rounded-full bg-white/5 p-0.5'>
@@ -1183,7 +1236,7 @@ function CameraRig({ preset, controlsRef, buoys }: {
         // apply each request exactly once (buoy changes must not re-snap the
         // camera after the user has moved away); wait for the course to exist
         if (!preset || preset.nonce === appliedNonce.current) return
-        if (!controls || !courseBox) return
+        if (!controls || !buoys) return
         appliedNonce.current = preset.nonce
         // rotate first, then contain-fit at the final angle. Fitting by hand
         // because controls.fitToBox rounds the rotation to the nearest 90°
@@ -1198,25 +1251,37 @@ function CameraRig({ preset, controlsRef, buoys }: {
                     return
                 }
                 camera.updateMatrixWorld() // rotation settled; also updates matrixWorldInverse
-                const center = courseBox.getCenter(new THREE.Vector3())
-                const c = center.clone().applyMatrix4(camera.matrixWorldInverse)
+                // Measure the buoys themselves, not the corners of their
+                // bounding box: a course running diagonally through the box
+                // barely touches those corners, and fitting them instead cost
+                // us most of the usable zoom.
                 const v = new THREE.Vector3()
-                let maxX = 1e-6, maxY = 1e-6
-                for (let i = 0; i < 8; i++) {
-                    v.set(
-                        i & 1 ? courseBox.max.x : courseBox.min.x,
-                        i & 2 ? courseBox.max.y : courseBox.min.y,
-                        i & 4 ? courseBox.max.z : courseBox.min.z,
-                    ).applyMatrix4(camera.matrixWorldInverse)
-                    maxX = Math.max(maxX, Math.abs(v.x - c.x))
-                    maxY = Math.max(maxY, Math.abs(v.y - c.y))
+                let minX = Infinity, maxX = -Infinity
+                let minY = Infinity, maxY = -Infinity
+                let sumZ = 0
+                for (const p of buoys.positions) {
+                    v.copy(p).applyMatrix4(camera.matrixWorldInverse)
+                    minX = Math.min(minX, v.x); maxX = Math.max(maxX, v.x)
+                    minY = Math.min(minY, v.y); maxY = Math.max(maxY, v.y)
+                    sumZ += v.z
                 }
-                const pad = 60 // px of breathing room on each side
-                const zoom = Math.min((size.width / 2 - pad) / maxX, (size.height / 2 - pad) / maxY)
+                const spanX = Math.max(maxX - minX, 1e-6)
+                const spanY = Math.max(maxY - minY, 1e-6)
+                const zoom = Math.min(
+                    (size.width * FIT_FRACTION_X) / spanX,
+                    (size.height * FIT_FRACTION_Y) / spanY,
+                )
+                // re-centre on the middle of what was just measured — the box
+                // centre can sit well off it for a lopsided course
+                const center = camera.localToWorld(new THREE.Vector3(
+                    (minX + maxX) / 2,
+                    (minY + maxY) / 2,
+                    sumZ / buoys.positions.length,
+                ))
                 controls.moveTo(center.x, center.y, center.z, true)
                 controls.zoomTo(zoom, true)
             })
-    }, [preset, courseBox, controlsRef, camera, size])
+    }, [preset, buoys, controlsRef, camera, size])
     return null
 }
 
@@ -1271,11 +1336,26 @@ function Control({ label, value, min, max, step, onChange }: ControlProps) {
     )
 }
 
+/** live match for "narrower than Tailwind's `sm`", i.e. phone layout */
+function useIsMobile() {
+    const [mobile, setMobile] = useState(
+        () => typeof window !== 'undefined' && !window.matchMedia(SM_UP).matches,
+    )
+    useEffect(() => {
+        const mq = window.matchMedia(SM_UP)
+        const onChange = () => setMobile(!mq.matches)
+        mq.addEventListener('change', onChange)
+        return () => mq.removeEventListener('change', onChange)
+    }, [])
+    return mobile
+}
+
 export function FiberCanvas() {
     const [dataset, setDataset] = useState('Waimea 10m')
+    const isMobile = useIsMobile()
     // results panel starts open on desktop, collapsed to its toggle on phones
     const [sidebarOpen, setSidebarOpen] = useState(
-        () => typeof window === 'undefined' || window.matchMedia('(min-width: 640px)').matches,
+        () => typeof window === 'undefined' || window.matchMedia(SM_UP).matches,
     )
     const [stride, setStride] = useState(8)
     const [heightScale, setHeightScale] = useState(0.005)
@@ -1314,8 +1394,11 @@ export function FiberCanvas() {
 
     // race results + swimmer selection
     const [raceKey, setRaceKey] = useState(Object.keys(RACES)[0])
+    // season picked by the user; falls back to the race's latest year when the
+    // selected race never ran that season
+    const [pickedYear, setPickedYear] = useState<number | null>(null)
     const [racers, setRacers] = useState<Racer[]>([])
-    // which race the loaded `racers` belong to (results load async after a switch)
+    // which "race-year" the loaded `racers` belong to (results load async after a switch)
     const [racersFor, setRacersFor] = useState('')
     const [selectedBibs, setSelectedBibs] = useState<string[]>([])
     const [playing, setPlaying] = useState(false)
@@ -1323,6 +1406,7 @@ export function FiberCanvas() {
     const [speed, setSpeed] = useState(SPEED_PRESETS[1].factor)
     const raceClock = useRef(0)
     const race = RACES[raceKey]
+    const year = pickedYear !== null && race.years.includes(pickedYear) ? pickedYear : latestYear(race)
 
     // buoy editor (active while settings are open): session-only waypoint
     // overrides per race; copy the tuned coords back into RACES by hand
@@ -1376,15 +1460,15 @@ export function FiberCanvas() {
         setSelectedWaypoint(null)
         setPlaying(false)
         raceClock.current = 0
-        fetch(race.resultsUrl)
+        fetch(resultsUrl(raceKey, year))
             .then(r => r.json())
             .then((file: RaceResultsFile) => {
                 if (!live) return
                 setRacers(parseRacers(file))
-                setRacersFor(raceKey)
+                setRacersFor(`${raceKey}-${year}`)
             })
         return () => { live = false }
-    }, [race, raceKey])
+    }, [race, raceKey, year])
 
     const toggleBib = (bib: string) => setSelectedBibs(s =>
         s.includes(bib) ? s.filter(b => b !== bib) : [...s, bib]
@@ -1417,6 +1501,18 @@ export function FiberCanvas() {
     const durationMs = selectedRacers.reduce((max, r) => Math.max(max, r.minutes * 60_000), 0)
     const hasSwimmers = selectedRacers.length > 0
 
+    const togglePlay = useCallback(() => {
+        if (!playing) {
+            // once the replay has run out, play doubles as restart (same
+            // swimmers, same speed — just from the gun again)
+            if (durationMs > 0 && raceClock.current >= durationMs) raceClock.current = 0
+            // on phones the panel owns most of the screen; starting the replay
+            // is the cue to get it out of the way of the map
+            if (isMobile) setSidebarOpen(false)
+        }
+        setPlaying(!playing)
+    }, [playing, durationMs, isMobile])
+
     // onboarding: shown on load, reopenable via the ? button
     const [showOnboarding, setShowOnboarding] = useState(true)
 
@@ -1428,11 +1524,11 @@ export function FiberCanvas() {
             if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || tag === 'BUTTON') return
             if (!hasSwimmers || showOnboarding) return
             e.preventDefault()
-            setPlaying(p => !p)
+            togglePlay()
         }
         window.addEventListener('keydown', onKey)
         return () => window.removeEventListener('keydown', onKey)
-    }, [hasSwimmers, showOnboarding])
+    }, [hasSwimmers, showOnboarding, togglePlay])
 
     // downsample + smoothing are the expensive passes; keep them independent of
     // the depth-compression slider so dragging it only redoes the cheap remap
@@ -1504,6 +1600,14 @@ export function FiberCanvas() {
         if (l) setLabel(l)
     }, [makeLabel])
 
+    // clicking a swimmer's block pins that name. Also drops any roster-hover
+    // label, which would otherwise keep display precedence — on touch,
+    // mouseenter fires on tap and never gets a matching mouseleave.
+    const handleSwimmerClick = useCallback((bib: string, name: string, color: string) => {
+        const l = makeLabel(bib, name, color)
+        if (l) { setHoverLabel(null); setLabel(l) }
+    }, [makeLabel])
+
     // roster rows share the swimmer's assigned color (index in selection order)
     const labelForBib = (bib: string) => {
         const i = selectedRacers.findIndex(r => r.bib === bib)
@@ -1511,10 +1615,14 @@ export function FiberCanvas() {
         return makeLabel(bib, selectedRacers[i].name, swimmerColors[i % swimmerColors.length])
     }
     const handleRosterHover = (bib: string | null) => {
+        // touch reports a mouseenter on tap and often never a matching
+        // mouseleave, so on phones taps go through handleRosterClick alone
+        if (isMobile) return
         setHoverLabel(bib ? labelForBib(bib) : null)
     }
     const handleRosterClick = (bib: string) => {
         // click pins the label; clicking the same swimmer again unpins
+        setHoverLabel(null)
         setLabel(prev => prev?.bib === bib ? null : labelForBib(bib))
     }
 
@@ -1537,7 +1645,7 @@ export function FiberCanvas() {
     // grid finishes loading last.
     const [spotlight, setSpotlight] = useState(false)
     useEffect(() => {
-        if (!spotlight || !buoys || racersFor !== BETTY_SPOTLIGHT.raceKey) return
+        if (!spotlight || !buoys || racersFor !== `${BETTY_SPOTLIGHT.raceKey}-${BETTY_SPOTLIGHT.year}`) return
         const found = BETTY_SPOTLIGHT.bibs.filter(b => racers.some(r => r.bib === b))
         setSelectedBibs(found)
         raceClock.current = 0
@@ -1550,8 +1658,10 @@ export function FiberCanvas() {
         setSpotlight(false)
     }, [spotlight, racers, racersFor, buoys, handleSwimmerHover])
 
+    // 100dvh, not 100vh: on phones the URL bar shrinks the visible viewport and
+    // 100vh would push the bottom chrome off-screen
     return (
-        <div className='relative h-screen w-screen overflow-hidden bg-slate-950 text-slate-100'>
+        <div className='relative h-[100dvh] w-full overflow-hidden overscroll-none bg-slate-950 text-slate-100'>
             {/* scene: full-bleed, all chrome floats on top */}
             <div className='absolute inset-0'>
                 <Canvas
@@ -1619,6 +1729,7 @@ export function FiberCanvas() {
                                 loop={loop}
                                 positionsRef={swimmerPositions}
                                 onHover={handleSwimmerHover}
+                                onSelect={handleSwimmerClick}
                             />
                             {(hoverLabel ?? label) && (
                                 <SwimmerLabel
@@ -1637,66 +1748,91 @@ export function FiberCanvas() {
                 </Canvas>
             </div>
 
-            {/* floating sidebar: race switcher + swimmer search/selection.
-                Collapsible — shrinks to just its toggle so the map is usable
-                on phones. */}
-            <div
-                className={`absolute left-4 top-4 z-10 overflow-hidden border border-white/10 bg-slate-900/70 shadow-2xl shadow-black/40 backdrop-blur-xl animate-fade-in-up transition-all duration-300 ${sidebarOpen
-                    ? 'h-[calc(100%-2rem)] w-80 max-w-[calc(100vw-2rem)] rounded-2xl'
-                    : 'h-11 w-11 rounded-full'}`}
-            >
-                <button
-                    className={`absolute z-20 grid place-items-center text-slate-300 transition hover:text-white ${sidebarOpen
-                        ? 'right-2 top-2 h-8 w-8 rounded-full hover:bg-white/10'
-                        : 'inset-0'}`}
-                    onClick={() => setSidebarOpen(o => !o)}
-                    title={sidebarOpen ? 'Collapse panel' : 'Races & swimmers'}
-                >
-                    {sidebarOpen ? (
-                        <span className='text-lg leading-none'>×</span>
-                    ) : (
-                        <span className='flex flex-col gap-[3px]'>
-                            <span className='h-[2px] w-4 rounded bg-current' />
-                            <span className='h-[2px] w-4 rounded bg-current' />
-                            <span className='h-[2px] w-4 rounded bg-current' />
-                        </span>
-                    )}
-                </button>
+            {/* left chrome. On phones this is a flex column so the panel and the
+                playback bar split the viewport instead of stacking on top of each
+                other; from `sm` up both children float independently again. */}
+            <div className='pointer-events-none absolute inset-0 z-10 flex flex-col gap-2 p-4 sm:block sm:p-0'>
+                {/* sidebar: race switcher + swimmer search/selection. Collapsible —
+                    shrinks to just its toggle so the map is usable on phones. */}
                 <div
-                    className={`h-full w-80 max-w-[calc(100vw-2rem)] transition-opacity duration-200 ${sidebarOpen
-                        ? 'opacity-100'
-                        : 'pointer-events-none opacity-0'}`}
+                    className={`pointer-events-auto relative overflow-hidden border border-white/10 bg-slate-900/70 shadow-2xl shadow-black/40 backdrop-blur-xl animate-fade-in-up transition-[height,width,border-radius] duration-300 sm:absolute sm:left-4 sm:top-4 ${sidebarOpen
+                        ? 'min-h-0 w-80 max-w-full flex-1 rounded-2xl sm:h-[calc(100%-2rem)] sm:max-w-[calc(100vw-2rem)]'
+                        : 'h-11 w-11 shrink-0 rounded-full'}`}
                 >
-                <ResultsPanel
-                    raceKey={raceKey}
-                    onSelectRace={setRaceKey}
-                    racers={racers}
-                    selectedBibs={selectedBibs}
-                    onToggle={toggleBib}
-                    onAddGroup={addGroup}
-                    onClear={() => setSelectedBibs([])}
-                    pinnedBib={label?.bib ?? null}
-                    onHoverSwimmer={handleRosterHover}
-                    onPinSwimmer={handleRosterClick}
-                />
+                    <button
+                        className={`absolute z-20 grid place-items-center text-slate-300 transition hover:text-white ${sidebarOpen
+                            ? 'right-2 top-2 h-8 w-8 rounded-full hover:bg-white/10'
+                            : 'inset-0'}`}
+                        onClick={() => setSidebarOpen(o => !o)}
+                        title={sidebarOpen ? 'Collapse panel' : 'Races & swimmers'}
+                    >
+                        {sidebarOpen ? (
+                            <span className='text-lg leading-none'>×</span>
+                        ) : (
+                            <span className='flex flex-col gap-[3px]'>
+                                <span className='h-[2px] w-4 rounded bg-current' />
+                                <span className='h-[2px] w-4 rounded bg-current' />
+                                <span className='h-[2px] w-4 rounded bg-current' />
+                            </span>
+                        )}
+                    </button>
+                    <div
+                        className={`h-full w-80 max-w-full transition-opacity duration-200 ${sidebarOpen
+                            ? 'opacity-100'
+                            : 'pointer-events-none opacity-0'}`}
+                    >
+                        <ResultsPanel
+                            raceKey={raceKey}
+                            onSelectRace={setRaceKey}
+                            year={year}
+                            onSelectYear={setPickedYear}
+                            racers={racers}
+                            selectedBibs={selectedBibs}
+                            onToggle={toggleBib}
+                            onAddGroup={addGroup}
+                            onClear={() => setSelectedBibs([])}
+                            pinnedBib={label?.bib ?? null}
+                            onHoverSwimmer={handleRosterHover}
+                            onPinSwimmer={handleRosterClick}
+                        />
+                    </div>
+                </div>
+
+                {/* playback bar: last row of the phone column (mt-auto pins it to
+                    the bottom when the panel is collapsed); from `sm` up it floats
+                    centered in the space right of the sidebar */}
+                <div className='pointer-events-none mt-auto flex shrink-0 justify-center sm:absolute sm:bottom-4 sm:left-1/2 sm:mt-0 sm:-translate-x-1/2 lg:left-[calc(50%+10.5rem)]'>
+                    <PlaybackBar
+                        clockRef={raceClock}
+                        playing={playing}
+                        onTogglePlay={togglePlay}
+                        onRestart={() => { raceClock.current = 0 }}
+                        speed={speed}
+                        onSpeed={setSpeed}
+                        loop={loop}
+                        onLoop={setLoop}
+                        durationMs={durationMs}
+                        hasSwimmers={hasSwimmers}
+                    />
                 </div>
             </div>
 
-            {/* top-right: camera starting points + settings + help. Drops to a
-                second row on phones so it clears the toggle + accessory. */}
-            <div className={`absolute right-4 top-16 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/70 p-1 text-sm shadow-lg shadow-black/30 backdrop-blur-xl sm:top-4 ${sidebarOpen ? 'max-sm:hidden' : ''}`}>
+            {/* top-right: camera starting points + settings + help. Shares the
+                top row with the panel toggle; on phones it tightens up and is
+                capped short of the toggle rather than colliding with it. */}
+            <div className={`absolute right-4 top-4 z-10 flex items-center justify-end gap-1.5 rounded-full border border-white/10 bg-slate-900/70 p-1 text-sm shadow-lg shadow-black/30 backdrop-blur-xl max-sm:max-w-[calc(100vw-5.25rem)] max-sm:flex-wrap max-sm:gap-0.5 ${sidebarOpen ? 'max-sm:hidden' : ''}`}>
                 {race.cameras.map(c => (
                     <button
                         key={c.name}
-                        className='rounded-full px-3 py-1 text-xs text-slate-300 transition hover:bg-white/10 hover:text-white'
+                        className='shrink-0 rounded-full px-3 py-1 text-xs text-slate-300 transition hover:bg-white/10 hover:text-white max-sm:px-2'
                         onClick={() => applyCamera(c)}
                     >
                         {c.name}
                     </button>
                 ))}
-                <span className='h-4 w-px bg-white/10' />
+                <span className='h-4 w-px shrink-0 bg-white/10' />
                 <button
-                    className={`grid h-7 w-7 place-items-center rounded-full text-xs transition ${settingsOpen
+                    className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs transition ${settingsOpen
                         ? 'bg-cyan-400/20 text-cyan-300'
                         : 'text-slate-300 hover:bg-white/10 hover:text-white'}`}
                     onClick={() => setSettingsOpen(o => !o)}
@@ -1705,7 +1841,7 @@ export function FiberCanvas() {
                     ⚙
                 </button>
                 <button
-                    className='grid h-7 w-7 place-items-center rounded-full text-xs text-slate-300 transition hover:bg-white/10 hover:text-white'
+                    className='grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs text-slate-300 transition hover:bg-white/10 hover:text-white'
                     onClick={() => setShowOnboarding(true)}
                     title='Help'
                 >
@@ -1715,7 +1851,7 @@ export function FiberCanvas() {
 
             {/* settings dialog */}
             {settingsOpen && (
-                    <div className='absolute right-4 top-28 z-20 flex max-h-[calc(100%-8.5rem)] w-[520px] max-w-[calc(100%-2rem)] flex-col gap-1 overflow-y-auto rounded-2xl border border-white/10 bg-slate-900/85 p-4 shadow-2xl shadow-black/50 backdrop-blur-xl animate-fade-in-up sm:top-14 sm:max-h-[calc(100%-5.5rem)]'>
+                    <div className='absolute right-4 top-14 z-20 flex max-h-[calc(100%-5.5rem)] w-[520px] max-w-[calc(100%-2rem)] flex-col gap-1 overflow-y-auto rounded-2xl border border-white/10 bg-slate-900/85 p-4 shadow-2xl shadow-black/50 backdrop-blur-xl animate-fade-in-up'>
                         <div className='mb-1 flex items-center justify-between'>
                             <span className={sectionLabelCls}>Scene settings</span>
                             <button className='px-1 text-slate-500 transition hover:text-white' onClick={() => setSettingsOpen(false)}>×</button>
@@ -1803,33 +1939,13 @@ export function FiberCanvas() {
                     </div>
             )}
 
-            {/* bottom: playback bar, centered in the space right of the sidebar */}
-            <div className={`absolute bottom-4 left-1/2 z-10 -translate-x-1/2 lg:left-[calc(50%+10.5rem)] ${sidebarOpen ? 'max-sm:hidden' : ''}`}>
-                <PlaybackBar
-                    clockRef={raceClock}
-                    playing={playing}
-                    onTogglePlay={() => {
-                        // once the replay has run out, play doubles as restart
-                        // (same swimmers, same speed — just from the gun again)
-                        if (!playing && durationMs > 0 && raceClock.current >= durationMs) raceClock.current = 0
-                        setPlaying(p => !p)
-                    }}
-                    onRestart={() => { raceClock.current = 0 }}
-                    speed={speed}
-                    onSpeed={setSpeed}
-                    loop={loop}
-                    onLoop={setLoop}
-                    durationMs={durationMs}
-                    hasSwimmers={hasSwimmers}
-                />
-            </div>
-
             {/* first-load onboarding, reopenable via the ? button */}
             {showOnboarding && (
                 <Onboarding
                     onPickRace={key => { setRaceKey(key); setShowOnboarding(false) }}
                     onShowBettyRace={() => {
                         setRaceKey(BETTY_SPOTLIGHT.raceKey)
+                        setPickedYear(BETTY_SPOTLIGHT.year)
                         setSpotlight(true)
                         setShowOnboarding(false)
                     }}

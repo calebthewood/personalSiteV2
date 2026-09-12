@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "preprocess": "node scripts/preprocess-grid.mjs",
+    "fetch-results": "node scripts/fetch-results.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

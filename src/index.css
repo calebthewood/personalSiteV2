@@ -35,9 +35,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* the voxel map keeps its own dark world; VoxelMapPage toggles this class */
+/* the voxel map keeps its own dark world; VoxelMapPage toggles this class.
+   The map sizes itself to the viewport, so the page must never scroll or
+   rubber-band underneath it. */
 body.map-theme {
   background: #020617;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 ::selection {
