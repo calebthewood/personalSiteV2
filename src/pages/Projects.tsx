@@ -11,7 +11,7 @@ const PROJECTS: Project[] = [
   {
     title: 'Open Water Replay',
     description:
-      'A 3D voxel map of Waimea Bay that replays real North Shore Swim Series races — pick a race, add swimmers, and watch them cross the bay.',
+      'A 3D voxel map of the Hawaiian islands that replays real open water races — pick a race, add swimmers, and watch them cross the bay.',
     tags: ['TypeScript', 'Three.js', 'React'],
     to: '/projects/swim-map',
   },

@@ -39,12 +39,12 @@ function App() {
         />
       </Route>
       <Route
-        path='/projects/swim-map'
+        path='/projects/swim-map/:race?'
         element={
           <Suspense
             fallback={
               <div className='grid h-full place-items-center bg-slate-950 text-sm text-slate-400'>
-                Loading the bay…
+                Loading the islands…
               </div>
             }
           >

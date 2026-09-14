@@ -23,3 +23,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 *.json
+# Hawaii DEM tile pyramid (1.4GB of GeoTIFF; served by vite middleware in dev)
+/data

@@ -9,7 +9,7 @@ export default function VoxelMapPage() {
   useLayoutEffect(() => {
     document.body.classList.add('map-theme')
     const prev = document.title
-    document.title = 'Open Water Replay — North Shore Swim Series'
+    document.title = 'Open Water Replay — Hawaii open water races'
     return () => {
       document.body.classList.remove('map-theme')
       document.title = prev

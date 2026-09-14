@@ -59,11 +59,18 @@ const EDITIONS = {
         2026: { raceId: 209567, eventId: 1174473, resultSetId: 681717 },
     },
     // Waikiki Rough Water is not on RunSignup; it publishes through RACE RESULT.
-    // `key` is the event's public Simple API list key, copied from the published
-    // results URL (my-us-1.raceresult.com/<eventId>/results/list?key=...); no
-    // account credentials involved. contest 1 = the main "Swim (NO FINS)" wave
-    // (contest 2 is the small w/ FINS wave, ranked separately, not fetched).
+    // `key` is the event's public Simple API list key; no account credentials
+    // involved. Find it (and the list names) in the event's publish config:
+    //   https://my-us-1.raceresult.com/<eventId>/RRPublish/data/config?page=results&noVisitor=1
+    // where <eventId> comes from the my.raceresult.com/<eventId>/results url
+    // linked from waikikiroughwaterswim.com/results. contest 1 = the main
+    // "Swim (NO FINS)" wave (contest 2 is the small w/ FINS wave, ranked
+    // separately, not fetched). The list name varies by year.
+    // 2023 and earlier were published elsewhere (2023 on publish.acho.io), so
+    // they are not fetchable this way.
     roughwater: {
+        // 2024's only list is "Online|Final" and answers for all contests only
+        2024: { rr: { server: 'my-us-1', eventId: 305766, key: 'c4db4cfaf0b84aa2343fd60ec5406247', contest: 1, listname: 'Online|Final', listContest: 0 } },
         2025: { rr: { server: 'my-us-1', eventId: 352413, key: 'f0fb595e8607e6dee42dd4dcadd83557', contest: 1 } },
         2026: { rr: { server: 'my-us-1', eventId: 414181, key: 'dd5ecd05512526adb813332a7c7a48cb', contest: 1 } },
     },
@@ -148,19 +155,35 @@ const HEADINGS = [
  * { headings, resultSet } shape; rows are positional arrays whose column
  * meaning is defined by DataFields (names vary slightly per event, so columns
  * are found by keyword) */
-async function fetchRaceResult({ server, eventId, key, contest }) {
+/** longest believable finish, seconds (the Rough Water course closes at ~4h) */
+const MAX_FINISH_S = 5 * 3600
+
+async function fetchRaceResult({ server, eventId, key, contest, listname = 'Online|Final Results', listContest = contest }) {
     const url = new URL(`https://${server}.raceresult.com/${eventId}/results/list`)
     url.search = new URLSearchParams({
         key,
-        listname: 'Online|Final Results',
+        listname,
         page: 'results',
-        contest,
+        // some seasons' lists only answer for "all contests" (0); the wanted
+        // contest is then picked out of the grouped data below
+        contest: listContest,
         r: 'all',
         l: 0,
     })
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HTTP ${res.status} for RACE RESULT event ${eventId}`)
     const file = await res.json()
+
+    // data is grouped, one or more levels deep ("#1_Swim (NO FINS)" ->
+    // "#1_Female" -> rows); keep the wanted contest's group when the top
+    // level is split by contest, then flatten
+    const flatten = v => Array.isArray(v) ? v : Object.values(v).flatMap(flatten)
+    let groups = file.data
+    if (listContest !== contest) {
+        const wanted = Object.keys(groups).filter(k => k.startsWith(`#${contest}_`))
+        if (wanted.length) groups = Object.fromEntries(wanted.map(k => [k, groups[k]]))
+    }
+    const allRows = flatten(groups)
 
     const field = needle => file.DataFields.findIndex(f => f.toUpperCase().includes(needle))
     const iBib = field('BIB')
@@ -171,13 +194,27 @@ async function fetchRaceResult({ server, eventId, key, contest }) {
     const iDivRank = file.DataFields.findIndex(f => /RANK/i.test(f) && !/AUTORANK/i.test(f))
     const iTime = field('FINISH')
 
+    // "51:38" / "1:02:45" -> seconds, for the overall ordering below
+    const seconds = t => String(t ?? '').split(':').reduce((acc, p) => acc * 60 + Number(p), 0)
+    const finishers = []
+    for (const row of allRows) {
+        // rank "1." -> a number; DNF/DSQ rows carry status text here instead
+        // (and sometimes a pulled-from-water time), so drop non-finishers
+        if (Number.isNaN(parseInt(row[iRank] ?? '', 10))) continue
+        const t = seconds(row[iTime])
+        // no time, or a time-of-day clock leaking into the gun time (2024 has
+        // a "12:14:00" finisher): the course closes well inside this
+        if (!(t > 0) || t > MAX_FINISH_S) continue
+        finishers.push(row)
+    }
+    // the list's rank can be per group (2024 ranks within Female / Male), so
+    // race_placement is recomputed overall from the finish time
+    finishers.sort((a, b) => seconds(a[iTime]) - seconds(b[iTime]))
+
     const results = []
-    for (const rows of Object.values(file.data)) {
-        for (const row of rows) {
-            // rank "1." -> 1; DNF/DSQ rows carry status text here instead (and
-            // sometimes a pulled-from-water time), so drop non-finishers
-            const place = parseInt(row[iRank] ?? '', 10)
-            if (Number.isNaN(place)) continue
+    for (const [i, row] of finishers.entries()) {
+        {
+            const place = i + 1
             // "Kupsky, Woobie" -> "Woobie Kupsky"
             const raw = row[iName] ?? ''
             const comma = raw.indexOf(',')
@@ -198,7 +235,8 @@ async function fetchRaceResult({ server, eventId, key, contest }) {
                 row[iTime] ?? '', // chip_time
                 '', // pace
                 '', // age
-                String(iDivRank >= 0 ? row[iDivRank] ?? '' : ''),
+                // "-1" = no division rank published; text like "1stOverallMale" stays
+                String(iDivRank >= 0 && !/^-\d+$/.test(String(row[iDivRank] ?? '')) ? row[iDivRank] ?? '' : ''),
                 division,
             ])
         }

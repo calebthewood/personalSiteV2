@@ -72,13 +72,13 @@ export function Onboarding({ onPickRace, onShowBettyRace, onClose }: {
                     <div className='animate-fade-in'>
                         <div className='mb-6 text-center'>
                             <div className='text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-400'>
-                                North Shore &middot; Oahu
+                                Hawaii &middot; Open Water
                             </div>
                             <h1 className='mt-1 text-3xl font-bold tracking-tight text-white'>
                                 Open Water Replay
                             </h1>
                             <p className='mt-2 text-sm text-slate-400'>
-                                Real race results, replayed swimmer by swimmer over a voxel Waimea.
+                                Real race results, replayed swimmer by swimmer over a voxel map of the islands.
                                 Pick a race to dive in.
                             </p>
                         </div>
@@ -112,6 +112,7 @@ export function Onboarding({ onPickRace, onShowBettyRace, onClose }: {
                                             {race.miles} mi
                                         </span>
                                     </div>
+                                    <div className='mt-1 text-[11px] text-slate-500'>{race.region}</div>
                                     <div className='mt-3 text-[11px] font-medium uppercase tracking-wider text-slate-500 transition group-hover:text-cyan-300'>
                                         Dive in →
                                     </div>

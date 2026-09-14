@@ -1,15 +1,20 @@
-import { CameraControls, Line, Text, useCursor } from '@react-three/drei'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Line, Text, useCursor } from '@react-three/drei'
+import { useFrame, useThree } from '@react-three/fiber'
 import type CameraControlsImpl from 'camera-controls'
-import { scaleQuantile, type ScaleQuantile } from 'd3-scale'
 import { schemeTableau10 } from 'd3-scale-chromatic'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import * as THREE from 'three'
 import type { Line2 } from 'three-stdlib'
 import ExplosionConfetti from './confetti'
+import { DemMap, latLngToMercator, markShadowsDirty, useDemMapSettings, type DemMapApi, type DemStats, type MapFrame } from './dem-map'
 import { Onboarding } from './onboarding'
-import { BETTY_SPOTLIGHT, RACES, UNITS_PER_METER, latestYear, resultsUrl, type CameraStart, type Course } from './races'
-import { VoxelWater } from './water'
+import { BETTY_SPOTLIGHT, RACES, UNITS_PER_METER, latestYear, parseSwimmerId, raceKeyForSlug, resultsUrl, swimmerId, viewSlug, type CameraStart, type Course, type Race } from './races'
+
+// The race replay: swimmers, buoys, labels, playback and the panel chrome,
+// drawn on top of the state-wide voxel basemap (dem-map.tsx). Everything in
+// the scene is placed through the basemap's MapFrame (lat/lng -> scene,
+// sea level), so a course can be anywhere in the islands.
 
 const safetyOrange = "#FF6600"
 
@@ -34,246 +39,14 @@ const CONFETTI_SCALE = 0.15
 // swimmers over the cap just disappear at the end of their overrun
 const MAX_CONFETTI = 20
 
-const DATASETS: Record<string, string> = {
-    'Waimea 10m': '/data/waimea-10m',
-    'Waimea 200m': '/data/waimea-200m',
-}
-
-interface Grid {
-    name: string
-    nRows: number
-    nCols: number
-    cellX: number // meters per cell, EPSG:3857
-    cellY: number
-    col0CenterX: number // mercator x of col 0 cell center
-    row0CenterY: number // mercator y of row 0 cell center (rows go north -> south)
-    elev: Float32Array // row-major, NaN = no data
-}
-
-async function loadGrid(base: string): Promise<Grid> {
-    const [meta, buf] = await Promise.all([
-        fetch(`${base}.meta.json`).then(r => r.json()),
-        fetch(`${base}.bin`).then(r => r.arrayBuffer()),
-    ])
-    return { ...meta, elev: new Float32Array(buf) }
-}
-
-/** average stride x stride blocks into one cell */
-function downsample(g: Grid, stride: number): Grid {
-    if (stride === 1) return g
-    const nRows = Math.ceil(g.nRows / stride)
-    const nCols = Math.ceil(g.nCols / stride)
-    const out = new Float32Array(nRows * nCols).fill(NaN)
-    for (let r = 0; r < nRows; r++) {
-        for (let c = 0; c < nCols; c++) {
-            let sum = 0, n = 0
-            for (let rr = r * stride; rr < Math.min((r + 1) * stride, g.nRows); rr++) {
-                for (let cc = c * stride; cc < Math.min((c + 1) * stride, g.nCols); cc++) {
-                    const e = g.elev[rr * g.nCols + cc]
-                    if (!Number.isNaN(e)) { sum += e; n++ }
-                }
-            }
-            if (n > 0) out[r * nCols + c] = sum / n
-        }
-    }
-    return {
-        ...g,
-        nRows,
-        nCols,
-        cellX: g.cellX * stride,
-        cellY: g.cellY * stride,
-        col0CenterX: g.col0CenterX + ((stride - 1) / 2) * g.cellX,
-        row0CenterY: g.row0CenterY - ((stride - 1) / 2) * g.cellY,
-        elev: out,
-    }
-}
-
-/**
- * One pass of Laplacian smoothing over the heightfield.
- * Each cell moves toward the average of its N/S/E/W neighbors by `strength`.
- * strength = 0 -> untouched, strength = 1 -> pure neighbor average.
- * Repeated passes approximate a Gaussian blur of the terrain.
- */
-function smoothPass(elev: Float32Array, nRows: number, nCols: number, strength: number): Float32Array {
-    const out = new Float32Array(elev.length)
-    for (let r = 0; r < nRows; r++) {
-        for (let c = 0; c < nCols; c++) {
-            const i = r * nCols + c
-            const e = elev[i]
-            if (Number.isNaN(e)) { out[i] = NaN; continue }
-            let sum = 0, n = 0
-            if (r > 0 && !Number.isNaN(elev[i - nCols])) { sum += elev[i - nCols]; n++ }
-            if (r < nRows - 1 && !Number.isNaN(elev[i + nCols])) { sum += elev[i + nCols]; n++ }
-            if (c > 0 && !Number.isNaN(elev[i - 1])) { sum += elev[i - 1]; n++ }
-            if (c < nCols - 1 && !Number.isNaN(elev[i + 1])) { sum += elev[i + 1]; n++ }
-            out[i] = n > 0 ? e + strength * (sum / n - e) : e
-        }
-    }
-    return out
-}
-
-// grid is EPSG:3857 (Web Mercator); project [lat, lng] into it
-const EARTH_RADIUS = 6378137
-function latLngToMercator([lat, lng]: number[]): [number, number] {
-    return [
-        (lng * Math.PI / 180) * EARTH_RADIUS,
-        Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI / 180) / 2)) * EARTH_RADIUS,
-    ]
-}
-
-/** inverse of latLngToMercator ∘ mercToScene, for the buoy editor */
-function sceneToLatLng(g: Grid, x: number, z: number): [number, number] {
-    const row = x / (g.cellY * UNITS_PER_METER) + (g.nRows - 1) / 2
-    const col = -z / (g.cellX * UNITS_PER_METER) + (g.nCols - 1) / 2
-    const mx = g.col0CenterX + col * g.cellX
-    const my = g.row0CenterY - row * g.cellY
-    return [
-        (2 * Math.atan(Math.exp(my / EARTH_RADIUS)) - Math.PI / 2) * 180 / Math.PI,
-        (mx / EARTH_RADIUS) * 180 / Math.PI,
-    ]
-}
-
-const oceanColors = [
-    'rgb(0, 30, 80)',
-    'rgb(0, 51, 102)',
-    'rgb(0, 102, 153)',
-    'rgb(0, 153, 205)',
-    'rgb(100, 200, 255)',
-    // 'rgb(198, 236, 255)'
-];
-
-// light coastal green -> dark jungle green
-const landColors = [
-    'rgb(181, 200, 141)',
-    'rgb(152, 186, 121)',
-    'rgb(122, 166, 101)',
-    'rgb(96, 146, 86)',
-    'rgb(72, 126, 71)',
-    'rgb(52, 106, 60)',
-    'rgb(37, 86, 50)',
-    'rgb(26, 66, 41)'
-];
-
-const sandColor = 'rgb(230, 214, 168)'
-
-export interface View {
-    g: Grid
-    y: Float32Array // display elevation (ocean compression applied), NaN = no data
-    distToOcean: Uint16Array // grid-cell steps to the nearest ocean cell (0 = ocean)
-    heightOffset: number
-    oceanColorScale: ScaleQuantile<string>
-    landColorScale: ScaleQuantile<string>
-}
-
-const MAX_OCEAN_DIST = 64 // cells; beyond this we don't care (never beach)
-
-/** multi-source BFS from every ocean cell, in grid steps */
-function oceanDistance(y: Float32Array, nRows: number, nCols: number): Uint16Array {
-    const dist = new Uint16Array(y.length).fill(65535)
-    let frontier: number[] = []
-    for (let i = 0; i < y.length; i++) {
-        if (y[i] < 0) { dist[i] = 0; frontier.push(i) }
-    }
-    let d = 1
-    while (frontier.length > 0 && d <= MAX_OCEAN_DIST) {
-        const next: number[] = []
-        for (const i of frontier) {
-            const r = (i / nCols) | 0
-            const c = i - r * nCols
-            const neighbors = [
-                r > 0 ? i - nCols : -1,
-                r < nRows - 1 ? i + nCols : -1,
-                c > 0 ? i - 1 : -1,
-                c < nCols - 1 ? i + 1 : -1,
-            ]
-            for (const n of neighbors) {
-                if (n >= 0 && dist[n] === 65535 && !Number.isNaN(y[n])) {
-                    dist[n] = d
-                    next.push(n)
-                }
-            }
-        }
-        frontier = next
-        d++
-    }
-    return dist
-}
-
-/** all terrain blocks in a single draw call */
-function TerrainInstances({ view, heightScale, blockFootprint, beachMaxElev, beachReachCells }: {
-    view: View, heightScale: number, blockFootprint: number, beachMaxElev: number, beachReachCells: number
-}) {
-    const { g, y, distToOcean, heightOffset, oceanColorScale, landColorScale } = view
-    const ref = useRef<THREE.InstancedMesh>(null!)
-
-    const count = useMemo(() => {
-        let n = 0
-        for (let i = 0; i < y.length; i++) if (!Number.isNaN(y[i])) n++
-        return n
-    }, [y])
-
-    useLayoutEffect(() => {
-        const mesh = ref.current
-        const m = new THREE.Matrix4()
-        const color = new THREE.Color()
-        const rowCell = g.cellY * UNITS_PER_METER // scene x axis follows rows
-        const colCell = g.cellX * UNITS_PER_METER // scene z axis follows cols
-        const cR = (g.nRows - 1) / 2
-        const cC = (g.nCols - 1) / 2
-        let i = 0
-        for (let r = 0; r < g.nRows; r++) {
-            for (let c = 0; c < g.nCols; c++) {
-                const idx = r * g.nCols + c
-                const yv = y[idx]
-                if (Number.isNaN(yv)) continue
-                const h = Math.max((yv + heightOffset) * heightScale, 0.002)
-                m.makeScale(rowCell * blockFootprint, h, colCell * blockFootprint)
-                m.setPosition((r - cR) * rowCell, h / 2, -(c - cC) * colCell)
-                mesh.setMatrixAt(i, m)
-                // beach: low-lying land close to the ocean; high coastal cliffs
-                // fail the elevation test, low inland valleys fail the distance test
-                const isBeach = yv >= 0 && yv <= beachMaxElev && distToOcean[idx] <= beachReachCells
-                mesh.setColorAt(i, color.set(
-                    yv < 0 ? oceanColorScale(yv) : isBeach ? sandColor : landColorScale(yv)
-                ))
-                i++
-            }
-        }
-        mesh.count = i
-        mesh.instanceMatrix.needsUpdate = true
-        if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
-        mesh.computeBoundingSphere()
-    }, [view, heightScale, blockFootprint, beachMaxElev, beachReachCells, g, y, distToOcean, heightOffset, oceanColorScale, landColorScale])
-
-    return (
-        <instancedMesh key={`${g.name}-${count}`} ref={ref} args={[undefined, undefined, count]} castShadow receiveShadow>
-            <boxGeometry />
-            <meshStandardMaterial />
-        </instancedMesh>
-    )
-}
-
-/** scene x/z for a mercator point, fractional (not snapped to a cell center) */
-function mercToScene(g: Grid, mx: number, my: number): [number, number] {
-    const row = (g.row0CenterY - my) / g.cellY
-    const col = (mx - g.col0CenterX) / g.cellX
-    return [
-        (row - (g.nRows - 1) / 2) * g.cellY * UNITS_PER_METER,
-        -(col - (g.nCols - 1) / 2) * g.cellX * UNITS_PER_METER,
-    ]
-}
-
-/** scene-space top of the terrain column under scene (x, z); 0 if off-grid or no data */
-function terrainTopAt(view: View, heightScale: number, x: number, z: number): number {
-    const { g, y, heightOffset } = view
-    // inverse of mercToScene's cell -> scene mapping
-    const r = Math.round(x / (g.cellY * UNITS_PER_METER) + (g.nRows - 1) / 2)
-    const c = Math.round(-z / (g.cellX * UNITS_PER_METER) + (g.nCols - 1) / 2)
-    if (r < 0 || r >= g.nRows || c < 0 || c >= g.nCols) return 0
-    const e = y[r * g.nCols + c]
-    if (Number.isNaN(e)) return 0
-    return Math.max((e + heightOffset) * heightScale, 0.002)
-}
+// Marker sizes follow the voxel size of the level being drawn, as on the old
+// single-grid map: a fixed 100m buoy is one cell at 80m voxels but five at
+// 20m, which reads as a giant. Both are clamped so they never vanish on the
+// fine levels or balloon on the coarse ones.
+/** buoy tetrahedron base radius, meters, for a voxel size in meters */
+const buoyRadiusM = (voxelM: number) => THREE.MathUtils.clamp(voxelM * 1.15, 20, 50)
+/** swimmer box edge, meters: half a voxel, never under 20m */
+const swimmerSizeM = (voxelM: number) => Math.max(20, voxelM * 0.5)
 
 // playback speed = course time / wall time; the clock counts course ms, so
 // switching speed mid-race never teleports the swimmers.
@@ -314,25 +87,6 @@ const SPEED_PROFILES: { name: string, f: (u: number) => number }[] = [
     { name: 'mid-lull', f: u => u + SIN_AMP * Math.sin(2 * Math.PI * u) },
 ]
 
-/**
- * Freezes the shadow map: every shadow caster in the scene is static (terrain,
- * buoys — swimmers and water don't cast), yet three.js re-renders the whole
- * shadow pass each frame by default, roughly doubling geometry cost. Render it
- * once, then only when something a shadow depends on actually changes.
- */
-function ShadowFreeze({ casters }: { casters: unknown[] }) {
-    const gl = useThree(s => s.gl)
-    useEffect(() => {
-        gl.shadowMap.autoUpdate = false
-        return () => { gl.shadowMap.autoUpdate = true }
-    }, [gl])
-    useEffect(() => {
-        gl.shadowMap.needsUpdate = true
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [gl, ...casters])
-    return null
-}
-
 /** advances the shared race clock (in course ms); all swimmers read from it so they stay in sync */
 function RaceClock({ clockRef, playing, speed }: {
     clockRef: React.MutableRefObject<number>
@@ -346,6 +100,8 @@ function RaceClock({ clockRef, playing, speed }: {
 }
 
 interface SwimmerEntry {
+    /** "year-bib" (see swimmerId): the swimmer's identity in the scene */
+    id: string
     bib: string
     name: string
     minutes: number
@@ -355,15 +111,27 @@ interface SwimmerEntry {
 /** stable per-swimmer randomness: lane across the gates, per-leg arc bulge,
  * pacing profile, and a tiny height jitter so overlapping boxes don't z-fight */
 interface SwimmerRand {
-    /** each leg bows out perpendicular to the straight line by 5-18%, random side */
+    /** each leg bows out perpendicular to the straight line by up to ~18% of
+     * its length, either side; most swimmers stay near the line */
     bulges: number[]
+    /** where along each leg the bow peaks (0.35-0.65), so arcs of the same
+     * side don't stack into one band */
+    peaks: number[]
     lane: { start: number, finish: number, yJitter: number }
     pace: (u: number) => number
 }
 
+const BULGE_MAX = 0.18
+
+/** triangular sample on (-1, 1): densest at 0, tailing off to the sides.
+ * A flat random-sign draw split the field into two clean arcs with an
+ * empty middle; this fills the middle while keeping the wide lines. */
+const triangular = () => Math.random() + Math.random() - 1
+
 function makeRand(nLegs: number): SwimmerRand {
     return {
-        bulges: Array.from({ length: nLegs }, () => (0.05 + Math.random() * 0.13) * (Math.random() < 0.5 ? -1 : 1)),
+        bulges: Array.from({ length: nLegs }, () => triangular() * BULGE_MAX),
+        peaks: Array.from({ length: nLegs }, () => 0.35 + Math.random() * 0.3),
         lane: {
             start: (Math.random() - 0.5) * 0.8, // +/- 40% of gate width
             finish: (Math.random() - 0.5) * 0.8,
@@ -374,7 +142,7 @@ function makeRand(nLegs: number): SwimmerRand {
 }
 
 /** bezier path through the course for one swimmer's lane + bulges */
-function makePath(g: Grid, course: Course, rand: SwimmerRand) {
+function makePath(frame: MapFrame, course: Course, rand: SwimmerRand) {
     const last = course.waypoints.length - 1
     const pts = course.waypoints.map((pt, i) => {
         let [mx, my] = latLngToMercator(pt)
@@ -385,7 +153,7 @@ function makePath(g: Grid, course: Course, rand: SwimmerRand) {
             mx += Math.sin(bearing) * offM
             my += Math.cos(bearing) * offM
         }
-        const [x, z] = mercToScene(g, mx, my)
+        const [x, z] = frame.projectMerc(mx, my)
         return new THREE.Vector3(x, 0, z)
     })
     const curves: THREE.QuadraticBezierCurve3[] = []
@@ -394,7 +162,7 @@ function makePath(g: Grid, course: Course, rand: SwimmerRand) {
         const b = pts[i + 1]
         const dir = b.clone().sub(a)
         const perp = new THREE.Vector3(-dir.z, 0, dir.x)
-        const mid = a.clone().lerp(b, 0.5).add(perp.multiplyScalar(rand.bulges[i]))
+        const mid = a.clone().lerp(b, rand.peaks[i]).add(perp.multiplyScalar(rand.bulges[i]))
         curves.push(new THREE.QuadraticBezierCurve3(a, mid, b))
     }
     // time is proportional to distance across legs (same average speed per
@@ -422,18 +190,19 @@ function makePath(g: Grid, course: Course, rand: SwimmerRand) {
  * low zoom); it shares the visible mesh's instanceMatrix so it's written once.
  * Finished swimmers collapse to zero scale (hides them and kills raycasts).
  */
-function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, loop, positionsRef, onHover, onSelect }: {
-    view: View
+function SwimmerField({ frame, course, voxelM, raceKey, swimmers, clockRef, loop, positionsRef, onHover, onSelect }: {
+    frame: MapFrame
     course: Course
-    heightScale: number
+    /** voxel size of the level being drawn, meters (sizes the boxes) */
+    voxelM: number
     raceKey: string
     swimmers: SwimmerEntry[]
     clockRef: React.MutableRefObject<number>
     loop: boolean
     positionsRef: React.MutableRefObject<Map<string, THREE.Vector3>>
-    onHover: (bib: string, name: string, color: string) => void
+    onHover: (id: string, name: string, color: string) => void
     /** click/tap — pins the label; the only way in on touch, which has no hover */
-    onSelect: (bib: string, name: string, color: string) => void
+    onSelect: (id: string, name: string, color: string) => void
 }) {
     const meshRef = useRef<THREE.InstancedMesh>(null!)
     const hitRef = useRef<THREE.InstancedMesh>(null!)
@@ -451,26 +220,26 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
         randCache.current.clear()
     }
 
-    // bibs celebrated (confetti popped, hidden); survives path rebuilds
+    // swimmers celebrated (confetti popped, hidden); survives path rebuilds
     const celebrated = useRef(new Set<string>())
     // active confetti bursts, capped at MAX_CONFETTI
-    const [bursts, setBursts] = useState<{ bib: string, color: string, pos: [number, number, number] }[]>([])
+    const [bursts, setBursts] = useState<{ id: string, color: string, pos: [number, number, number] }[]>([])
 
     const sims = useMemo(() => swimmers.map(s => {
-        let rand = randCache.current.get(s.bib)
+        let rand = randCache.current.get(s.id)
         if (!rand) {
             rand = makeRand(course.waypoints.length - 1)
-            randCache.current.set(s.bib, rand)
+            randCache.current.set(s.id, rand)
         }
-        return { ...s, rand, path: makePath(view.g, course, rand), raceMs: s.minutes * 60_000 }
-    }), [swimmers, view.g, course])
+        return { ...s, rand, path: makePath(frame, course, rand), raceMs: s.minutes * 60_000 }
+    }), [swimmers, frame, course])
 
     // prune celebration/burst/position state for swimmers no longer on the map
     useEffect(() => {
-        const valid = new Set(swimmers.map(s => s.bib))
-        setBursts(bs => bs.some(b => !valid.has(b.bib)) ? bs.filter(b => valid.has(b.bib)) : bs)
-        for (const bib of [...celebrated.current]) if (!valid.has(bib)) celebrated.current.delete(bib)
-        for (const bib of [...positionsRef.current.keys()]) if (!valid.has(bib)) positionsRef.current.delete(bib)
+        const valid = new Set(swimmers.map(s => s.id))
+        setBursts(bs => bs.some(b => !valid.has(b.id)) ? bs.filter(b => valid.has(b.id)) : bs)
+        for (const id of [...celebrated.current]) if (!valid.has(id)) celebrated.current.delete(id)
+        for (const id of [...positionsRef.current.keys()]) if (!valid.has(id)) positionsRef.current.delete(id)
     }, [swimmers, positionsRef])
 
     // per-instance colors; the hitbox shares the visible mesh's matrices
@@ -484,10 +253,8 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
         if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
     }, [sims])
 
-    // half a voxel, but never smaller than 20m x 20m so swimmers stay visible
-    // on fine-grained strides
-    const size = Math.max(20, view.g.cellY * 0.5) * UNITS_PER_METER
-    const seaLevel = view.heightOffset * heightScale
+    const size = swimmerSizeM(voxelM) * UNITS_PER_METER
+    const seaLevel = frame.seaLevel
 
     const scratch = useMemo(() => ({ m: new THREE.Matrix4(), p: new THREE.Vector3() }), [])
 
@@ -514,20 +281,20 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
                 )
                 if (k >= 1) {
                     hidden = true
-                    if (!celebrated.current.has(s.bib)) {
-                        celebrated.current.add(s.bib)
+                    if (!celebrated.current.has(s.id)) {
+                        celebrated.current.add(s.id)
                         finished.push({
-                            bib: s.bib,
+                            id: s.id,
                             color: s.color,
                             pos: [s.path.overrunEnd.x, seaLevel + s.rand.lane.yJitter, s.path.overrunEnd.z],
                         })
                     }
                 }
             } else {
-                if (celebrated.current.has(s.bib)) {
+                if (celebrated.current.has(s.id)) {
                     // clock was restarted
-                    celebrated.current.delete(s.bib)
-                    restarted.push(s.bib)
+                    celebrated.current.delete(s.id)
+                    restarted.push(s.id)
                 }
                 const t = loop ? (ms % s.raceMs) / s.raceMs : Math.min(ms / s.raceMs, 1)
                 // find the current leg, ease time within it, then sample by arc length
@@ -542,14 +309,14 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
             m.setPosition(p)
             mesh.setMatrixAt(i, m)
             // publish position for the hover-label leader line
-            let reg = positionsRef.current.get(s.bib)
-            if (!reg) { reg = new THREE.Vector3(); positionsRef.current.set(s.bib, reg) }
+            let reg = positionsRef.current.get(s.id)
+            if (!reg) { reg = new THREE.Vector3(); positionsRef.current.set(s.id, reg) }
             reg.copy(p)
         }
         mesh.instanceMatrix.needsUpdate = true
         if (finished.length > 0 || restarted.length > 0) {
             setBursts(bs => {
-                let next = restarted.length ? bs.filter(b => !restarted.includes(b.bib)) : bs
+                let next = restarted.length ? bs.filter(b => !restarted.includes(b.id)) : bs
                 for (const f of finished) {
                     if (next.length < MAX_CONFETTI) next = [...next, f]
                 }
@@ -563,7 +330,7 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
         const id = e.instanceId
         if (id === undefined || id >= sims.length) return null
         const s = sims[id]
-        if (celebrated.current.has(s.bib)) return null
+        if (celebrated.current.has(s.id)) return null
         e.stopPropagation()
         return { id, s }
     }
@@ -574,13 +341,13 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
         setHovered(true)
         if (lastHover.current !== hit.id) {
             lastHover.current = hit.id
-            onHover(hit.s.bib, hit.s.name, hit.s.color)
+            onHover(hit.s.id, hit.s.name, hit.s.color)
         }
     }
 
     const handleClick = (e: { instanceId?: number, stopPropagation: () => void }) => {
         const hit = simAt(e)
-        if (hit) onSelect(hit.s.bib, hit.s.name, hit.s.color)
+        if (hit) onSelect(hit.s.id, hit.s.name, hit.s.color)
     }
 
     if (sims.length === 0) return null
@@ -610,14 +377,14 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
                 <meshBasicMaterial />
             </instancedMesh>
             {bursts.map(b => (
-                <group key={b.bib} position={b.pos} scale={CONFETTI_SCALE}>
+                <group key={b.id} position={b.pos} scale={CONFETTI_SCALE}>
                     <ExplosionConfetti
                         numberOfExplosions={1}
                         particleAmount={100}
                         explosionCount={1}
                         spreadAreaRadius={0}
                         colorsArray={[b.color, '#e8bf56', '#e2f7ce', '#ffffff']}
-                        onComplete={() => setBursts(bs => bs.filter(x => x.bib !== b.bib))}
+                        onComplete={() => setBursts(bs => bs.filter(x => x.id !== b.id))}
                     />
                 </group>
             ))}
@@ -627,14 +394,11 @@ function SwimmerField({ view, course, heightScale, raceKey, swimmers, clockRef, 
 
 /** scene-space buoy positions (tetrahedron centers) + tetrahedron dimensions;
  * waypointOf maps each buoy back to its course waypoint (gates share one) */
-function computeBuoys(view: View, course: Course, heightScale: number): {
+function computeBuoys(frame: MapFrame, course: Course, voxelM: number): {
     positions: THREE.Vector3[], waypointOf: number[], height: number, baseRadius: number
 } {
-    const { g, heightOffset } = view
-    const seaLevel = heightOffset * heightScale
-    // scale with voxel size: keeps the proportions of the large strides (~50m at
-    // 40m cells) but shrinks on fine grids, never below the swimmer min (20m)
-    const baseRadius = THREE.MathUtils.clamp(g.cellY * 1.15, 20, 50) * UNITS_PER_METER
+    const seaLevel = frame.seaLevel
+    const baseRadius = buoyRadiusM(voxelM) * UNITS_PER_METER
     // 3-sided cone with h = r*sqrt(2) is a regular tetrahedron (all edges r*sqrt(3))
     const height = baseRadius * Math.SQRT2
 
@@ -659,7 +423,7 @@ function computeBuoys(view: View, course: Course, heightScale: number): {
     })
 
     const positions = merc.map(([mx, my]) => {
-        const [x, z] = mercToScene(g, mx, my)
+        const [x, z] = frame.projectMerc(mx, my)
         return new THREE.Vector3(x, seaLevel + height / 2, z)
     })
     return { positions, waypointOf, height, baseRadius }
@@ -668,9 +432,9 @@ function computeBuoys(view: View, course: Course, heightScale: number): {
 /** race course markers: tetrahedra floating at sea level; start + finish are
  * 2-buoy gates. In edit mode (settings open) buoys are click-draggable: drags
  * move the underlying course waypoint (both buoys of a gate move together). */
-function CourseMarkers({ buoys, g, waypoints, editable, selectedWaypoint, onSelectWaypoint, onMoveWaypoint, controlsRef }: {
+function CourseMarkers({ buoys, frame, waypoints, editable, selectedWaypoint, onSelectWaypoint, onMoveWaypoint, controlsRef }: {
     buoys: ReturnType<typeof computeBuoys>
-    g: Grid
+    frame: MapFrame
     waypoints: number[][]
     editable: boolean
     selectedWaypoint: number | null
@@ -685,6 +449,10 @@ function CourseMarkers({ buoys, g, waypoints, editable, selectedWaypoint, onSele
     const drag = useRef<{ wp: number, lat0: number, lng0: number, hitLat0: number, hitLng0: number } | null>(null)
     const plane = useRef(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0))
     const hit = useRef(new THREE.Vector3())
+
+    // buoys cast shadows and the basemap only re-renders its shadow map on
+    // request, so every buoy move (race switch, drag) asks for one
+    useEffect(() => { markShadowsDirty() }, [buoys])
 
     return (
         <>
@@ -702,7 +470,7 @@ function CourseMarkers({ buoys, g, waypoints, editable, selectedWaypoint, onSele
                             onSelectWaypoint(wp)
                             plane.current.constant = -p.y
                             if (!e.ray.intersectPlane(plane.current, hit.current)) return
-                            const [hitLat0, hitLng0] = sceneToLatLng(g, hit.current.x, hit.current.z)
+                            const [hitLat0, hitLng0] = frame.unproject(hit.current.x, hit.current.z)
                             drag.current = { wp, lat0: waypoints[wp][0], lng0: waypoints[wp][1], hitLat0, hitLng0 }
                             ;(e.target as Element).setPointerCapture(e.pointerId)
                             if (controlsRef.current) controlsRef.current.enabled = false
@@ -712,7 +480,7 @@ function CourseMarkers({ buoys, g, waypoints, editable, selectedWaypoint, onSele
                             if (!d || d.wp !== wp) return
                             e.stopPropagation()
                             if (!e.ray.intersectPlane(plane.current, hit.current)) return
-                            const [lat, lng] = sceneToLatLng(g, hit.current.x, hit.current.z)
+                            const [lat, lng] = frame.unproject(hit.current.x, hit.current.z)
                             onMoveWaypoint(d.wp, [d.lat0 + lat - d.hitLat0, d.lng0 + lng - d.hitLng0])
                         } : undefined}
                         onPointerUp={editable ? e => {
@@ -742,8 +510,8 @@ function CourseMarkers({ buoys, g, waypoints, editable, selectedWaypoint, onSele
  * at `anchor` near a buoy, plus a fine leader line that tracks the swimmer;
  * stays up until dismissed via the corner button
  */
-function SwimmerLabel({ bib, name, color, anchor, positionsRef, onDismiss }: {
-    bib: string
+function SwimmerLabel({ id, name, color, anchor, positionsRef, onDismiss }: {
+    id: string
     name: string
     color: string
     anchor: THREE.Vector3
@@ -766,7 +534,7 @@ function SwimmerLabel({ bib, name, color, anchor, positionsRef, onDismiss }: {
 
         const line = lineRef.current
         if (!line) return
-        const p = positionsRef.current.get(bib)
+        const p = positionsRef.current.get(id)
         if (!p) { line.visible = false; return }
         line.visible = true
         // imperative update only — changing the `points` prop rebuilds the
@@ -777,7 +545,10 @@ function SwimmerLabel({ bib, name, color, anchor, positionsRef, onDismiss }: {
         ])
     })
 
-    const shown = name.length > 22 ? name.slice(0, 21) + '…' : name
+    // "BETTY ANN BARNETT ’26": the season matters now that one person can be
+    // on the map from several years
+    const season = parseSwimmerId(id)?.year
+    const shown = (name.length > 22 ? name.slice(0, 21) + '…' : name) + (season ? ` ${shortYear(season)}` : '')
 
     return (
         <>
@@ -849,6 +620,17 @@ interface Racer {
     division: string
 }
 
+/** a racer resolved from the selection: which season, and the "year-bib" id */
+interface SelectedRacer extends Racer {
+    id: string
+    year: number
+}
+
+const EMPTY_RACERS: Racer[] = []
+
+/** 2026 -> ’26 */
+const shortYear = (y: number) => `’${String(y).slice(-2)}`
+
 interface RaceResultsFile {
     headings: { key: string }[]
     resultSet: { results: (string | number | boolean)[][] }
@@ -868,7 +650,8 @@ function parseRacers(file: RaceResultsFile): Racer[] {
     file.headings.forEach((h, i) => { idx[h.key] = i })
     const out: Racer[] = []
     for (const row of file.resultSet.results) {
-        const chipTime = String(row[idx.chip_time] ?? '')
+        // some seasons publish gun time only (no chip time): fall back to it
+        const chipTime = String(row[idx.chip_time] || row[idx.clock_time] || '')
         const minutes = parseTimeToMinutes(chipTime)
         if (minutes === null || minutes <= 0) continue
         out.push({
@@ -892,27 +675,43 @@ const selectCls = inputCls + ' appearance-none cursor-pointer [&>option]:bg-slat
 const sectionLabelCls = 'text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-500'
 
 function ResultsPanel({
-    raceKey, onSelectRace, year, onSelectYear, racers, selectedBibs, onToggle, onAddGroup, onClear,
-    pinnedBib, onHoverSwimmer, onPinSwimmer,
+    raceKey, onSelectRace, year, onSelectYear, racers, selectedIds, selectedRacers, onToggle, onAddGroup, onClear,
+    pinnedId, onHoverSwimmer, onPinSwimmer,
 }: {
     raceKey: string
     onSelectRace: (key: string) => void
     /** season currently shown (always one of the race's `years`) */
     year: number
     onSelectYear: (year: number) => void
+    /** finishers of the season being browsed */
     racers: Racer[]
-    selectedBibs: string[]
-    onToggle: (bib: string) => void
+    /** "year-bib" ids on the map, in selection order (any season of this race) */
+    selectedIds: string[]
+    /** those ids resolved against loaded results, same order */
+    selectedRacers: SelectedRacer[]
+    onToggle: (id: string) => void
     onAddGroup: (group: string) => void
     onClear: () => void
-    /** bib whose name label is pinned in the scene (roster click / 3d hover) */
-    pinnedBib: string | null
+    /** id whose name label is pinned in the scene (roster click / 3d hover) */
+    pinnedId: string | null
     /** roster row hover: show that swimmer's name label (null on leave) */
-    onHoverSwimmer: (bib: string | null) => void
+    onHoverSwimmer: (id: string | null) => void
     /** roster row click: pin/unpin that swimmer's name label */
-    onPinSwimmer: (bib: string) => void
+    onPinSwimmer: (id: string) => void
 }) {
     const [query, setQuery] = useState('')
+
+    // races grouped by region, in RACES order (first appearance of a region
+    // sets its position)
+    const regions = useMemo(() => {
+        const groups = new Map<string, [string, Race][]>()
+        for (const entry of Object.entries(RACES)) {
+            const list = groups.get(entry[1].region) ?? []
+            list.push(entry)
+            groups.set(entry[1].region, list)
+        }
+        return [...groups.entries()]
+    }, [])
 
     const divisions = useMemo(() => {
         const counts = new Map<string, number>()
@@ -931,37 +730,33 @@ function ResultsPanel({
         : racers
     const shown = matches.slice(0, 40)
 
-    const selectedSet = new Set(selectedBibs)
-    const byBib = new Map(racers.map(r => [r.bib, r]))
-    const selectedRacers = selectedBibs.map(b => byBib.get(b)).filter((r): r is Racer => !!r)
+    const selectedSet = new Set(selectedIds)
 
     return (
         <div className='flex h-full flex-col gap-3 p-4 text-sm'>
             {/* header */}
             <div>
-                <div className='text-[10px] font-semibold uppercase tracking-[0.3em] text-cyan-400'>North Shore · Oahu</div>
+                <div className='text-[10px] font-semibold uppercase tracking-[0.3em] text-cyan-400'>{RACES[raceKey].region}</div>
                 <h1 className='text-lg font-bold tracking-tight text-white'>Open Water Replay</h1>
             </div>
 
-            {/* race switcher */}
+            {/* race switcher: a select grouped by region, so the list of races
+                can grow without eating the swimmer search below */}
             <div className='flex flex-col gap-1.5'>
                 <span className={sectionLabelCls}>Race</span>
-                {Object.entries(RACES).map(([key, r]) => {
-                    const active = key === raceKey
-                    return (
-                        <button
-                            key={key}
-                            onClick={() => onSelectRace(key)}
-                            className={`flex w-full items-center gap-2 rounded-lg border px-3 py-1.5 text-left transition ${active
-                                ? 'border-cyan-400/60 bg-gradient-to-r from-cyan-500/25 to-sky-500/15 font-semibold text-white shadow-inner shadow-cyan-500/10'
-                                : 'border-white/10 bg-white/5 text-slate-300 hover:border-white/20 hover:bg-white/10 hover:text-white'}`}
-                            title={r.name}
-                        >
-                            <span className='min-w-0 flex-1 truncate'>{r.name}</span>
-                            {active && <span className='shrink-0 text-cyan-300'>●</span>}
-                        </button>
-                    )
-                })}
+                <select
+                    className={selectCls}
+                    value={raceKey}
+                    onChange={e => onSelectRace(e.target.value)}
+                >
+                    {regions.map(([region, races]) => (
+                        <optgroup key={region} label={region}>
+                            {races.map(([key, r]) => (
+                                <option key={key} value={key}>{r.name} · {r.miles} mi</option>
+                            ))}
+                        </optgroup>
+                    ))}
+                </select>
             </div>
 
             {/* year switcher */}
@@ -1015,14 +810,15 @@ function ResultsPanel({
             {/* fills the remaining sidebar height; long lists scroll internally */}
             <div className='min-h-0 flex-1 overflow-y-auto rounded-lg border border-white/10 bg-black/20'>
                 {shown.map(r => {
-                    const selected = selectedSet.has(r.bib)
+                    const id = swimmerId(year, r.bib)
+                    const selected = selectedSet.has(id)
                     return (
                         <button
-                            key={r.bib}
+                            key={id}
                             className={`flex w-full items-center gap-2 px-2.5 py-1.5 text-left transition ${selected
                                 ? 'bg-cyan-400/10 text-white'
                                 : 'text-slate-300 hover:bg-white/5 hover:text-white'}`}
-                            onClick={() => onToggle(r.bib)}
+                            onClick={() => onToggle(id)}
                         >
                             <span className={`grid h-3.5 w-3.5 shrink-0 place-items-center rounded border text-[9px] leading-none transition ${selected
                                 ? 'border-cyan-400 bg-cyan-400 text-slate-900'
@@ -1057,29 +853,33 @@ function ResultsPanel({
             ) : (
                 <div className='flex max-h-44 flex-col gap-0.5 overflow-y-auto pr-1'>
                     {selectedRacers.map((r, i) => {
-                        const pinned = pinnedBib === r.bib
+                        const pinned = pinnedId === r.id
                         return (
                             <div
-                                key={r.bib}
+                                key={r.id}
                                 className={`group flex cursor-pointer items-center gap-2 rounded px-1 py-0.5 transition ${pinned
                                     ? 'bg-white/10 text-white'
                                     : 'text-slate-200 hover:bg-white/5'}`}
                                 title={pinned ? 'Click to unpin name label' : 'Click to pin name label'}
-                                onMouseEnter={() => onHoverSwimmer(r.bib)}
+                                onMouseEnter={() => onHoverSwimmer(r.id)}
                                 onMouseLeave={() => onHoverSwimmer(null)}
-                                onClick={() => onPinSwimmer(r.bib)}
+                                onClick={() => onPinSwimmer(r.id)}
                             >
                                 <span
                                     className='inline-block h-3 w-3 shrink-0 rounded-sm'
                                     style={{ background: swimmerColors[i % swimmerColors.length] }}
                                 />
                                 <span className='flex-1 truncate'>{r.name}</span>
+                                {/* the season this entry comes from */}
+                                <span className='shrink-0 rounded bg-white/10 px-1 text-[10px] tabular-nums text-slate-400' title={`${r.year} season`}>
+                                    {shortYear(r.year)}
+                                </span>
                                 {pinned && <span className='shrink-0 text-[10px] text-cyan-300'>◉</span>}
                                 <span className='tabular-nums text-slate-500'>{r.chipTime}</span>
                                 <button
                                     className='px-1 text-slate-600 opacity-0 transition group-hover:opacity-100 hover:text-red-400'
                                     title='Remove from the map'
-                                    onClick={e => { e.stopPropagation(); onToggle(r.bib) }}
+                                    onClick={e => { e.stopPropagation(); onToggle(r.id) }}
                                 >×</button>
                             </div>
                         )
@@ -1208,12 +1008,17 @@ function PlaybackBar({ clockRef, playing, onTogglePlay, onRestart, speed, onSpee
  * applies camera starting points (rotate to the preset's angles, then fit the
  * course buoys into frame) and keeps panning anchored to the course
  */
-function CameraRig({ preset, controlsRef, buoys }: {
+function CameraRig({ preset, controls, frame, buoys }: {
     preset: (CameraStart & { nonce: number }) | null
-    controlsRef: React.MutableRefObject<CameraControlsImpl | null>
+    controls: CameraControlsImpl | null
+    frame: MapFrame
     buoys: ReturnType<typeof computeBuoys> | null
 }) {
     const appliedNonce = useRef<number | null>(null)
+    // the very first framing snaps into place: the basemap's default camera
+    // is nowhere near any course, so animating from it is a swoop across
+    // the state
+    const applied = useRef(false)
     const camera = useThree(s => s.camera)
     const size = useThree(s => s.size)
 
@@ -1225,31 +1030,36 @@ function CameraRig({ preset, controlsRef, buoys }: {
     // clamp the orbit target to a generous box around the buoys so the course
     // can't be panned out of frame
     useEffect(() => {
-        const controls = controlsRef.current
         if (!controls || !courseBox) return
         // extra vertical headroom: preset targets can sit well above sea level
         controls.setBoundary(courseBox.clone().expandByVector(new THREE.Vector3(3, 6, 3)))
-    }, [courseBox, controlsRef])
+    }, [courseBox, controls])
 
     useEffect(() => {
-        const controls = controlsRef.current
         // apply each request exactly once (buoy changes must not re-snap the
         // camera after the user has moved away); wait for the course to exist
         if (!preset || preset.nonce === appliedNonce.current) return
         if (!controls || !buoys) return
         appliedNonce.current = preset.nonce
+        const animate = applied.current
+        applied.current = true
         // rotate first, then contain-fit at the final angle. Fitting by hand
         // because controls.fitToBox rounds the rotation to the nearest 90°
         // axis, which would snap every angled preset back to overhead.
         controls
-            .rotateTo(THREE.MathUtils.degToRad(preset.azimuth), THREE.MathUtils.degToRad(preset.polar), true)
+            .rotateTo(THREE.MathUtils.degToRad(preset.azimuth), THREE.MathUtils.degToRad(preset.polar), animate)
             .then(() => {
                 // explicit framing pinned in the preset: no auto-fit
                 if (preset.zoom !== undefined && preset.target) {
-                    controls.moveTo(...preset.target, true)
-                    controls.zoomTo(preset.zoom, true)
+                    const [x, z] = frame.project(preset.target[0], preset.target[1])
+                    controls.moveTo(x, frame.seaLevel, z, animate)
+                    controls.zoomTo(preset.zoom, animate)
                     return
                 }
+                // an instant rotate only settles on the next controls.update
+                // (drei runs it per frame); apply it now so the fit below
+                // measures from the new angle, not the old one
+                if (!animate) controls.update(0)
                 camera.updateMatrixWorld() // rotation settled; also updates matrixWorldInverse
                 // Measure the buoys themselves, not the corners of their
                 // bounding box: a course running diagonally through the box
@@ -1267,10 +1077,13 @@ function CameraRig({ preset, controlsRef, buoys }: {
                 }
                 const spanX = Math.max(maxX - minX, 1e-6)
                 const spanY = Math.max(maxY - minY, 1e-6)
-                const zoom = Math.min(
+                const fitZoom = Math.min(
                     (size.width * FIT_FRACTION_X) / spanX,
                     (size.height * FIT_FRACTION_Y) / spanY,
                 )
+                // a preset can pull the framing in or out (fit) or fix the zoom
+                // outright while keeping the auto-fit center
+                const zoom = preset.zoom ?? fitZoom * (preset.fit ?? 1)
                 // re-centre on the middle of what was just measured — the box
                 // centre can sit well off it for a lopsided course
                 const center = camera.localToWorld(new THREE.Vector3(
@@ -1278,17 +1091,18 @@ function CameraRig({ preset, controlsRef, buoys }: {
                     (minY + maxY) / 2,
                     sumZ / buoys.positions.length,
                 ))
-                controls.moveTo(center.x, center.y, center.z, true)
-                controls.zoomTo(zoom, true)
+                controls.moveTo(center.x, center.y, center.z, animate)
+                controls.zoomTo(zoom, animate)
             })
-    }, [preset, buoys, controlsRef, camera, size])
+    }, [preset, buoys, controls, camera, size, frame])
     return null
 }
 
 /** writes the live camera angles/zoom/target into a DOM input, throttled */
-function CameraReadout({ outRef, controlsRef }: {
+function CameraReadout({ outRef, controls, frame }: {
     outRef: React.RefObject<HTMLInputElement>
-    controlsRef: React.MutableRefObject<CameraControlsImpl | null>
+    controls: CameraControlsImpl | null
+    frame: MapFrame
 }) {
     const camera = useThree(s => s.camera)
     const acc = useRef(1)
@@ -1298,13 +1112,13 @@ function CameraReadout({ outRef, controlsRef }: {
         if (acc.current < 0.2) return
         acc.current = 0
         const el = outRef.current
-        const controls = controlsRef.current
         if (!el || !controls) return
         const t = controls.getTarget(tmp.current)
+        const [lat, lng] = frame.unproject(t.x, t.z)
         el.value = `az ${THREE.MathUtils.radToDeg(controls.azimuthAngle).toFixed(1)}°`
             + ` pol ${THREE.MathUtils.radToDeg(controls.polarAngle).toFixed(1)}°`
             + ` zoom ${camera.zoom.toFixed(1)}`
-            + ` target [${t.x.toFixed(1)}, ${t.y.toFixed(1)}, ${t.z.toFixed(1)}]`
+            + ` target [${lat.toFixed(6)}, ${lng.toFixed(6)}]`
     })
     return null
 }
@@ -1350,63 +1164,158 @@ function useIsMobile() {
     return mobile
 }
 
+const EMPTY_STATS: DemStats = { zoom: 0, mPerPx: 0, autoRes: 0, levelIdx: 0, tiles: 0, warming: 0 }
+
+const MAP_PATH = '/projects/swim-map'
+
+/** the onboarding's featured swimmers, as "year-bib" ids */
+const FEATURED_IDS = BETTY_SPOTLIGHT.bibs.map(b => swimmerId(BETTY_SPOTLIGHT.year, b))
+
+/** query string with the commas of the `swimmers` list left readable
+ * (URLSearchParams would escape them to %2C; a comma is safe in a query) */
+const toSearch = (p: URLSearchParams) => p.toString().replace(/%2C/gi, ',')
+
+/** the `swimmers` query param: comma-separated "year-bib" ids, deduped, in order */
+function parseSwimmersParam(v: string | null): string[] {
+    if (!v) return []
+    const out: string[] = []
+    for (const id of v.split(',')) if (parseSwimmerId(id) && !out.includes(id)) out.push(id)
+    return out
+}
+
+/**
+ * The page. Everything a visitor can adjust (settings aside) lives in the url,
+ * so a view is shareable and the back button works:
+ *
+ *   /projects/swim-map/<race slug>?year=2025&view=east&swimmers=2026-883,2025-883
+ *
+ * Defaults (latest season, the race's first view, nobody on the map) are
+ * omitted from the query. Query changes replace the history entry; race
+ * changes push one.
+ */
 export function FiberCanvas() {
-    const [dataset, setDataset] = useState('Waimea 10m')
     const isMobile = useIsMobile()
     // results panel starts open on desktop, collapsed to its toggle on phones
     const [sidebarOpen, setSidebarOpen] = useState(
         () => typeof window === 'undefined' || window.matchMedia(SM_UP).matches,
     )
-    const [stride, setStride] = useState(8)
-    const [heightScale, setHeightScale] = useState(0.005)
-    const [oceanDepthDivisor, setOceanDepthDivisor] = useState(0.25)
-    const [waterOpacity, setWaterOpacity] = useState(0.35)
-    const [smoothStrength, setSmoothStrength] = useState(0.6)
-    const [smoothIterations, setSmoothIterations] = useState(1)
-    const [blockFootprint, setBlockFootprint] = useState(1)
-    const [lightIntensity, setLightIntensity] = useState(1)
-    const [ambientIntensity, setAmbientIntensity] = useState(0.7)
-    const [timeOfDay, setTimeOfDay] = useState(9) // hours, 6 = sunrise .. 18 = sunset
-    const [beachMaxElev, setBeachMaxElev] = useState(10) // meters
-    const [beachReach, setBeachReach] = useState(120) // meters inland from the water
 
-    // Sun position/color for Oahu (~21.6N): rises in the east, arcs high through
-    // the southern sky (peak ~78 deg), sets west. Scene compass: -x = north, -z = east.
-    const sun = useMemo(() => {
-        const frac = (timeOfDay - 6) / 12
-        const elev = Math.max(0.05, Math.sin(Math.PI * frac) * 78 * Math.PI / 180)
-        const az = (90 + 180 * frac) * Math.PI / 180 // east -> south -> west
-        const R = 40
-        const pos: [number, number, number] = [
-            -Math.cos(az) * Math.cos(elev) * R,
-            Math.sin(elev) * R,
-            -Math.sin(az) * Math.cos(elev) * R,
-        ]
-        // warm gold near the horizon fading to near-white overhead; a touch
-        // dimmer at the ends of the day
-        const warmth = Math.min(1, Math.sin(elev) * 1.6)
-        const color = '#' + new THREE.Color('#ffc98a').lerp(new THREE.Color('#fff6ea'), warmth).getHexString()
-        const intensity = 1.0 + 0.8 * Math.sin(elev)
-        return { pos, color, intensity }
-    }, [timeOfDay])
+    // ---- url state ----
+    const params = useParams<{ race?: string }>()
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const raceKey = raceKeyForSlug(params.race) ?? Object.keys(RACES)[0]
+    const race = RACES[raceKey]
+    // season being browsed; falls back to the race's latest when the url
+    // names a season this race never ran
+    const yearParam = Number(searchParams.get('year'))
+    const year = race.years.includes(yearParam) ? yearParam : latestYear(race)
+    const viewParam = searchParams.get('view')
+    const camera = race.cameras.find(c => viewSlug(c) === viewParam) ?? race.cameras[0]
+    const swimmersParam = searchParams.get('swimmers')
+    const selectedIds = useMemo(() => parseSwimmersParam(swimmersParam), [swimmersParam])
 
-    const [grid, setGrid] = useState<Grid | null>(null)
+    // canonical path: an unknown or missing slug redirects to the race shown
+    useEffect(() => {
+        if (params.race !== race.slug) {
+            const q = toSearch(searchParams)
+            navigate(`${MAP_PATH}/${race.slug}${q ? `?${q}` : ''}`, { replace: true })
+        }
+    }, [params.race, race.slug, searchParams, navigate])
 
-    // race results + swimmer selection
-    const [raceKey, setRaceKey] = useState(Object.keys(RACES)[0])
-    // season picked by the user; falls back to the race's latest year when the
-    // selected race never ran that season
-    const [pickedYear, setPickedYear] = useState<number | null>(null)
-    const [racers, setRacers] = useState<Racer[]>([])
-    // which "race-year" the loaded `racers` belong to (results load async after a switch)
-    const [racersFor, setRacersFor] = useState('')
-    const [selectedBibs, setSelectedBibs] = useState<string[]>([])
+    // query writers go through navigate rather than setSearchParams, which
+    // re-serializes (and so re-escapes the swimmer list's commas)
+    const setQuery = useCallback((patch: Record<string, string | null>) => {
+        const next = new URLSearchParams(searchParams)
+        for (const [k, v] of Object.entries(patch)) {
+            if (v === null) next.delete(k)
+            else next.set(k, v)
+        }
+        const q = toSearch(next)
+        navigate({ search: q ? `?${q}` : '' }, { replace: true })
+    }, [searchParams, navigate])
+    const selectRace = useCallback((key: string) => {
+        // a fresh query: swimmers and seasons are race-specific
+        if (key !== raceKey) navigate(`${MAP_PATH}/${RACES[key].slug}`)
+    }, [navigate, raceKey])
+    const selectYear = useCallback((y: number) => {
+        setQuery({ year: y === latestYear(race) ? null : String(y) })
+    }, [setQuery, race])
+    const selectView = useCallback((c: CameraStart) => {
+        setQuery({ view: c === race.cameras[0] ? null : viewSlug(c) })
+    }, [setQuery, race])
+    const updateSelectedIds = useCallback((update: (ids: string[]) => string[]) => {
+        const ids = update(parseSwimmersParam(searchParams.get('swimmers')))
+        setQuery({ swimmers: ids.length ? ids.join(',') : null })
+    }, [searchParams, setQuery])
+
+    // basemap: the tile pyramid picks its voxel size from the zoom by default;
+    // the settings dialog can pin a level and tune the look
+    const { settings: mapSettings, set: setMapSetting } = useDemMapSettings({ ambient: 0.7 })
+    const [api, setApi] = useState<DemMapApi | null>(null)
+    const [mapStats, setMapStats] = useState<DemStats>(EMPTY_STATS)
+    const handleApi = useCallback((a: DemMapApi | null) => setApi(a), [])
+    const handleStats = useCallback((s: DemStats) => setMapStats(s), [])
+    // the placement frame is stable across LOD swaps; memo course geometry on it
+    const frame = api?.frame ?? null
+    const controls = api?.controls ?? null
+    // the buoy editor and the readout still take a ref (pointer handlers
+    // toggle controls.enabled mid-drag)
+    const controlsRef = useRef<CameraControlsImpl | null>(null)
+    controlsRef.current = controls
+
+    // ---- results: one file per race-season, cached; the season being
+    // browsed plus every season a selected swimmer comes from ----
+    const [results, setResults] = useState<Record<string, Racer[]>>({})
+    const loading = useRef(new Set<string>())
+    const neededYears = useMemo(() => {
+        const ys = new Set<number>([year])
+        for (const id of selectedIds) {
+            const p = parseSwimmerId(id)
+            if (p && race.years.includes(p.year)) ys.add(p.year)
+        }
+        return [...ys]
+    }, [year, selectedIds, race])
+    useEffect(() => {
+        for (const y of neededYears) {
+            const key = `${raceKey}-${y}`
+            if (results[key] || loading.current.has(key)) continue
+            loading.current.add(key)
+            fetch(resultsUrl(raceKey, y))
+                .then(r => r.json())
+                .then((file: RaceResultsFile) => {
+                    setResults(m => m[key] ? m : { ...m, [key]: parseRacers(file) })
+                })
+                .catch(err => console.error(`results for ${raceKey} ${y} failed to load`, err))
+                .finally(() => loading.current.delete(key))
+        }
+    }, [neededYears, raceKey, results])
+    /** the season being browsed (the search list) */
+    const racers = results[`${raceKey}-${year}`] ?? EMPTY_RACERS
+
+    // every loaded swimmer of this race by "year-bib" id
+    const byId = useMemo(() => {
+        const m = new Map<string, SelectedRacer>()
+        for (const [key, rs] of Object.entries(results)) {
+            if (!key.startsWith(`${raceKey}-`)) continue
+            const y = Number(key.slice(raceKey.length + 1))
+            for (const r of rs) {
+                const id = swimmerId(y, r.bib)
+                m.set(id, { ...r, id, year: y })
+            }
+        }
+        return m
+    }, [results, raceKey])
+    // selected swimmers whose season has loaded, in selection order
+    const selectedRacers = useMemo(
+        () => selectedIds.map(id => byId.get(id)).filter((r): r is SelectedRacer => !!r),
+        [selectedIds, byId]
+    )
+
     const [playing, setPlaying] = useState(false)
     const [loop, setLoop] = useState(false)
     const [speed, setSpeed] = useState(SPEED_PRESETS[1].factor)
     const raceClock = useRef(0)
-    const race = RACES[raceKey]
-    const year = pickedYear !== null && race.years.includes(pickedYear) ? pickedYear : latestYear(race)
 
     // buoy editor (active while settings are open): session-only waypoint
     // overrides per race; copy the tuned coords back into RACES by hand
@@ -1423,72 +1332,61 @@ export function FiberCanvas() {
         })
     }, [raceKey])
 
+    // a new race starts from the gun, stopped
+    useEffect(() => {
+        setSelectedWaypoint(null)
+        setPlaying(false)
+        raceClock.current = 0
+    }, [raceKey])
+
     // ui chrome: settings dialog + camera starting points + live coord readout
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [cameraPreset, setCameraPreset] = useState<(CameraStart & { nonce: number }) | null>(null)
-    const controlsRef = useRef<CameraControlsImpl | null>(null)
     const camReadoutRef = useRef<HTMLInputElement>(null)
     const applyCamera = useCallback((c: CameraStart) => {
         // nonce so re-clicking the same starting point re-applies it
         setCameraPreset({ ...c, nonce: performance.now() })
     }, [])
 
-    // jump to the race's first camera starting point when the race changes
+    // the url's view (or the race's first) applies whenever it or the race changes
     useEffect(() => {
-        applyCamera(race.cameras[0])
-    }, [race, applyCamera])
+        applyCamera(camera)
+    }, [race, camera, applyCamera])
+    const handleViewClick = (c: CameraStart) => {
+        // the effect above handles a change; re-clicking the current view
+        // just re-frames it
+        if (c === camera) applyCamera(c)
+        else selectView(c)
+    }
 
     // name-label state: live swimmer positions (written by Swimmer useFrame),
     // a pinned label (3d hover or roster click; persists until dismissed /
     // unclicked), and a transient label from hovering a roster row, which
     // takes display precedence while the pointer is over the row
     const swimmerPositions = useRef(new Map<string, THREE.Vector3>())
-    const [label, setLabel] = useState<{ bib: string, name: string, color: string, anchor: THREE.Vector3 } | null>(null)
-    const [hoverLabel, setHoverLabel] = useState<{ bib: string, name: string, color: string, anchor: THREE.Vector3 } | null>(null)
+    const [label, setLabel] = useState<{ id: string, name: string, color: string, anchor: THREE.Vector3 } | null>(null)
+    const [hoverLabel, setHoverLabel] = useState<{ id: string, name: string, color: string, anchor: THREE.Vector3 } | null>(null)
 
-    useEffect(() => {
-        let live = true
-        setGrid(null)
-        loadGrid(DATASETS[dataset]).then(g => { if (live) setGrid(g) })
-        return () => { live = false }
-    }, [dataset])
-
-    useEffect(() => {
-        let live = true
-        setRacers([])
-        setSelectedBibs([])
-        setSelectedWaypoint(null)
-        setPlaying(false)
-        raceClock.current = 0
-        fetch(resultsUrl(raceKey, year))
-            .then(r => r.json())
-            .then((file: RaceResultsFile) => {
-                if (!live) return
-                setRacers(parseRacers(file))
-                setRacersFor(`${raceKey}-${year}`)
-            })
-        return () => { live = false }
-    }, [race, raceKey, year])
-
-    const toggleBib = (bib: string) => setSelectedBibs(s =>
-        s.includes(bib) ? s.filter(b => b !== bib) : [...s, bib]
+    const toggleId = (id: string) => updateSelectedIds(s =>
+        s.includes(id) ? s.filter(x => x !== id) : [...s, id]
     )
-    const addGroup = (group: string) => setSelectedBibs(s => {
+    // groups come from the season being browsed
+    const addGroup = (group: string) => {
         const members = group === '__all__' ? racers
             : group === '__top100__' ? racers.slice(0, 100)
                 : racers.filter(r => r.division === group)
-        const existing = new Set(s)
-        return [...s, ...members.filter(r => !existing.has(r.bib)).map(r => r.bib)]
-    })
+        const ids = members.map(r => swimmerId(year, r.bib))
+        updateSelectedIds(s => {
+            const existing = new Set(s)
+            return [...s, ...ids.filter(id => !existing.has(id))]
+        })
+    }
+    const clearSelected = () => updateSelectedIds(() => [])
 
-    const byBib = useMemo(() => new Map(racers.map(r => [r.bib, r])), [racers])
-    const selectedRacers = useMemo(
-        () => selectedBibs.map(b => byBib.get(b)).filter((r): r is Racer => !!r),
-        [selectedBibs, byBib]
-    )
     // stable identity matters: SwimmerField rebuilds its paths when this changes
     const swimmerEntries = useMemo<SwimmerEntry[]>(
         () => selectedRacers.map((r, i) => ({
+            id: r.id,
             bib: r.bib,
             name: r.name,
             minutes: r.minutes,
@@ -1513,8 +1411,11 @@ export function FiberCanvas() {
         setPlaying(!playing)
     }, [playing, durationMs, isMobile])
 
-    // onboarding: shown on load, reopenable via the ? button
-    const [showOnboarding, setShowOnboarding] = useState(true)
+    // onboarding: shown when the page is opened at the bare /projects/swim-map
+    // (no race in the path), reopenable via the ? button. A link straight to
+    // a race skips it. Read once on mount: the canonical-path redirect above
+    // fills the slug in right after, without remounting.
+    const [showOnboarding, setShowOnboarding] = useState(() => !params.race)
 
     // space bar toggles playback (unless typing in a field)
     useEffect(() => {
@@ -1530,223 +1431,174 @@ export function FiberCanvas() {
         return () => window.removeEventListener('keydown', onKey)
     }, [hasSwimmers, showOnboarding, togglePlay])
 
-    // downsample + smoothing are the expensive passes; keep them independent of
-    // the depth-compression slider so dragging it only redoes the cheap remap
-    const smoothed = useMemo(() => {
-        if (!grid) return null
-        const g = downsample(grid, stride)
-        let elev = g.elev
-        for (let i = 0; i < smoothIterations; i++) {
-            elev = smoothPass(elev, g.nRows, g.nCols, smoothStrength)
-        }
-        return { g, elev }
-    }, [grid, stride, smoothStrength, smoothIterations])
-
-    const view = useMemo<View | null>(() => {
-        if (!smoothed) return null
-        const { g, elev } = smoothed
-
-        // apply ocean depth compression, gather stats + samples for the color scales
-        const y = new Float32Array(elev.length)
-        let min = Infinity, max = -Infinity
-        const oceanSample: number[] = []
-        const landSample: number[] = []
-        const sampleEvery = Math.max(1, Math.floor(elev.length / 50000))
-        for (let i = 0; i < elev.length; i++) {
-            const e = elev[i]
-            if (Number.isNaN(e)) { y[i] = NaN; continue }
-            const v = e < 0 ? e / oceanDepthDivisor : e
-            y[i] = v
-            if (v < min) min = v
-            if (v > max) max = v
-            if (i % sampleEvery === 0) (v < 0 ? oceanSample : landSample).push(v)
-        }
-
-        return {
-            g,
-            y,
-            distToOcean: oceanDistance(y, g.nRows, g.nCols),
-            heightOffset: Math.max(0, -min),
-            oceanColorScale: scaleQuantile<string>()
-                .domain(oceanSample.length ? oceanSample : [-1, 0])
-                .range(oceanColors),
-            landColorScale: scaleQuantile<string>()
-                .domain(landSample.length ? landSample : [0, max])
-                .range(landColors),
-        }
-    }, [smoothed, oceanDepthDivisor])
-
+    // voxel size of the level on screen; markers are sized from it, so they
+    // step down as the map refines on zoom-in (and back up on zoom-out)
+    const voxelM = api?.levels[mapStats.levelIdx]?.res ?? 20
     const buoys = useMemo(
-        () => view && computeBuoys(view, course, heightScale),
-        [view, course, heightScale]
+        () => frame && computeBuoys(frame, course, voxelM),
+        [frame, course, voxelM]
     )
 
-    const makeLabel = useCallback((bib: string, name: string, color: string) => {
-        if (!buoys || !view) return null
+    const makeLabel = useCallback((id: string, name: string, color: string) => {
+        if (!buoys || !frame) return null
         // fixed anchor at the race's configured lat/lng, floating a buoy's
-        // height above sea level
-        const [mx, my] = latLngToMercator(race.labelAnchor)
-        const [x, z] = mercToScene(view.g, mx, my)
-        const anchor = new THREE.Vector3(x, view.heightOffset * heightScale + buoys.height + 0.5, z)
-        // sanity check: never bury the label in the terrain it hovers over
-        // (one-time, at anchor placement)
-        const top = terrainTopAt(view, heightScale, anchor.x, anchor.z)
-        anchor.y = Math.max(anchor.y, top + LABEL_BOX_H)
-        return { bib, name, color, anchor }
-    }, [buoys, view, heightScale, race])
+        // height above sea level (raised clear of the terrain below, if any,
+        // once the basemap has sampled it - see the effect below)
+        const [x, z] = frame.project(race.labelAnchor[0], race.labelAnchor[1])
+        const anchor = new THREE.Vector3(x, frame.seaLevel + buoys.height + 0.5, z)
+        return { id, name, color, anchor }
+    }, [buoys, frame, race])
 
-    const handleSwimmerHover = useCallback((bib: string, name: string, color: string) => {
-        const l = makeLabel(bib, name, color)
+    // never bury the label in terrain it hovers over: sample the ground under
+    // the anchor (async, through the basemap's current level) and lift the
+    // box above it. One-time per anchor placement.
+    const pinnedAnchor = label?.anchor ?? null
+    useEffect(() => {
+        if (!api || !pinnedAnchor) return
+        let live = true
+        api.sampleElevation(race.labelAnchor[0], race.labelAnchor[1]).then(e => {
+            if (!live || e === null) return
+            const top = api.sceneY(e)
+            if (pinnedAnchor.y < top + LABEL_BOX_H) {
+                setLabel(l => l && l.anchor === pinnedAnchor
+                    ? { ...l, anchor: new THREE.Vector3(pinnedAnchor.x, top + LABEL_BOX_H, pinnedAnchor.z) }
+                    : l)
+            }
+        })
+        return () => { live = false }
+    }, [api, pinnedAnchor, race])
+
+    const handleSwimmerHover = useCallback((id: string, name: string, color: string) => {
+        const l = makeLabel(id, name, color)
         if (l) setLabel(l)
     }, [makeLabel])
 
     // clicking a swimmer's block pins that name. Also drops any roster-hover
     // label, which would otherwise keep display precedence — on touch,
     // mouseenter fires on tap and never gets a matching mouseleave.
-    const handleSwimmerClick = useCallback((bib: string, name: string, color: string) => {
-        const l = makeLabel(bib, name, color)
+    const handleSwimmerClick = useCallback((id: string, name: string, color: string) => {
+        const l = makeLabel(id, name, color)
         if (l) { setHoverLabel(null); setLabel(l) }
     }, [makeLabel])
 
     // roster rows share the swimmer's assigned color (index in selection order)
-    const labelForBib = (bib: string) => {
-        const i = selectedRacers.findIndex(r => r.bib === bib)
+    const labelForId = (id: string) => {
+        const i = selectedRacers.findIndex(r => r.id === id)
         if (i < 0) return null
-        return makeLabel(bib, selectedRacers[i].name, swimmerColors[i % swimmerColors.length])
+        return makeLabel(id, selectedRacers[i].name, swimmerColors[i % swimmerColors.length])
     }
-    const handleRosterHover = (bib: string | null) => {
+    const handleRosterHover = (id: string | null) => {
         // touch reports a mouseenter on tap and often never a matching
         // mouseleave, so on phones taps go through handleRosterClick alone
         if (isMobile) return
-        setHoverLabel(bib ? labelForBib(bib) : null)
+        setHoverLabel(id ? labelForId(id) : null)
     }
-    const handleRosterClick = (bib: string) => {
+    const handleRosterClick = (id: string) => {
         // click pins the label; clicking the same swimmer again unpins
         setHoverLabel(null)
-        setLabel(prev => prev?.bib === bib ? null : labelForBib(bib))
+        setLabel(prev => prev?.id === id ? null : labelForId(id))
     }
 
-    // anchor position goes stale when the race, grid, or vertical scale changes
+    // anchor position goes stale when the race or the map's vertical scale changes
     useEffect(() => {
         setLabel(null)
         setHoverLabel(null)
-    }, [raceKey, view, heightScale])
+    }, [raceKey, frame])
 
     // drop labels whose swimmer is removed from the map
     useEffect(() => {
-        if (label && !selectedBibs.includes(label.bib)) setLabel(null)
-        if (hoverLabel && !selectedBibs.includes(hoverLabel.bib)) setHoverLabel(null)
-    }, [label, hoverLabel, selectedBibs])
+        if (label && !selectedIds.includes(label.id)) setLabel(null)
+        if (hoverLabel && !selectedIds.includes(hoverLabel.id)) setHoverLabel(null)
+    }, [label, hoverLabel, selectedIds])
 
-    // Betty spotlight (launched from the onboarding): once the featured race's
-    // results and buoys are ready, select the featured swimmers, start the
-    // replay, and pin the name label on Betty. Declared after the label-clearing
+    // Betty spotlight (launched from the onboarding): the onboarding sends the
+    // browser to the featured race with the featured swimmers in the url;
+    // once that season's results and the buoys are ready, start the replay
+    // and pin the name label on Betty. Declared after the label-clearing
     // effects so the label set here survives the same-commit clear when the
-    // grid finishes loading last.
+    // map finishes loading last.
     const [spotlight, setSpotlight] = useState(false)
+    // ready only once the url actually carries the featured setup (navigate
+    // can land a render after setSpotlight) and that season has loaded
+    const spotlightReady = spotlight && raceKey === BETTY_SPOTLIGHT.raceKey && !!buoys
+        && FEATURED_IDS.every(id => selectedIds.includes(id) && byId.has(id))
     useEffect(() => {
-        if (!spotlight || !buoys || racersFor !== `${BETTY_SPOTLIGHT.raceKey}-${BETTY_SPOTLIGHT.year}`) return
-        const found = BETTY_SPOTLIGHT.bibs.filter(b => racers.some(r => r.bib === b))
-        setSelectedBibs(found)
+        if (!spotlightReady) return
         raceClock.current = 0
         setPlaying(true)
-        const star = racers.find(r => r.bib === BETTY_SPOTLIGHT.labelBib)
-        if (star) {
-            const i = Math.max(0, found.indexOf(star.bib))
-            handleSwimmerHover(star.bib, star.name, swimmerColors[i % swimmerColors.length])
-        }
+        const starId = swimmerId(BETTY_SPOTLIGHT.year, BETTY_SPOTLIGHT.labelBib)
+        const i = selectedRacers.findIndex(r => r.id === starId)
+        if (i >= 0) handleSwimmerHover(starId, selectedRacers[i].name, swimmerColors[i % swimmerColors.length])
         setSpotlight(false)
-    }, [spotlight, racers, racersFor, buoys, handleSwimmerHover])
+    }, [spotlightReady, selectedRacers, handleSwimmerHover])
+
+    const showBettyRace = () => {
+        const featured = RACES[BETTY_SPOTLIGHT.raceKey]
+        const q = new URLSearchParams()
+        if (BETTY_SPOTLIGHT.year !== latestYear(featured)) q.set('year', String(BETTY_SPOTLIGHT.year))
+        q.set('swimmers', FEATURED_IDS.join(','))
+        navigate(`${MAP_PATH}/${featured.slug}?${toSearch(q)}`)
+        setSpotlight(true)
+        setShowOnboarding(false)
+    }
+
+    const levels = api?.levels ?? []
+    const drawnLevel = levels[mapStats.levelIdx] ?? null
 
     // 100dvh, not 100vh: on phones the URL bar shrinks the visible viewport and
     // 100vh would push the bottom chrome off-screen
     return (
         <div className='relative h-[100dvh] w-full overflow-hidden overscroll-none bg-slate-950 text-slate-100'>
-            {/* scene: full-bleed, all chrome floats on top */}
-            <div className='absolute inset-0'>
-                <Canvas
-                    shadows
-                    orthographic
-                    camera={{
-                        zoom: 15,
-                        position: [20, 30, 10]
-                    }}>
-                    {/* soft, slightly hazy early-morning sky blue */}
-                    <color attach='background' args={['#a8c8e6']} />
-                    <CameraRig preset={cameraPreset} controlsRef={controlsRef} buoys={buoys} />
-                    <CameraReadout outRef={camReadoutRef} controlsRef={controlsRef} />
-                    <RaceClock clockRef={raceClock} playing={playing} speed={speed} />
-                    {/* casters: anything that moves the terrain, buoys, or the sun */}
-                    <ShadowFreeze casters={[view, heightScale, blockFootprint, sun, course]} />
-                    {/* early morning at Waimea: cool blue skylight from above, warm
-                        sand/ocean bounce from below */}
-                    <hemisphereLight args={['#bdd4ee', '#997f5f', 1.0]} />
-                    {/* shadowless base brightness so shadows stay soft even when
-                        the scene is lifted */}
-                    <ambientLight color='#f2ede4' intensity={ambientIntensity} />
-                    {/* the "sun": position/color/strength driven by the time-of-day slider */}
-                    <directionalLight
-                        castShadow
-                        position={sun.pos}
-                        color={sun.color}
-                        intensity={lightIntensity * sun.intensity}
-                        shadow-mapSize={[2048, 2048]} // Higher resolution shadows
-                        shadow-camera-far={200}
-                        shadow-camera-left={-50}
-                        shadow-camera-right={50}
-                        shadow-camera-top={50}
-                        shadow-camera-bottom={-50}
-                    />
-                    {view && buoys && (
-                        <>
-                            <TerrainInstances
-                                view={view}
-                                heightScale={heightScale}
-                                blockFootprint={blockFootprint}
-                                beachMaxElev={beachMaxElev}
-                                beachReachCells={Math.round(beachReach / view.g.cellY)}
-                            />
-                            {waterOpacity > 0 && (
-                                <VoxelWater view={view} heightScale={heightScale} blockFootprint={blockFootprint} opacity={waterOpacity} />
-                            )}
-                            <CourseMarkers
-                                buoys={buoys}
-                                g={view.g}
-                                waypoints={course.waypoints}
-                                editable={settingsOpen}
-                                selectedWaypoint={selectedWaypoint}
-                                onSelectWaypoint={setSelectedWaypoint}
-                                onMoveWaypoint={moveWaypoint}
-                                controlsRef={controlsRef}
-                            />
-                            <SwimmerField
-                                view={view}
-                                course={course}
-                                heightScale={heightScale}
-                                raceKey={raceKey}
-                                swimmers={swimmerEntries}
-                                clockRef={raceClock}
-                                loop={loop}
+            {/* scene: the full-bleed basemap, with the race drawn on top; all
+                chrome floats over it */}
+            <DemMap
+                settings={mapSettings}
+                onApi={handleApi}
+                onStats={handleStats}
+                lockTarget={false}
+            >
+                {/* placement uses the api from onApi (one render earlier), so
+                    the scene body needs nothing from the callback */}
+                {() => frame && buoys && (
+                    <>
+                        <CameraRig preset={cameraPreset} controls={controls} frame={frame} buoys={buoys} />
+                        <CameraReadout outRef={camReadoutRef} controls={controls} frame={frame} />
+                        <RaceClock clockRef={raceClock} playing={playing} speed={speed} />
+                        <CourseMarkers
+                            buoys={buoys}
+                            frame={frame}
+                            waypoints={course.waypoints}
+                            editable={settingsOpen}
+                            selectedWaypoint={selectedWaypoint}
+                            onSelectWaypoint={setSelectedWaypoint}
+                            onMoveWaypoint={moveWaypoint}
+                            controlsRef={controlsRef}
+                        />
+                        <SwimmerField
+                            frame={frame}
+                            course={course}
+                            voxelM={voxelM}
+                            raceKey={raceKey}
+                            swimmers={swimmerEntries}
+                            clockRef={raceClock}
+                            loop={loop}
+                            positionsRef={swimmerPositions}
+                            onHover={handleSwimmerHover}
+                            onSelect={handleSwimmerClick}
+                        />
+                        {(hoverLabel ?? label) && (
+                            <SwimmerLabel
+                                id={(hoverLabel ?? label)!.id}
+                                name={(hoverLabel ?? label)!.name}
+                                color={(hoverLabel ?? label)!.color}
+                                anchor={(hoverLabel ?? label)!.anchor}
                                 positionsRef={swimmerPositions}
-                                onHover={handleSwimmerHover}
-                                onSelect={handleSwimmerClick}
+                                onDismiss={() => { setLabel(null); setHoverLabel(null) }}
                             />
-                            {(hoverLabel ?? label) && (
-                                <SwimmerLabel
-                                    bib={(hoverLabel ?? label)!.bib}
-                                    name={(hoverLabel ?? label)!.name}
-                                    color={(hoverLabel ?? label)!.color}
-                                    anchor={(hoverLabel ?? label)!.anchor}
-                                    positionsRef={swimmerPositions}
-                                    onDismiss={() => { setLabel(null); setHoverLabel(null) }}
-                                />
-                            )}
-                        </>
-                    )}
-                    {/* clamp at the horizon: the map has no underside worth seeing */}
-                    <CameraControls ref={controlsRef} maxPolarAngle={Math.PI / 2} />
-                </Canvas>
-            </div>
+                        )}
+                    </>
+                )}
+            </DemMap>
 
             {/* left chrome. On phones this is a flex column so the panel and the
                 playback bar split the viewport instead of stacking on top of each
@@ -1783,15 +1635,16 @@ export function FiberCanvas() {
                     >
                         <ResultsPanel
                             raceKey={raceKey}
-                            onSelectRace={setRaceKey}
+                            onSelectRace={selectRace}
                             year={year}
-                            onSelectYear={setPickedYear}
+                            onSelectYear={selectYear}
                             racers={racers}
-                            selectedBibs={selectedBibs}
-                            onToggle={toggleBib}
+                            selectedIds={selectedIds}
+                            selectedRacers={selectedRacers}
+                            onToggle={toggleId}
                             onAddGroup={addGroup}
-                            onClear={() => setSelectedBibs([])}
-                            pinnedBib={label?.bib ?? null}
+                            onClear={clearSelected}
+                            pinnedId={label?.id ?? null}
                             onHoverSwimmer={handleRosterHover}
                             onPinSwimmer={handleRosterClick}
                         />
@@ -1824,8 +1677,10 @@ export function FiberCanvas() {
                 {race.cameras.map(c => (
                     <button
                         key={c.name}
-                        className='shrink-0 rounded-full px-3 py-1 text-xs text-slate-300 transition hover:bg-white/10 hover:text-white max-sm:px-2'
-                        onClick={() => applyCamera(c)}
+                        className={`shrink-0 rounded-full px-3 py-1 text-xs transition max-sm:px-2 ${c === camera
+                            ? 'bg-cyan-400/20 font-semibold text-cyan-300'
+                            : 'text-slate-300 hover:bg-white/10 hover:text-white'}`}
+                        onClick={() => handleViewClick(c)}
                     >
                         {c.name}
                     </button>
@@ -1856,34 +1711,58 @@ export function FiberCanvas() {
                             <span className={sectionLabelCls}>Scene settings</span>
                             <button className='px-1 text-slate-500 transition hover:text-white' onClick={() => setSettingsOpen(false)}>×</button>
                         </div>
-                        <div className='mb-1 flex items-center gap-4 text-sm text-slate-300'>
+                        {/* voxel size = tile pyramid level: auto follows the zoom */}
+                        <div className='mb-1 flex flex-wrap items-center gap-4 text-sm text-slate-300'>
                             <label className='flex items-center gap-2'>
-                                <span>Dataset</span>
-                                <select className={selectCls + ' !w-auto'} value={dataset} onChange={e => setDataset(e.target.value)}>
-                                    {Object.keys(DATASETS).map(k => <option key={k} value={k}>{k}</option>)}
+                                <span>Voxel size</span>
+                                <select
+                                    className={selectCls + ' !w-auto'}
+                                    value={mapSettings.auto ? 'auto' : String(mapSettings.levelIdx)}
+                                    onChange={e => {
+                                        if (e.target.value === 'auto') {
+                                            setMapSetting('auto', true)
+                                        } else {
+                                            // hand the slider the level currently drawn
+                                            // first, so turning auto off doesn't jump the map
+                                            setMapSetting('levelIdx', Number(e.target.value))
+                                            setMapSetting('auto', false)
+                                        }
+                                    }}
+                                >
+                                    <option value='auto'>Auto{drawnLevel ? ` (${drawnLevel.res}m)` : ''}</option>
+                                    {levels.map((l, i) => <option key={l.dir} value={i}>{l.res}m</option>)}
                                 </select>
                             </label>
                             <label className='flex items-center gap-2'>
-                                <span>Detail</span>
-                                <select className={selectCls + ' !w-auto'} value={stride} onChange={e => setStride(Number(e.target.value))}>
-                                    {[1, 2, 4, 8, 16].map(s => <option key={s} value={s}>{s}x</option>)}
-                                </select>
+                                <input
+                                    type='checkbox'
+                                    className='accent-cyan-400'
+                                    checked={mapSettings.shadows}
+                                    onChange={e => setMapSetting('shadows', e.target.checked)}
+                                />
+                                Shadows
+                            </label>
+                            <label className='flex items-center gap-2'>
+                                <input
+                                    type='checkbox'
+                                    className='accent-cyan-400'
+                                    checked={mapSettings.colorMode === 'terrain'}
+                                    onChange={e => setMapSetting('colorMode', e.target.checked ? 'terrain' : 'none')}
+                                />
+                                Land cover colors
                             </label>
                             <span className='text-xs text-slate-500'>
-                                {view ? `${view.g.nRows} × ${view.g.nCols} = ${(view.g.nRows * view.g.nCols).toLocaleString()} cells` : 'loading…'}
+                                {api
+                                    ? `${mapStats.tiles} tile${mapStats.tiles === 1 ? '' : 's'} · ${mapStats.mPerPx.toFixed(1)} m/px`
+                                    : 'loading terrain…'}
                             </span>
                         </div>
-                        <Control label='Height scale' value={heightScale} min={0.002} max={0.05} step={0.001} onChange={setHeightScale} />
-                        <Control label='Ocean depth compression' value={oceanDepthDivisor} min={0.25} max={15} step={0.25} onChange={setOceanDepthDivisor} />
-                        <Control label='Water opacity' value={waterOpacity} min={0} max={0.6} step={0.05} onChange={setWaterOpacity} />
-                        <Control label='Smoothing strength' value={smoothStrength} min={0} max={1} step={0.05} onChange={setSmoothStrength} />
-                        <Control label='Smoothing iterations' value={smoothIterations} min={0} max={4} step={1} onChange={setSmoothIterations} />
-                        <Control label='Block footprint' value={blockFootprint} min={0.5} max={1.2} step={0.05} onChange={setBlockFootprint} />
-                        <Control label='Light intensity' value={lightIntensity} min={0} max={3} step={0.1} onChange={setLightIntensity} />
-                        <Control label='Ambient light' value={ambientIntensity} min={0} max={2} step={0.05} onChange={setAmbientIntensity} />
-                        <Control label='Time of day (hr)' value={timeOfDay} min={6} max={18} step={0.25} onChange={setTimeOfDay} />
-                        <Control label='Beach max elevation (m)' value={beachMaxElev} min={0} max={20} step={0.5} onChange={setBeachMaxElev} />
-                        <Control label='Beach reach (m inland)' value={beachReach} min={0} max={400} step={20} onChange={setBeachReach} />
+                        <Control label='Auto detail (px per voxel)' value={mapSettings.detailPx} min={2} max={16} step={1} onChange={v => setMapSetting('detailPx', v)} />
+                        <Control label='Height scale' value={mapSettings.heightScale} min={0.002} max={0.02} step={0.001} onChange={v => setMapSetting('heightScale', v)} />
+                        <Control label='Ocean depth compression' value={mapSettings.oceanDivisor} min={1} max={15} step={0.5} onChange={v => setMapSetting('oceanDivisor', v)} />
+                        <Control label='Water opacity' value={mapSettings.waterOpacity} min={0} max={0.6} step={0.05} onChange={v => setMapSetting('waterOpacity', v)} />
+                        <Control label='Sun intensity' value={mapSettings.sunIntensity} min={0} max={3} step={0.1} onChange={v => setMapSetting('sunIntensity', v)} />
+                        <Control label='Ambient light' value={mapSettings.ambient} min={0} max={2} step={0.05} onChange={v => setMapSetting('ambient', v)} />
 
                         {/* buoy editor: active while this dialog is open */}
                         <div className='mt-2 flex flex-col gap-1 border-t border-white/10 pt-2 text-sm'>
@@ -1927,7 +1806,8 @@ export function FiberCanvas() {
                             )}
                         </div>
 
-                        {/* live camera coordinates, for pinning new starting points */}
+                        {/* live camera coordinates, for pinning new starting points
+                            (the target is a lat/lng, ready for CameraStart.target) */}
                         <div className='mt-2 flex flex-col gap-1 border-t border-white/10 pt-2'>
                             <span className={sectionLabelCls}>Camera</span>
                             <input
@@ -1942,13 +1822,8 @@ export function FiberCanvas() {
             {/* first-load onboarding, reopenable via the ? button */}
             {showOnboarding && (
                 <Onboarding
-                    onPickRace={key => { setRaceKey(key); setShowOnboarding(false) }}
-                    onShowBettyRace={() => {
-                        setRaceKey(BETTY_SPOTLIGHT.raceKey)
-                        setPickedYear(BETTY_SPOTLIGHT.year)
-                        setSpotlight(true)
-                        setShowOnboarding(false)
-                    }}
+                    onPickRace={key => { selectRace(key); setShowOnboarding(false) }}
+                    onShowBettyRace={showBettyRace}
                     onClose={() => setShowOnboarding(false)}
                 />
             )}
